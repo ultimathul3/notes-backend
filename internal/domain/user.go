@@ -10,9 +10,11 @@ type User struct {
 }
 
 type UserUsecase interface {
-	GetByID(ctx context.Context, id int64) (User, error)
+	Create(ctx context.Context, user *User) (int64, error)
+	GetByID(ctx context.Context, id int64) (*User, error)
 }
 
 type UserRepository interface {
-	GetByID(ctx context.Context, id int64) (User, error)
+	Create(ctx context.Context, user *User) (int64, error)
+	GetByID(ctx context.Context, id int64) (*User, error)
 }
