@@ -9,7 +9,7 @@ import (
 
 func NewConnection(ctx context.Context, username, password, host, port, db string) (*pgx.Conn, error) {
 	url := fmt.Sprintf(
-		"postgres//%s:%s@%s:%s/%s",
+		"postgres://%s:%s@%s:%s/%s",
 		username, password, host, port, db,
 	)
 
