@@ -4,8 +4,9 @@ import "github.com/ilyakaznacheev/cleanenv"
 
 type Config struct {
 	HTTP struct {
-		IP   string `env:"HTTP_IP"`
-		Port uint16 `env:"HTTP_PORT"`
+		IP      string `env:"HTTP_IP"`
+		Port    uint16 `env:"HTTP_PORT"`
+		GinMode string `env:"GIN_MODE"`
 	}
 
 	PostgreSQL struct {
