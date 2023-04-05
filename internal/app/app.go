@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -50,8 +51,12 @@ func Run() {
 	user.NewHandlerHTTP(router, userUsecase)
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port),
-		Handler: router,
+		Addr:           fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port),
+		Handler:        router,
+		ReadTimeout:    cfg.HTTP.ReadTimeout * time.Second,
+		WriteTimeout:   cfg.HTTP.WriteTimeout * time.Second,
+		IdleTimeout:    cfg.HTTP.IdleTimeout * time.Second,
+		MaxHeaderBytes: cfg.HTTP.MaxHeaderMebibytes << 20,
 	}
 
 	log.Info("server is starting...")
