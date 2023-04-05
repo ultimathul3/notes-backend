@@ -24,6 +24,8 @@ type Config struct {
 		Port     uint16 `env:"PSQL_PORT"`
 		DB       string `env:"PSQL_DB"`
 	}
+
+	PasswordSalt string `env:"PASSWORD_SALT"`
 }
 
 func ReadEnvFile() (*Config, error) {

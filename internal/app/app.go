@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/ultimathul3/notes-backend/internal/config"
 	"github.com/ultimathul3/notes-backend/internal/user"
+	"github.com/ultimathul3/notes-backend/pkg/hash"
 	"github.com/ultimathul3/notes-backend/pkg/postgresql"
 )
 
@@ -47,7 +48,8 @@ func Run() {
 	}
 
 	userRepo := user.NewRepositoryPostgres(pgConn)
-	userUsecase := user.NewUsecase(userRepo)
+	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
+	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
 	user.NewHandlerHTTP(router, userUsecase)
 
 	server := &http.Server{

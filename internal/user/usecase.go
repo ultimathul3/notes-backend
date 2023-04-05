@@ -2,17 +2,21 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ultimathul3/notes-backend/internal/domain"
+	"github.com/ultimathul3/notes-backend/pkg/hash"
 )
 
 type Usecase struct {
-	repository domain.UserRepository
+	repository     domain.UserRepository
+	passwordHasher hash.Hasher
 }
 
-func NewUsecase(repository domain.UserRepository) *Usecase {
+func NewUsecase(repository domain.UserRepository, passwordHasher hash.Hasher) *Usecase {
 	return &Usecase{
-		repository: repository,
+		repository:     repository,
+		passwordHasher: passwordHasher,
 	}
 }
 
@@ -21,10 +25,15 @@ func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int6
 		return 0, err
 	}
 
+	passwordHash, err := u.passwordHasher.Hash([]byte(*input.Password))
+	if err != nil {
+		return 0, err
+	}
+
 	user := domain.User{
 		Login:        *input.Login,
 		Name:         *input.Name,
-		PasswordHash: *input.Password,
+		PasswordHash: fmt.Sprintf("%x", passwordHash),
 	}
 
 	return u.repository.Create(ctx, &user)
