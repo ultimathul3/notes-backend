@@ -17,6 +17,10 @@ func NewUsecase(repository domain.UserRepository) *Usecase {
 }
 
 func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int64, error) {
+	if err := input.Validate(); err != nil {
+		return 0, err
+	}
+
 	user := domain.User{
 		Login:        *input.Login,
 		Name:         *input.Name,
