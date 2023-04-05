@@ -16,8 +16,14 @@ func NewUsecase(repository domain.UserRepository) *Usecase {
 	}
 }
 
-func (u *Usecase) Create(ctx context.Context, user *domain.User) (int64, error) {
-	return u.repository.Create(ctx, user)
+func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int64, error) {
+	user := domain.User{
+		Login:        *input.Login,
+		Name:         *input.Name,
+		PasswordHash: *input.Password,
+	}
+
+	return u.repository.Create(ctx, &user)
 }
 
 func (u *Usecase) GetByID(ctx context.Context, id int64) (*domain.User, error) {

@@ -18,7 +18,17 @@ func NewRepositoryPostgres(conn *pgx.Conn) *RepositoryPostgres {
 }
 
 func (r *RepositoryPostgres) Create(ctx context.Context, user *domain.User) (int64, error) {
-	return 0, nil
+	if err := r.conn.QueryRow(
+		ctx,
+		`INSERT INTO users (login, name, password_hash)
+		 VALUES ($1, $2, $3)
+		 RETURNING id`,
+		user.Login, user.Name, user.PasswordHash,
+	).Scan(&user.ID); err != nil {
+		return 0, domain.ErrUserAlreadyExists
+	}
+
+	return user.ID, nil
 }
 
 func (r *RepositoryPostgres) GetByID(ctx context.Context, id int64) (*domain.User, error) {
