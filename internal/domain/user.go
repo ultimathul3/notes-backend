@@ -21,16 +21,15 @@ type (
 	}
 )
 
-type (
-	UserUsecase interface {
-		Create(ctx context.Context, user *CreateUserDTO) (int64, error)
-	}
+type UserUsecase interface {
+	Create(ctx context.Context, user *CreateUserDTO) (int64, error)
+}
 
-	UserRepository interface {
-		Create(ctx context.Context, user *User) (int64, error)
-		GetByID(ctx context.Context, id int64) (*User, error)
-	}
-)
+//go:generate mockery --name UserRepository
+type UserRepository interface {
+	Create(ctx context.Context, user *User) (int64, error)
+	GetByID(ctx context.Context, id int64) (*User, error)
+}
 
 func (cu *CreateUserDTO) Validate() error {
 	if cu.Login == nil {
