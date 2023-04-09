@@ -42,6 +42,15 @@ func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int6
 	return u.repository.Create(ctx, &user)
 }
 
-func (u *Usecase) GetByID(ctx context.Context, id int64) (*domain.User, error) {
-	return u.repository.GetByID(ctx, id)
+func (u *Usecase) GetID(ctx context.Context, input *domain.GetUserIDDTO) (int64, error) {
+	if err := input.Validate(); err != nil {
+		return 0, err
+	}
+
+	passwordHash, err := u.passwordHasher.Hash([]byte(*input.Password))
+	if err != nil {
+		return 0, err
+	}
+
+	return u.repository.GetID(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
 }

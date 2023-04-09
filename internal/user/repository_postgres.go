@@ -31,6 +31,17 @@ func (r *RepositoryPostgres) Create(ctx context.Context, user *domain.User) (int
 	return user.ID, nil
 }
 
-func (r *RepositoryPostgres) GetByID(ctx context.Context, id int64) (*domain.User, error) {
-	return nil, nil
+func (r *RepositoryPostgres) GetID(ctx context.Context, login, passwordHash string) (int64, error) {
+	var id int64
+
+	if err := r.conn.QueryRow(
+		ctx,
+		`SELECT id FROM users
+		 WHERE login=$1 AND password_hash=$2`,
+		login, passwordHash,
+	).Scan(&id); err != nil {
+		return 0, domain.ErrInvalidLoginOrPassword
+	}
+
+	return id, nil
 }

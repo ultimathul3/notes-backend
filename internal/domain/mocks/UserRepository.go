@@ -38,25 +38,23 @@ func (_m *UserRepository) Create(ctx context.Context, user *domain.User) (int64,
 	return r0, r1
 }
 
-// GetByID provides a mock function with given fields: ctx, id
-func (_m *UserRepository) GetByID(ctx context.Context, id int64) (*domain.User, error) {
-	ret := _m.Called(ctx, id)
+// GetID provides a mock function with given fields: ctx, login, passwordHash
+func (_m *UserRepository) GetID(ctx context.Context, login string, passwordHash string) (int64, error) {
+	ret := _m.Called(ctx, login, passwordHash)
 
-	var r0 *domain.User
+	var r0 int64
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, int64) (*domain.User, error)); ok {
-		return rf(ctx, id)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) (int64, error)); ok {
+		return rf(ctx, login, passwordHash)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, int64) *domain.User); ok {
-		r0 = rf(ctx, id)
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) int64); ok {
+		r0 = rf(ctx, login, passwordHash)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*domain.User)
-		}
+		r0 = ret.Get(0).(int64)
 	}
 
-	if rf, ok := ret.Get(1).(func(context.Context, int64) error); ok {
-		r1 = rf(ctx, id)
+	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {
+		r1 = rf(ctx, login, passwordHash)
 	} else {
 		r1 = ret.Error(1)
 	}

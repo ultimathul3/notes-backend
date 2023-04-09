@@ -19,16 +19,22 @@ type (
 		Name     *string `json:"name"`
 		Password *string `json:"password"`
 	}
+
+	GetUserIDDTO struct {
+		Login    *string `json:"login"`
+		Password *string `json:"password"`
+	}
 )
 
 type UserUsecase interface {
 	Create(ctx context.Context, input *CreateUserDTO) (int64, error)
+	GetID(ctx context.Context, input *GetUserIDDTO) (int64, error)
 }
 
 //go:generate mockery --name UserRepository
 type UserRepository interface {
 	Create(ctx context.Context, user *User) (int64, error)
-	GetByID(ctx context.Context, id int64) (*User, error)
+	GetID(ctx context.Context, login, passwordHash string) (int64, error)
 }
 
 func (cu *CreateUserDTO) Validate() error {
@@ -62,6 +68,17 @@ func (cu *CreateUserDTO) Validate() error {
 	return nil
 }
 
+func (gu *GetUserIDDTO) Validate() error {
+	if gu.Login == nil {
+		return errors.New("empty login")
+	}
+	if gu.Password == nil {
+		return errors.New("empty password")
+	}
+	return nil
+}
+
 var (
-	ErrUserAlreadyExists = errors.New("user with such login already exists")
+	ErrUserAlreadyExists      = errors.New("user with such login already exists")
+	ErrInvalidLoginOrPassword = errors.New("invalid login or password")
 )
