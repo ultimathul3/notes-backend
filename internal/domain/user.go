@@ -22,7 +22,7 @@ type (
 )
 
 type UserUsecase interface {
-	Create(ctx context.Context, user *CreateUserDTO) (int64, error)
+	Create(ctx context.Context, input *CreateUserDTO) (int64, error)
 }
 
 //go:generate mockery --name UserRepository

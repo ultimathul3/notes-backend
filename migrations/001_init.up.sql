@@ -59,3 +59,11 @@ CREATE TABLE shared_todo_lists (
     "todo_list_id" BIGINT REFERENCES todo_lists("id") ON DELETE CASCADE NOT NULL,
     "accepted" BOOLEAN NOT NULL
 );
+
+CREATE TABLE sessions (
+    "id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "user_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
+    "refresh_token" UUID NOT NULL,
+    "fingerprint" TEXT NOT NULL,
+    "expires_in" TIMESTAMPTZ NOT NULL
+);
