@@ -5,15 +5,18 @@ import (
 	"fmt"
 
 	"github.com/ultimathul3/notes-backend/internal/domain"
-	"github.com/ultimathul3/notes-backend/pkg/hash"
 )
+
+type Hasher interface {
+	Hash(data []byte) ([]byte, error)
+}
 
 type Usecase struct {
 	repository     domain.UserRepository
-	passwordHasher hash.Hasher
+	passwordHasher Hasher
 }
 
-func NewUsecase(repository domain.UserRepository, passwordHasher hash.Hasher) *Usecase {
+func NewUsecase(repository domain.UserRepository, passwordHasher Hasher) *Usecase {
 	return &Usecase{
 		repository:     repository,
 		passwordHasher: passwordHasher,
