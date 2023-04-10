@@ -1,6 +1,7 @@
 package jwtauth
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -27,7 +28,7 @@ func (j *JWT) GenerateTokens(userID int64) (string, uuid.UUID, error) {
 		ID:        fmt.Sprintf("%d", userID),
 	})
 
-	signedAccesToken, err := accessToken.SignedString(j.secretKey)
+	signedAccesToken, err := accessToken.SignedString([]byte(j.secretKey))
 	if err != nil {
 		return "", uuid.Nil, err
 	}
@@ -43,11 +44,16 @@ func (j *JWT) ParseAccessToken(accessToken string) (int64, error) {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
 		}
 
-		return j.secretKey, nil
+		return []byte(j.secretKey), nil
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return strconv.ParseInt(claims["ID"].(string), 10, 64)
+		var jti string
+		jti, ok = claims["jti"].(string)
+		if !ok {
+			return 0, errors.New("missing jti field")
+		}
+		return strconv.ParseInt(jti, 10, 64)
 	}
 
 	return 0, err
