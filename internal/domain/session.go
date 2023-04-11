@@ -17,17 +17,21 @@ type (
 	}
 
 	CreateSessionDTO struct {
-		UserID       *int64     `json:"user_id"`
-		RefreshToken *uuid.UUID `json:"refresh_token"`
-		Fingerprint  *string    `json:"fingerprint"`
-		ExpiresIn    *time.Time `json:"expires_in"`
+		UserID       int64     `json:"user_id"`
+		RefreshToken uuid.UUID `json:"refresh_token"`
+		Fingerprint  string    `json:"fingerprint"`
+		ExpiresIn    time.Time `json:"expires_in"`
 	}
 )
 
 type SessionUsecase interface {
 	Create(ctx context.Context, session *CreateSessionDTO) (int64, error)
+	GetUserSessionsCount(ctx context.Context, userID int64) int64
+	DeleteAllUserSessions(ctx context.Context, userID int64)
 }
 
 type SessionRepository interface {
 	Create(ctx context.Context, session *Session) (int64, error)
+	GetUserSessionsCount(ctx context.Context, userID int64) int64
+	DeleteAllUserSessions(ctx context.Context, userID int64)
 }
