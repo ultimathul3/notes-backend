@@ -3,15 +3,15 @@ package user
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/ultimathul3/notes-backend/internal/domain"
 )
 
 type RepositoryPostgres struct {
-	conn *pgx.Conn
+	conn *pgxpool.Pool
 }
 
-func NewRepositoryPostgres(conn *pgx.Conn) *RepositoryPostgres {
+func NewRepositoryPostgres(conn *pgxpool.Pool) *RepositoryPostgres {
 	return &RepositoryPostgres{
 		conn: conn,
 	}
