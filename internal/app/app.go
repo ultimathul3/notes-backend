@@ -11,9 +11,12 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ultimathul3/notes-backend/internal/auth"
 	"github.com/ultimathul3/notes-backend/internal/config"
+	"github.com/ultimathul3/notes-backend/internal/session"
 	"github.com/ultimathul3/notes-backend/internal/user"
 	"github.com/ultimathul3/notes-backend/pkg/hash"
+	"github.com/ultimathul3/notes-backend/pkg/jwtauth"
 	"github.com/ultimathul3/notes-backend/pkg/postgresql"
 )
 
@@ -47,10 +50,26 @@ func Run() {
 		log.Fatal(err)
 	}
 
+	// repositories
 	userRepo := user.NewRepositoryPostgres(pgConn)
+	sessionRepo := session.NewRepositoryPostgres(pgConn)
+
+	// user
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
 	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
 	user.NewHandlerHTTP(router, userUsecase)
+
+	// auth
+	jwt := jwtauth.NewJWT(cfg.Auth.AccessTokenTTL, cfg.Auth.JwtSecretKey)
+	sessionUsecase := session.NewUsecase(sessionRepo)
+	auth.NewHandlerHTTP(
+		router,
+		userUsecase,
+		sessionUsecase,
+		jwt,
+		cfg.Auth.RefreshTokenTTL,
+		cfg.Auth.MaxUserSessionsCount,
+	)
 
 	server := &http.Server{
 		Addr:           fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port),

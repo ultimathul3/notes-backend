@@ -26,6 +26,13 @@ type Config struct {
 	}
 
 	PasswordSalt string `env:"PASSWORD_SALT"`
+
+	Auth struct {
+		AccessTokenTTL       time.Duration `env:"ACCESS_TOKEN_TTL"`
+		RefreshTokenTTL      time.Duration `env:"REFRESH_TOKEN_TTL"`
+		JwtSecretKey         string        `env:"JWT_SECRET_KEY"`
+		MaxUserSessionsCount int64         `env:"MAX_USER_SESSIONS_COUNT"`
+	}
 }
 
 func ReadEnvFile() (*Config, error) {
