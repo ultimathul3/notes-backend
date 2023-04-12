@@ -14,20 +14,20 @@ type jwtManager interface {
 }
 
 type Usecase struct {
-	repository           domain.SessionRepository
+	repo                 domain.SessionRepository
 	jwt                  jwtManager
 	refreshTokenTTL      time.Duration
 	maxUserSessionsCount int64
 }
 
 func NewUsecase(
-	repository domain.SessionRepository,
+	repo domain.SessionRepository,
 	jwt jwtManager,
 	refreshTokenTTL time.Duration,
 	maxUserSessionsCount int64,
 ) *Usecase {
 	return &Usecase{
-		repository:           repository,
+		repo:                 repo,
 		jwt:                  jwt,
 		refreshTokenTTL:      refreshTokenTTL,
 		maxUserSessionsCount: maxUserSessionsCount,
@@ -50,30 +50,30 @@ func (u *Usecase) Create(ctx context.Context, input domain.CreateSessionDTO) (in
 		ExpiresIn:    time.Now().Add(u.refreshTokenTTL),
 	}
 
-	return u.repository.Create(ctx, session)
+	return u.repo.Create(ctx, session)
 }
 
 func (u *Usecase) GetCountByUserID(ctx context.Context, userID int64) int64 {
-	return u.repository.GetCountByUserID(ctx, userID)
+	return u.repo.GetCountByUserID(ctx, userID)
 }
 
 func (u *Usecase) DeleteAllByUserID(ctx context.Context, userID int64) {
-	u.repository.DeleteAllByUserID(ctx, userID)
+	u.repo.DeleteAllByUserID(ctx, userID)
 }
 
 func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (string, uuid.UUID, error) {
-	session, err := u.repository.GetByRefreshToken(ctx, *input.RefreshToken)
+	session, err := u.repo.GetByRefreshToken(ctx, *input.RefreshToken)
 	if err != nil {
 		return "", uuid.Nil, err
 	}
 
 	if session.Fingerprint != input.Fingerprint {
-		u.repository.DeleteByID(ctx, session.ID)
+		u.repo.DeleteByID(ctx, session.ID)
 		return "", uuid.Nil, domain.ErrInvalidFingerPrint
 	}
 
 	if time.Now().After(session.ExpiresIn) {
-		u.repository.DeleteByID(ctx, session.ID)
+		u.repo.DeleteByID(ctx, session.ID)
 		return "", uuid.Nil, domain.ErrInvalidOrExpiredRefreshToken
 	}
 
@@ -82,7 +82,7 @@ func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (
 		return "", uuid.Nil, err
 	}
 
-	if err := u.repository.Update(ctx, domain.UpdateSessionDTO{
+	if err := u.repo.Update(ctx, domain.UpdateSessionDTO{
 		ID:           session.ID,
 		RefreshToken: refreshToken,
 		ExpiresIn:    time.Now().Add(u.refreshTokenTTL),

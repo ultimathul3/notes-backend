@@ -54,18 +54,20 @@ func Run() {
 	userRepo := user.NewRepositoryPostgres(pgConn)
 	sessionRepo := session.NewRepositoryPostgres(pgConn)
 
-	// user
+	// providers
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
-	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
-
-	// auth
 	jwt := jwtauth.NewJWT(cfg.Auth.AccessTokenTTL, cfg.Auth.JwtSecretKey)
+
+	// usecases
+	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
 	sessionUsecase := session.NewUsecase(
 		sessionRepo,
 		jwt,
 		cfg.Auth.RefreshTokenTTL,
 		cfg.Auth.MaxUserSessionsCount,
 	)
+
+	// handlers
 	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
 
 	server := &http.Server{

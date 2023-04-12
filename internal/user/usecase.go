@@ -12,13 +12,13 @@ type Hasher interface {
 }
 
 type Usecase struct {
-	repository     domain.UserRepository
+	repo           domain.UserRepository
 	passwordHasher Hasher
 }
 
-func NewUsecase(repository domain.UserRepository, passwordHasher Hasher) *Usecase {
+func NewUsecase(repo domain.UserRepository, passwordHasher Hasher) *Usecase {
 	return &Usecase{
-		repository:     repository,
+		repo:           repo,
 		passwordHasher: passwordHasher,
 	}
 }
@@ -39,7 +39,7 @@ func (u *Usecase) Create(ctx context.Context, input domain.CreateUserDTO) (int64
 		PasswordHash: fmt.Sprintf("%x", passwordHash),
 	}
 
-	return u.repository.Create(ctx, user)
+	return u.repo.Create(ctx, user)
 }
 
 func (u *Usecase) GetID(ctx context.Context, input domain.GetUserIDDTO) (int64, error) {
@@ -52,5 +52,5 @@ func (u *Usecase) GetID(ctx context.Context, input domain.GetUserIDDTO) (int64, 
 		return 0, err
 	}
 
-	return u.repository.GetID(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
+	return u.repo.GetID(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
 }
