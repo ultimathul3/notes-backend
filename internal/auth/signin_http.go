@@ -40,8 +40,8 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		c.Request.Header["Accept-Language"],
 	)
 
-	if h.suc.GetUserSessionsCount(c, id) > h.suc.GetMaxUserSessionsCount()-1 {
-		h.suc.DeleteAllUserSessions(c, id)
+	if h.suc.GetCountByUserID(c, id) > h.suc.GetMaxUserSessionsCount()-1 {
+		h.suc.DeleteAllByUserID(c, id)
 	}
 
 	_, err = h.suc.Create(c, &domain.CreateSessionDTO{

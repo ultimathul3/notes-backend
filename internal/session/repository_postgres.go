@@ -31,7 +31,7 @@ func (r *RepositoryPostgres) Create(ctx context.Context, session *domain.Session
 	return session.ID, nil
 }
 
-func (r *RepositoryPostgres) GetUserSessionsCount(ctx context.Context, userID int64) int64 {
+func (r *RepositoryPostgres) GetCountByUserID(ctx context.Context, userID int64) int64 {
 	var count int64
 
 	if err := r.conn.QueryRow(
@@ -46,7 +46,7 @@ func (r *RepositoryPostgres) GetUserSessionsCount(ctx context.Context, userID in
 	return count
 }
 
-func (r *RepositoryPostgres) DeleteAllUserSessions(ctx context.Context, userID int64) {
+func (r *RepositoryPostgres) DeleteAllByUserID(ctx context.Context, userID int64) {
 	r.conn.QueryRow(
 		ctx,
 		`DELETE FROM sessions

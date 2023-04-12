@@ -34,15 +34,15 @@ type SessionUsecase interface {
 	GenerateTokens(userID int64) (string, uuid.UUID, error)
 	GetMaxUserSessionsCount() int64
 	Create(ctx context.Context, input *CreateSessionDTO) (int64, error)
-	GetUserSessionsCount(ctx context.Context, userID int64) int64
-	DeleteAllUserSessions(ctx context.Context, userID int64)
-	RefreshUserSession(ctx context.Context, input *RefreshSessionDTO) error
+	GetCountByUserID(ctx context.Context, userID int64) int64
+	DeleteAllByUserID(ctx context.Context, userID int64)
+	Refresh(ctx context.Context, input *RefreshSessionDTO) error
 }
 
 type SessionRepository interface {
 	Create(ctx context.Context, session *Session) (int64, error)
-	GetUserSessionsCount(ctx context.Context, userID int64) int64
-	DeleteAllUserSessions(ctx context.Context, userID int64)
+	GetCountByUserID(ctx context.Context, userID int64) int64
+	DeleteAllByUserID(ctx context.Context, userID int64)
 }
 
 var ErrInvalidOrExpiredAccessToken = errors.New("invalid or expired access token")

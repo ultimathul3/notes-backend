@@ -53,14 +53,14 @@ func (u *Usecase) Create(ctx context.Context, input *domain.CreateSessionDTO) (i
 	return u.repository.Create(ctx, &session)
 }
 
-func (u *Usecase) GetUserSessionsCount(ctx context.Context, userID int64) int64 {
-	return u.repository.GetUserSessionsCount(ctx, userID)
+func (u *Usecase) GetCountByUserID(ctx context.Context, userID int64) int64 {
+	return u.repository.GetCountByUserID(ctx, userID)
 }
 
-func (u *Usecase) DeleteAllUserSessions(ctx context.Context, userID int64) {
-	u.repository.DeleteAllUserSessions(ctx, userID)
+func (u *Usecase) DeleteAllByUserID(ctx context.Context, userID int64) {
+	u.repository.DeleteAllByUserID(ctx, userID)
 }
 
-func (u *Usecase) RefreshUserSession(ctx context.Context, input *domain.RefreshSessionDTO) error {
+func (u *Usecase) Refresh(ctx context.Context, input *domain.RefreshSessionDTO) error {
 	return nil
 }
