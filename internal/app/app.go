@@ -3,9 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
-	"io"
 	"net/http"
-	"os"
 	"time"
 
 	log "github.com/sirupsen/logrus"
@@ -20,21 +18,7 @@ import (
 	"github.com/ultimathul3/notes-backend/pkg/postgresql"
 )
 
-func init() {
-	file, err := os.OpenFile("log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.SetOutput(io.MultiWriter(os.Stdout, file))
-}
-
-func Run() {
-	cfg, err := config.ReadEnvFile()
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func Run(cfg *config.Config) {
 	gin.SetMode(cfg.HTTP.GinMode)
 	router := gin.New()
 
