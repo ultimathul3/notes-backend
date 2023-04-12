@@ -68,10 +68,12 @@ func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (
 	}
 
 	if session.Fingerprint != input.Fingerprint {
+		u.repository.DeleteByID(ctx, session.ID)
 		return "", uuid.Nil, domain.ErrInvalidFingerPrint
 	}
 
 	if time.Now().After(session.ExpiresIn) {
+		u.repository.DeleteByID(ctx, session.ID)
 		return "", uuid.Nil, domain.ErrInvalidOrExpiredRefreshToken
 	}
 

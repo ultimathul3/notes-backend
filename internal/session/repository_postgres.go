@@ -47,13 +47,18 @@ func (r *RepositoryPostgres) GetCountByUserID(ctx context.Context, userID int64)
 	return count
 }
 
-func (r *RepositoryPostgres) DeleteAllByUserID(ctx context.Context, userID int64) {
-	r.conn.QueryRow(
+func (r *RepositoryPostgres) DeleteAllByUserID(ctx context.Context, userID int64) error {
+	if err := r.conn.QueryRow(
 		ctx,
 		`DELETE FROM sessions
-		 WHERE user_id=$1`,
+		 WHERE user_id=$1
+		 RETURNING id`,
 		userID,
-	).Scan()
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *RepositoryPostgres) GetByRefreshToken(ctx context.Context, refreshToken uuid.UUID) (domain.Session, error) {
@@ -79,13 +84,30 @@ func (r *RepositoryPostgres) GetByRefreshToken(ctx context.Context, refreshToken
 }
 
 func (r *RepositoryPostgres) Update(ctx context.Context, input domain.UpdateSessionDTO) error {
-	r.conn.QueryRow(
+	if err := r.conn.QueryRow(
 		ctx,
 		`UPDATE sessions
 		 SET refresh_token=$1, expires_in=$2
-		 WHERE id=$3`,
+		 WHERE id=$3
+		 RETURNING id`,
 		input.RefreshToken, input.ExpiresIn, input.ID,
-	).Scan(nil)
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RepositoryPostgres) DeleteByID(ctx context.Context, id int64) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`DELETE FROM sessions
+		 WHERE id=$1
+		 RETURNING id`,
+		id,
+	).Scan(nil); err != nil {
+		return err
+	}
 
 	return nil
 }

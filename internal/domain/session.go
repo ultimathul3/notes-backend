@@ -48,9 +48,10 @@ type SessionUsecase interface {
 type SessionRepository interface {
 	Create(ctx context.Context, session Session) (int64, error)
 	GetCountByUserID(ctx context.Context, userID int64) int64
-	DeleteAllByUserID(ctx context.Context, userID int64)
+	DeleteAllByUserID(ctx context.Context, userID int64) error
 	GetByRefreshToken(ctx context.Context, refreshToken uuid.UUID) (Session, error)
 	Update(ctx context.Context, input UpdateSessionDTO) error
+	DeleteByID(ctx context.Context, id int64) error
 }
 
 func (r *RefreshSessionDTO) Validate() error {
