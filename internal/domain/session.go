@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,14 +21,22 @@ type (
 		UserID       int64     `json:"user_id"`
 		RefreshToken uuid.UUID `json:"refresh_token"`
 		Fingerprint  string    `json:"fingerprint"`
-		ExpiresIn    time.Time `json:"expires_in"`
+	}
+
+	RefreshSessionDTO struct {
+		UserID       int64      `json:"user_id"`
+		RefreshToken *uuid.UUID `json:"refresh_token"`
+		Fingerprint  string     `json:"fingerprint"`
 	}
 )
 
 type SessionUsecase interface {
-	Create(ctx context.Context, session *CreateSessionDTO) (int64, error)
+	GenerateTokens(userID int64) (string, uuid.UUID, error)
+	GetMaxUserSessionsCount() int64
+	Create(ctx context.Context, input *CreateSessionDTO) (int64, error)
 	GetUserSessionsCount(ctx context.Context, userID int64) int64
 	DeleteAllUserSessions(ctx context.Context, userID int64)
+	RefreshUserSession(ctx context.Context, input *RefreshSessionDTO) error
 }
 
 type SessionRepository interface {
@@ -35,3 +44,5 @@ type SessionRepository interface {
 	GetUserSessionsCount(ctx context.Context, userID int64) int64
 	DeleteAllUserSessions(ctx context.Context, userID int64)
 }
+
+var ErrInvalidOrExpiredAccessToken = errors.New("invalid or expired access token")

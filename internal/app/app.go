@@ -61,15 +61,13 @@ func Run() {
 
 	// auth
 	jwt := jwtauth.NewJWT(cfg.Auth.AccessTokenTTL, cfg.Auth.JwtSecretKey)
-	sessionUsecase := session.NewUsecase(sessionRepo)
-	auth.NewHandlerHTTP(
-		router,
-		userUsecase,
-		sessionUsecase,
+	sessionUsecase := session.NewUsecase(
+		sessionRepo,
 		jwt,
 		cfg.Auth.RefreshTokenTTL,
 		cfg.Auth.MaxUserSessionsCount,
 	)
+	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
 
 	server := &http.Server{
 		Addr:           fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port),

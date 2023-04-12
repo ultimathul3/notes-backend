@@ -3,7 +3,6 @@ package auth
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -25,10 +24,12 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		return
 	}
 
-	accessToken, refreshToken, err := h.jwt.GenerateTokens(id)
+	accessToken, refreshToken, err := h.suc.GenerateTokens(id)
 	if err != nil {
 		log.Error("generate tokens: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": ErrInvalidOrExpiredAccessToken.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": domain.ErrInvalidOrExpiredAccessToken.Error(),
+		})
 		return
 	}
 
@@ -39,7 +40,7 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		c.Request.Header["Accept-Language"],
 	)
 
-	if h.suc.GetUserSessionsCount(c, id) > h.maxUserSessionsCount-1 {
+	if h.suc.GetUserSessionsCount(c, id) > h.suc.GetMaxUserSessionsCount()-1 {
 		h.suc.DeleteAllUserSessions(c, id)
 	}
 
@@ -47,7 +48,6 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		UserID:       id,
 		RefreshToken: refreshToken,
 		Fingerprint:  fingerprint,
-		ExpiresIn:    time.Now().Add(h.refreshTokenTTL),
 	})
 	if err != nil {
 		log.Error("create session: ", err)
