@@ -27,13 +27,13 @@ type (
 )
 
 type UserUsecase interface {
-	Create(ctx context.Context, input *CreateUserDTO) (int64, error)
-	GetID(ctx context.Context, input *GetUserIDDTO) (int64, error)
+	Create(ctx context.Context, input CreateUserDTO) (int64, error)
+	GetID(ctx context.Context, input GetUserIDDTO) (int64, error)
 }
 
 //go:generate mockery --name UserRepository
 type UserRepository interface {
-	Create(ctx context.Context, user *User) (int64, error)
+	Create(ctx context.Context, user User) (int64, error)
 	GetID(ctx context.Context, login, passwordHash string) (int64, error)
 }
 

@@ -23,7 +23,7 @@ func NewUsecase(repository domain.UserRepository, passwordHasher Hasher) *Usecas
 	}
 }
 
-func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int64, error) {
+func (u *Usecase) Create(ctx context.Context, input domain.CreateUserDTO) (int64, error) {
 	if err := input.Validate(); err != nil {
 		return 0, err
 	}
@@ -39,10 +39,10 @@ func (u *Usecase) Create(ctx context.Context, input *domain.CreateUserDTO) (int6
 		PasswordHash: fmt.Sprintf("%x", passwordHash),
 	}
 
-	return u.repository.Create(ctx, &user)
+	return u.repository.Create(ctx, user)
 }
 
-func (u *Usecase) GetID(ctx context.Context, input *domain.GetUserIDDTO) (int64, error) {
+func (u *Usecase) GetID(ctx context.Context, input domain.GetUserIDDTO) (int64, error) {
 	if err := input.Validate(); err != nil {
 		return 0, err
 	}

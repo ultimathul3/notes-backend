@@ -17,7 +17,7 @@ func NewRepositoryPostgres(conn *pgxpool.Pool) *RepositoryPostgres {
 	}
 }
 
-func (r *RepositoryPostgres) Create(ctx context.Context, user *domain.User) (int64, error) {
+func (r *RepositoryPostgres) Create(ctx context.Context, user domain.User) (int64, error) {
 	if err := r.conn.QueryRow(
 		ctx,
 		`INSERT INTO users (login, name, password_hash)

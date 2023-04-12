@@ -17,7 +17,7 @@ func NewRepositoryPostgres(conn *pgxpool.Pool) *RepositoryPostgres {
 	}
 }
 
-func (r *RepositoryPostgres) Create(ctx context.Context, session *domain.Session) (int64, error) {
+func (r *RepositoryPostgres) Create(ctx context.Context, session domain.Session) (int64, error) {
 	if err := r.conn.QueryRow(
 		ctx,
 		`INSERT INTO sessions (user_id, refresh_token, fingerprint, expires_in)

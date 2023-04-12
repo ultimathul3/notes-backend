@@ -24,7 +24,7 @@ func TestUserCreate(t *testing.T) {
 		Return(int64(1), nil)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
-	_, err := usecase.Create(context.Background(), &domain.CreateUserDTO{
+	_, err := usecase.Create(context.Background(), domain.CreateUserDTO{
 		Login:    toPtr("login"),
 		Name:     toPtr("name"),
 		Password: toPtr("password"),
@@ -42,7 +42,7 @@ func TestUserCreateError(t *testing.T) {
 		Return(int64(0), domain.ErrUserAlreadyExists)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
-	_, err := usecase.Create(context.Background(), &domain.CreateUserDTO{
+	_, err := usecase.Create(context.Background(), domain.CreateUserDTO{
 		Login:    toPtr("login"),
 		Name:     toPtr("name"),
 		Password: toPtr("password"),

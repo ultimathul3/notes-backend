@@ -42,7 +42,7 @@ func (u *Usecase) GetMaxUserSessionsCount() int64 {
 	return u.maxUserSessionsCount
 }
 
-func (u *Usecase) Create(ctx context.Context, input *domain.CreateSessionDTO) (int64, error) {
+func (u *Usecase) Create(ctx context.Context, input domain.CreateSessionDTO) (int64, error) {
 	session := domain.Session{
 		UserID:       input.UserID,
 		RefreshToken: input.RefreshToken,
@@ -50,7 +50,7 @@ func (u *Usecase) Create(ctx context.Context, input *domain.CreateSessionDTO) (i
 		ExpiresIn:    time.Now().Add(u.refreshTokenTTL),
 	}
 
-	return u.repository.Create(ctx, &session)
+	return u.repository.Create(ctx, session)
 }
 
 func (u *Usecase) GetCountByUserID(ctx context.Context, userID int64) int64 {
@@ -61,6 +61,6 @@ func (u *Usecase) DeleteAllByUserID(ctx context.Context, userID int64) {
 	u.repository.DeleteAllByUserID(ctx, userID)
 }
 
-func (u *Usecase) Refresh(ctx context.Context, input *domain.RefreshSessionDTO) error {
+func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) error {
 	return nil
 }

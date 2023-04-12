@@ -10,7 +10,7 @@ import (
 )
 
 func (h *HandlerHTTP) signIn(c *gin.Context) {
-	var user *domain.GetUserIDDTO
+	var user domain.GetUserIDDTO
 	if err := c.BindJSON(&user); err != nil {
 		log.Error("GetUserIDDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -44,7 +44,7 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		h.suc.DeleteAllByUserID(c, id)
 	}
 
-	_, err = h.suc.Create(c, &domain.CreateSessionDTO{
+	_, err = h.suc.Create(c, domain.CreateSessionDTO{
 		UserID:       id,
 		RefreshToken: refreshToken,
 		Fingerprint:  fingerprint,

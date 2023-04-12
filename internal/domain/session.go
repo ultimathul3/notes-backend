@@ -33,14 +33,14 @@ type (
 type SessionUsecase interface {
 	GenerateTokens(userID int64) (string, uuid.UUID, error)
 	GetMaxUserSessionsCount() int64
-	Create(ctx context.Context, input *CreateSessionDTO) (int64, error)
+	Create(ctx context.Context, input CreateSessionDTO) (int64, error)
 	GetCountByUserID(ctx context.Context, userID int64) int64
 	DeleteAllByUserID(ctx context.Context, userID int64)
-	Refresh(ctx context.Context, input *RefreshSessionDTO) error
+	Refresh(ctx context.Context, input RefreshSessionDTO) error
 }
 
 type SessionRepository interface {
-	Create(ctx context.Context, session *Session) (int64, error)
+	Create(ctx context.Context, session Session) (int64, error)
 	GetCountByUserID(ctx context.Context, userID int64) int64
 	DeleteAllByUserID(ctx context.Context, userID int64)
 }

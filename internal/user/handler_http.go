@@ -24,7 +24,7 @@ func NewHandlerHTTP(router *gin.Engine, uuc domain.UserUsecase) {
 }
 
 func (h *HandlerHTTP) create(c *gin.Context) {
-	var user *domain.CreateUserDTO
+	var user domain.CreateUserDTO
 	if err := c.BindJSON(&user); err != nil {
 		log.Error("CreateUserDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
