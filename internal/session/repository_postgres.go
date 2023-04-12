@@ -3,6 +3,7 @@ package session
 import (
 	"context"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/ultimathul3/notes-backend/internal/domain"
 )
@@ -53,4 +54,38 @@ func (r *RepositoryPostgres) DeleteAllByUserID(ctx context.Context, userID int64
 		 WHERE user_id=$1`,
 		userID,
 	).Scan()
+}
+
+func (r *RepositoryPostgres) GetByRefreshToken(ctx context.Context, refreshToken uuid.UUID) (domain.Session, error) {
+	var session domain.Session
+
+	if err := r.conn.QueryRow(
+		ctx,
+		`SELECT id, user_id, refresh_token, fingerprint, expires_in
+		 FROM sessions
+		 WHERE refresh_token=$1`,
+		refreshToken,
+	).Scan(
+		&session.ID,
+		&session.UserID,
+		&session.RefreshToken,
+		&session.Fingerprint,
+		&session.ExpiresIn,
+	); err != nil {
+		return domain.Session{}, domain.ErrInvalidOrExpiredRefreshToken
+	}
+
+	return session, nil
+}
+
+func (r *RepositoryPostgres) Update(ctx context.Context, input domain.UpdateSessionDTO) error {
+	r.conn.QueryRow(
+		ctx,
+		`UPDATE sessions
+		 SET refresh_token=$1, expires_in=$2
+		 WHERE id=$3`,
+		input.RefreshToken, input.ExpiresIn, input.ID,
+	).Scan(nil)
+
+	return nil
 }

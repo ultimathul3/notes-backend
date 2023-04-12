@@ -61,6 +61,32 @@ func (u *Usecase) DeleteAllByUserID(ctx context.Context, userID int64) {
 	u.repository.DeleteAllByUserID(ctx, userID)
 }
 
-func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) error {
-	return nil
+func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (string, uuid.UUID, error) {
+	session, err := u.repository.GetByRefreshToken(ctx, *input.RefreshToken)
+	if err != nil {
+		return "", uuid.Nil, err
+	}
+
+	if session.Fingerprint != input.Fingerprint {
+		return "", uuid.Nil, domain.ErrInvalidFingerPrint
+	}
+
+	if time.Now().After(session.ExpiresIn) {
+		return "", uuid.Nil, domain.ErrInvalidOrExpiredRefreshToken
+	}
+
+	accessToken, refreshToken, err := u.jwt.GenerateTokens(session.ID)
+	if err != nil {
+		return "", uuid.Nil, err
+	}
+
+	if err := u.repository.Update(ctx, domain.UpdateSessionDTO{
+		ID:           session.ID,
+		RefreshToken: refreshToken,
+		ExpiresIn:    time.Now().Add(u.refreshTokenTTL),
+	}); err != nil {
+		return "", uuid.Nil, err
+	}
+
+	return accessToken, refreshToken, nil
 }

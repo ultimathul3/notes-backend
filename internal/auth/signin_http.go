@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +12,12 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 	var user domain.GetUserIDDTO
 	if err := c.BindJSON(&user); err != nil {
 		log.Error("GetUserIDDTO bind json: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	if err := user.Validate(); err != nil {
+		log.Errorf("sign-in: user validation: %s", err.Error())
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -33,12 +38,7 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 		return
 	}
 
-	fingerprint := fmt.Sprintf(
-		"%s; %s; %s",
-		c.ClientIP(),
-		c.Request.Header["User-Agent"],
-		c.Request.Header["Accept-Language"],
-	)
+	fingerprint := generateFingerprint(c)
 
 	if h.suc.GetCountByUserID(c, id) > h.suc.GetMaxUserSessionsCount()-1 {
 		h.suc.DeleteAllByUserID(c, id)

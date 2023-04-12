@@ -57,7 +57,6 @@ func Run() {
 	// user
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
 	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
-	user.NewHandlerHTTP(router, userUsecase)
 
 	// auth
 	jwt := jwtauth.NewJWT(cfg.Auth.AccessTokenTTL, cfg.Auth.JwtSecretKey)
