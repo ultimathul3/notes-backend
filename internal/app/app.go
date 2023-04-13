@@ -42,6 +42,9 @@ func Run(cfg *config.Config) {
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
 	jwt := jwtauth.NewJWT(cfg.Auth.AccessTokenTTL, cfg.Auth.JwtSecretKey)
 
+	// middlewares
+	//tokenChecker := middleware.NewTokenChecker(jwt)
+
 	// usecases
 	userUsecase := user.NewUsecase(userRepo, sha256Hasher)
 	sessionUsecase := session.NewUsecase(
