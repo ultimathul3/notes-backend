@@ -39,6 +39,8 @@ func (j *JWT) GenerateTokens(userID int64) (string, uuid.UUID, error) {
 }
 
 func (j *JWT) ParseAccessToken(accessToken string) (int64, error) {
+	var jti string
+
 	token, err := jwt.Parse(accessToken, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
@@ -47,14 +49,16 @@ func (j *JWT) ParseAccessToken(accessToken string) (int64, error) {
 		return []byte(j.secretKey), nil
 	})
 
+	if err != nil {
+		return 0, err
+	}
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		var jti string
 		jti, ok = claims["jti"].(string)
 		if !ok {
 			return 0, errors.New("missing jti field")
 		}
-		return strconv.ParseInt(jti, 10, 64)
 	}
 
-	return 0, err
+	return strconv.ParseInt(jti, 10, 64)
 }
