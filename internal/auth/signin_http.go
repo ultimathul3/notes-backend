@@ -17,7 +17,7 @@ func (h *HandlerHTTP) signIn(c *gin.Context) {
 	}
 
 	if err := user.Validate(); err != nil {
-		log.Errorf("sign-in: user validation: %s", err.Error())
+		log.Error("sign-in: user validation: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

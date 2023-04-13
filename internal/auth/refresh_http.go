@@ -20,7 +20,7 @@ func (h *HandlerHTTP) refresh(c *gin.Context) {
 	}
 
 	if err := input.Validate(); err != nil {
-		log.Errorf("refresh: input validation: %s", err.Error())
+		log.Error("refresh: input validation: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -32,7 +32,7 @@ func (h *HandlerHTTP) refresh(c *gin.Context) {
 		if errors.Is(err, domain.ErrInvalidFingerPrint) {
 			log.Error("refresh tokens: token may have been stolen")
 		} else {
-			log.Errorf("refresh tokens: %s", err.Error())
+			log.Error("refresh tokens: ", err)
 		}
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": domain.ErrInvalidOrExpiredRefreshToken.Error(),
