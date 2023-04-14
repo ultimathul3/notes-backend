@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"regexp"
+	"unicode/utf8"
 )
 
 type (
@@ -47,13 +48,13 @@ func (cu *CreateUserDTO) Validate() error {
 	if cu.Password == nil {
 		return errors.New("empty password")
 	}
-	if len(*cu.Login) < 4 || len(*cu.Login) > 15 {
+	if utf8.RuneCountInString(*cu.Login) < 4 || utf8.RuneCountInString(*cu.Login) > 15 {
 		return errors.New("login length must be from 4 to 15 characters")
 	}
-	if len(*cu.Name) < 2 || len(*cu.Name) > 50 {
+	if utf8.RuneCountInString(*cu.Name) < 2 || utf8.RuneCountInString(*cu.Name) > 50 {
 		return errors.New("name length must be from 2 to 50 characters")
 	}
-	if len(*cu.Password) < 6 || len(*cu.Password) > 256 {
+	if utf8.RuneCountInString(*cu.Password) < 6 || utf8.RuneCountInString(*cu.Password) > 256 {
 		return errors.New("password length must be from 6 to 256 characters")
 	}
 	if regexp.MustCompile(`^\d+$`).MatchString(*cu.Login) {
