@@ -8,10 +8,10 @@ import (
 )
 
 type RepositoryPostgres struct {
-	conn *pgxpool.Conn
+	conn *pgxpool.Pool
 }
 
-func NewRepositoryPostgres(conn *pgxpool.Conn) *RepositoryPostgres {
+func NewRepositoryPostgres(conn *pgxpool.Pool) *RepositoryPostgres {
 	return &RepositoryPostgres{
 		conn: conn,
 	}
