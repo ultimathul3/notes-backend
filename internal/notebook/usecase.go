@@ -28,6 +28,14 @@ func (u *Usecase) GetAllByUserID(ctx context.Context, userID int64) ([]domain.No
 	return u.repo.GetAllByUserID(ctx, userID)
 }
 
+func (u *Usecase) Update(ctx context.Context, notebook domain.Notebook) error {
+	if err := notebook.Validate(); err != nil {
+		return err
+	}
+
+	return u.repo.Update(ctx, notebook)
+}
+
 func (u *Usecase) Delete(ctx context.Context, id, userID int64) error {
 	return u.repo.Delete(ctx, id, userID)
 }

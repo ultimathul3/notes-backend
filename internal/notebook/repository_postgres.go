@@ -70,3 +70,18 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, id, userID int64) error
 
 	return nil
 }
+
+func (r *RepositoryPostgres) Update(ctx context.Context, notebook domain.Notebook) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`UPDATE notebooks
+		 SET description=$1
+		 WHERE user_id=$2 AND id=$3
+		 RETURNING id`,
+		notebook.Description, notebook.UserID, notebook.ID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}

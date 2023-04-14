@@ -22,6 +22,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByUserID)
+		notebook.PUT("/:id", handler.update)
 		notebook.DELETE("/:id", handler.delete)
 	}
 }
@@ -60,6 +61,34 @@ func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 	c.JSON(http.StatusOK, notebooks)
 }
 
+func (h *HandlerHTTP) update(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid id param"})
+		return
+	}
+
+	var notebook domain.Notebook
+	if err := c.BindJSON(&notebook); err != nil {
+		log.Error("Notebook bind json: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+	notebook.ID = id
+	notebook.UserID = userID
+
+	err = h.nuc.Update(c, notebook)
+	if err != nil {
+		log.Error("update notebook: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -70,7 +99,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 	err = h.nuc.Delete(c, id, userID)
 	if err != nil {
-		log.Error("delete notebook", err)
+		log.Error("delete notebook: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "notebook not found"})
 		return
 	}
