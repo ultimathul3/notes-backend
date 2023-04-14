@@ -17,11 +17,13 @@ type (
 type NotebookUsecase interface {
 	Create(ctx context.Context, notebook Notebook) (int64, error)
 	GetAllByUserID(ctx context.Context, userID int64) ([]Notebook, error)
+	Delete(ctx context.Context, id, userID int64) error
 }
 
 type NotebookRepository interface {
 	Create(ctx context.Context, notebook Notebook) (int64, error)
 	GetAllByUserID(ctx context.Context, userID int64) ([]Notebook, error)
+	Delete(ctx context.Context, id, userID int64) error
 }
 
 func (cn *Notebook) Validate() error {

@@ -56,3 +56,17 @@ func (r *RepositoryPostgres) GetAllByUserID(ctx context.Context, userID int64) (
 
 	return notebooks, nil
 }
+
+func (r *RepositoryPostgres) Delete(ctx context.Context, id, userID int64) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`DELETE FROM notebooks
+		 WHERE user_id=$1 AND id=$2
+		 RETURNING id`,
+		userID, id,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}

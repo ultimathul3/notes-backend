@@ -27,3 +27,7 @@ func (u *Usecase) Create(ctx context.Context, notebook domain.Notebook) (int64, 
 func (u *Usecase) GetAllByUserID(ctx context.Context, userID int64) ([]domain.Notebook, error) {
 	return u.repo.GetAllByUserID(ctx, userID)
 }
+
+func (u *Usecase) Delete(ctx context.Context, id, userID int64) error {
+	return u.repo.Delete(ctx, id, userID)
+}

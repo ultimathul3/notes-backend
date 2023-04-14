@@ -2,6 +2,7 @@ package notebook
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -21,6 +22,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByUserID)
+		notebook.DELETE("/:id", handler.delete)
 	}
 }
 
@@ -56,4 +58,22 @@ func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notebooks)
+}
+
+func (h *HandlerHTTP) delete(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+	err = h.nuc.Delete(c, id, userID)
+	if err != nil {
+		log.Error("delete notebook", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "notebook not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
