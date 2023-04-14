@@ -10,16 +10,18 @@ type (
 	Notebook struct {
 		ID          int64   `json:"id"`
 		Description *string `json:"description"`
-		UserID      int64   `json:"user_id"`
+		UserID      int64   `json:"user_id,omitempty"`
 	}
 )
 
 type NotebookUsecase interface {
 	Create(ctx context.Context, notebook Notebook) (int64, error)
+	GetAllByUserID(ctx context.Context, userID int64) ([]Notebook, error)
 }
 
 type NotebookRepository interface {
 	Create(ctx context.Context, notebook Notebook) (int64, error)
+	GetAllByUserID(ctx context.Context, userID int64) ([]Notebook, error)
 }
 
 func (cn *Notebook) Validate() error {

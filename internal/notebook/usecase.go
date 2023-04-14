@@ -23,3 +23,7 @@ func (u *Usecase) Create(ctx context.Context, notebook domain.Notebook) (int64, 
 
 	return u.repo.Create(ctx, notebook)
 }
+
+func (u *Usecase) GetAllByUserID(ctx context.Context, userID int64) ([]domain.Notebook, error) {
+	return u.repo.GetAllByUserID(ctx, userID)
+}

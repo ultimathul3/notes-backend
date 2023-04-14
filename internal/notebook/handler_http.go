@@ -20,6 +20,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 	notebook := router.Group("/notebooks").Use(tokenChecker)
 	{
 		notebook.POST("/", handler.create)
+		notebook.GET("/", handler.getAllByUserID)
 	}
 }
 
@@ -42,4 +43,17 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"id": id})
+}
+
+func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
+	userID := c.MustGet("userID").(int64)
+
+	notebooks, err := h.nuc.GetAllByUserID(c, userID)
+	if err != nil {
+		log.Error("get all notebooks by user id: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, notebooks)
 }
