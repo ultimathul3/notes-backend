@@ -20,7 +20,7 @@ func TestUserCreate(t *testing.T) {
 	repo.On(
 		"Create",
 		mock.AnythingOfType("*context.emptyCtx"),
-		mock.AnythingOfType("*domain.User")).
+		mock.AnythingOfType("domain.User")).
 		Return(int64(1), nil)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
@@ -38,7 +38,7 @@ func TestUserCreateError(t *testing.T) {
 	repo.On(
 		"Create",
 		mock.AnythingOfType("*context.emptyCtx"),
-		mock.AnythingOfType("*domain.User")).
+		mock.AnythingOfType("domain.User")).
 		Return(int64(0), domain.ErrUserAlreadyExists)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
@@ -48,5 +48,5 @@ func TestUserCreateError(t *testing.T) {
 		Password: toPtr("password"),
 	})
 
-	assert.ErrorIs(t, domain.ErrUserAlreadyExists, err)
+	assert.ErrorIs(t, err, domain.ErrUserAlreadyExists)
 }

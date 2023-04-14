@@ -45,6 +45,7 @@ type SessionUsecase interface {
 	Refresh(ctx context.Context, input RefreshSessionDTO) (string, uuid.UUID, error)
 }
 
+//go:generate mockery --name SessionRepository
 type SessionRepository interface {
 	Create(ctx context.Context, session Session) (int64, error)
 	GetCountByUserID(ctx context.Context, userID int64) int64
