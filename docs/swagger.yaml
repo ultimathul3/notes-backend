@@ -1,5 +1,5 @@
 definitions:
-  docs.Message:
+  docs.MessageResponse:
     properties:
       message:
         type: string
@@ -74,7 +74,7 @@ paths:
         "400":
           description: Error message
           schema:
-            $ref: '#/definitions/docs.Message'
+            $ref: '#/definitions/docs.MessageResponse'
       summary: Refreshing a user session
       tags:
       - Auth
@@ -99,11 +99,11 @@ paths:
         "400":
           description: Error message
           schema:
-            $ref: '#/definitions/docs.Message'
+            $ref: '#/definitions/docs.MessageResponse'
         "500":
           description: Server error message
           schema:
-            $ref: '#/definitions/docs.Message'
+            $ref: '#/definitions/docs.MessageResponse'
       summary: User sign in
       tags:
       - Auth
@@ -128,7 +128,7 @@ paths:
         "400":
           description: Error message
           schema:
-            $ref: '#/definitions/docs.Message'
+            $ref: '#/definitions/docs.MessageResponse'
       summary: User sign up
       tags:
       - Auth

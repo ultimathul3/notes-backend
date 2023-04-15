@@ -10,7 +10,7 @@ type SignUpResponse struct {
 	ID int64 `json:"id"`
 }
 
-type Message struct {
+type MessageResponse struct {
 	Message string `json:"message"`
 }
 

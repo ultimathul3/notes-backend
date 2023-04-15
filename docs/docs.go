@@ -49,7 +49,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Error message",
                         "schema": {
-                            "$ref": "#/definitions/docs.Message"
+                            "$ref": "#/definitions/docs.MessageResponse"
                         }
                     }
                 }
@@ -88,13 +88,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Error message",
                         "schema": {
-                            "$ref": "#/definitions/docs.Message"
+                            "$ref": "#/definitions/docs.MessageResponse"
                         }
                     },
                     "500": {
                         "description": "Server error message",
                         "schema": {
-                            "$ref": "#/definitions/docs.Message"
+                            "$ref": "#/definitions/docs.MessageResponse"
                         }
                     }
                 }
@@ -133,7 +133,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Error message",
                         "schema": {
-                            "$ref": "#/definitions/docs.Message"
+                            "$ref": "#/definitions/docs.MessageResponse"
                         }
                     }
                 }
@@ -141,7 +141,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "docs.Message": {
+        "docs.MessageResponse": {
             "type": "object",
             "properties": {
                 "message": {
