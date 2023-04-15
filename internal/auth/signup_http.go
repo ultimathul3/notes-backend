@@ -8,6 +8,14 @@ import (
 	"github.com/ultimathul3/notes-backend/internal/domain"
 )
 
+// @Summary	User sign up
+// @Tags	Auth
+// @Accept	json
+// @Produce	json
+// @Param	user body domain.CreateUserDTO true "User JSON"
+// @Success	200 {object} docs.SignUpResponse "User ID"
+// @Failure	400 {object} docs.Message "Error message"
+// @Router	/auth/sign-up [post]
 func (h *HandlerHTTP) signUp(c *gin.Context) {
 	var user domain.CreateUserDTO
 	if err := c.BindJSON(&user); err != nil {

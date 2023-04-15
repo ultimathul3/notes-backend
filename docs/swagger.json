@@ -1,0 +1,212 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Notes API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/auth/refresh": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refreshing a user session",
+                "parameters": [
+                    {
+                        "description": "User session",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/docs.RefreshSessionDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New data for user authorization",
+                        "schema": {
+                            "$ref": "#/definitions/docs.RefreshResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.Message"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/sign-in": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User sign in",
+                "parameters": [
+                    {
+                        "description": "User JSON",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.GetUserIDDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data for user authorization",
+                        "schema": {
+                            "$ref": "#/definitions/docs.SignInResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.Message"
+                        }
+                    },
+                    "500": {
+                        "description": "Server error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.Message"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/sign-up": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User sign up",
+                "parameters": [
+                    {
+                        "description": "User JSON",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateUserDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.SignUpResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.Message"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "docs.Message": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "docs.RefreshResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "docs.RefreshSessionDTO": {
+            "type": "object",
+            "properties": {
+                "refresh_token": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "docs.SignInResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "docs.SignUpResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.CreateUserDTO": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.GetUserIDDTO": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

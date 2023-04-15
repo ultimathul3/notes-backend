@@ -9,6 +9,9 @@ generate:
 test:
 	go test -v ./internal/...
 
+swag:
+	swag init --parseDependency -g cmd/app/main.go
+
 up_migrate:
 	migrate -path ./migrations -database '$(PSQL_URL)' up
 

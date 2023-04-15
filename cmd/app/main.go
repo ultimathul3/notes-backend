@@ -19,6 +19,8 @@ func init() {
 	log.SetOutput(io.MultiWriter(os.Stdout, file))
 }
 
+// @title Notes API
+// @version 1.0
 func main() {
 	cfg, err := config.ReadEnvFile()
 	if err != nil {

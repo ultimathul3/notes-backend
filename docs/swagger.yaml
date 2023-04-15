@@ -1,0 +1,135 @@
+definitions:
+  docs.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  docs.RefreshResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  docs.RefreshSessionDTO:
+    properties:
+      refresh_token:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  docs.SignInResponse:
+    properties:
+      access_token:
+        type: string
+      id:
+        type: integer
+      refresh_token:
+        type: string
+    type: object
+  docs.SignUpResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  domain.CreateUserDTO:
+    properties:
+      login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.GetUserIDDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Notes API
+  version: "1.0"
+paths:
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User session
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/docs.RefreshSessionDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New data for user authorization
+          schema:
+            $ref: '#/definitions/docs.RefreshResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.Message'
+      summary: Refreshing a user session
+      tags:
+      - Auth
+  /auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User JSON
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.GetUserIDDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data for user authorization
+          schema:
+            $ref: '#/definitions/docs.SignInResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.Message'
+        "500":
+          description: Server error message
+          schema:
+            $ref: '#/definitions/docs.Message'
+      summary: User sign in
+      tags:
+      - Auth
+  /auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User JSON
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User ID
+          schema:
+            $ref: '#/definitions/docs.SignUpResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.Message'
+      summary: User sign up
+      tags:
+      - Auth
+swagger: "2.0"

@@ -9,6 +9,9 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/ultimathul3/notes-backend/docs"
 	"github.com/ultimathul3/notes-backend/internal/auth"
 	"github.com/ultimathul3/notes-backend/internal/config"
 	"github.com/ultimathul3/notes-backend/internal/middleware"
@@ -59,6 +62,7 @@ func Run(cfg *config.Config) {
 	notebookUsecase := notebook.NewUsecase(notebookRepo)
 
 	// handlers
+	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
 
