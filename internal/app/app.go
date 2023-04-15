@@ -66,8 +66,10 @@ func Run(cfg *config.Config) {
 	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
 
+	addr := fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port)
+
 	server := &http.Server{
-		Addr:           fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port),
+		Addr:           addr,
 		Handler:        router,
 		ReadTimeout:    cfg.HTTP.ReadTimeout * time.Second,
 		WriteTimeout:   cfg.HTTP.WriteTimeout * time.Second,
@@ -75,9 +77,7 @@ func Run(cfg *config.Config) {
 		MaxHeaderBytes: cfg.HTTP.MaxHeaderMebibytes << 20,
 	}
 
-	log.Info("server is starting...")
+	log.Info("server is listening on ", addr)
 
-	if err := server.ListenAndServe(); err != nil {
-		log.Fatal(err)
-	}
+	shutdownGracefully(server, cfg.HTTP.ShutdownTimeout)
 }

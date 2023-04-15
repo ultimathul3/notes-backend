@@ -15,6 +15,7 @@ type Config struct {
 		WriteTimeout       time.Duration `env:"HTTP_WRITE_TIMEOUT"`
 		IdleTimeout        time.Duration `env:"HTTP_IDLE_TIMEOUT"`
 		MaxHeaderMebibytes int           `env:"HTTP_MAX_HEADER_MEBIBYTES"`
+		ShutdownTimeout    time.Duration `env:"HTTP_SHUTDOWN_TIMEOUT"`
 	}
 
 	PostgreSQL struct {
