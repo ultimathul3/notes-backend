@@ -25,7 +25,7 @@ func NewJWT(accessTokenTTL time.Duration, secretKey string) *JWT {
 func (j *JWT) GenerateTokens(userID int64) (string, uuid.UUID, error) {
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(j.accessTokenTTL)),
-		ID:        fmt.Sprintf("%d", userID),
+		Subject:   fmt.Sprintf("%d", userID),
 	})
 
 	signedAccesToken, err := accessToken.SignedString([]byte(j.secretKey))
@@ -39,7 +39,7 @@ func (j *JWT) GenerateTokens(userID int64) (string, uuid.UUID, error) {
 }
 
 func (j *JWT) ParseAccessToken(accessToken string) (int64, error) {
-	var jti string
+	var sub string
 
 	token, err := jwt.Parse(accessToken, func(t *jwt.Token) (any, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -54,11 +54,11 @@ func (j *JWT) ParseAccessToken(accessToken string) (int64, error) {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		jti, ok = claims["jti"].(string)
+		sub, ok = claims["sub"].(string)
 		if !ok {
-			return 0, errors.New("missing jti field")
+			return 0, errors.New("missing sub field")
 		}
 	}
 
-	return strconv.ParseInt(jti, 10, 64)
+	return strconv.ParseInt(sub, 10, 64)
 }
