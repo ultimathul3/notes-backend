@@ -27,6 +27,15 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 	}
 }
 
+// @Summary		Creating notebook
+// @Security	BearerToken
+// @Tags		Notebook
+// @Accept		json
+// @Produce		json
+// @Param		user body docs.CreateUpdateNotebookDTO true "Notebook data"
+// @Success		200 {object} docs.CreateNotebookResponse "Notebook ID"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	var notebook domain.Notebook
 	if err := c.BindJSON(&notebook); err != nil {
@@ -48,6 +57,14 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
+// @Summary		Getting list of user notebooks
+// @Security	BearerToken
+// @Tags		Notebook
+// @Accept		json
+// @Produce		json
+// @Success		200 {array} docs.GetAllNotebooksResponse "Notebooks"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks [get]
 func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 
@@ -61,6 +78,16 @@ func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 	c.JSON(http.StatusOK, notebooks)
 }
 
+// @Summary		Updating user notebook
+// @Security	BearerToken
+// @Tags		Notebook
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Param		user body docs.CreateUpdateNotebookDTO true "New notebook data"
+// @Success		200 {object} docs.OkStatusResponse "OK status"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id} [put]
 func (h *HandlerHTTP) update(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -82,13 +109,22 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 	err = h.nuc.Update(c, notebook)
 	if err != nil {
 		log.Error("update notebook: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "notebook not found"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
+// @Summary		Deleting user notebook
+// @Security	BearerToken
+// @Tags		Notebook
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Success		200 {object} docs.OkStatusResponse "OK status"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {

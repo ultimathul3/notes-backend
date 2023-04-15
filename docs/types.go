@@ -23,3 +23,20 @@ type RefreshResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
+
+type CreateUpdateNotebookDTO struct {
+	Description string `json:"description"`
+}
+
+type CreateNotebookResponse struct {
+	ID int64 `json:"id"`
+}
+
+type GetAllNotebooksResponse struct {
+	ID          int64  `json:"id"`
+	Description string `json:"description"`
+}
+
+type OkStatusResponse struct {
+	Status string `json:"status" example:"ok"`
+}

@@ -21,6 +21,11 @@ func init() {
 
 // @title Notes API
 // @version 1.0
+
+// @securityDefinitions.apikey BearerToken
+// @in header
+// @name Authorization
+
 func main() {
 	cfg, err := config.ReadEnvFile()
 	if err != nil {
