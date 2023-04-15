@@ -19,21 +19,22 @@ func toPtr[T any](t T) *T {
 
 func TestSessionCreate(t *testing.T) {
 	repo := &mocks.SessionRepository{}
+	expectedID := int64(1)
 	repo.On(
 		"Create",
 		mock.AnythingOfType("*context.emptyCtx"),
 		mock.AnythingOfType("domain.Session")).
-		Return(int64(1), nil)
+		Return(expectedID, nil)
 
 	usecase := NewUsecase(repo, jwtauth.NewJWT(10*time.Second, ""), 60*time.Second, 1)
-	id, err := usecase.Create(context.Background(), domain.CreateSessionDTO{
+	resultID, err := usecase.Create(context.Background(), domain.CreateSessionDTO{
 		UserID:       1,
 		RefreshToken: uuid.New(),
 		Fingerprint:  "fingerprint",
 	})
 
 	assert.Nil(t, err)
-	assert.Equal(t, id, int64(1))
+	assert.Equal(t, resultID, expectedID)
 }
 
 func TestSessionRefresh(t *testing.T) {
