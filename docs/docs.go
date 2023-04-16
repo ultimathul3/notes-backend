@@ -324,7 +324,7 @@ const docTemplate = `{
                 "tags": [
                     "Note"
                 ],
-                "summary": "Getting a list of user notes in notebook",
+                "summary": "Getting a list of user notes in a notebook",
                 "parameters": [
                     {
                         "type": "integer",
@@ -367,7 +367,7 @@ const docTemplate = `{
                 "tags": [
                     "Note"
                 ],
-                "summary": "Creating a note in notebook",
+                "summary": "Creating a note in a notebook",
                 "parameters": [
                     {
                         "type": "integer",
@@ -382,7 +382,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CreateNoteDTO"
+                            "$ref": "#/definitions/domain.CreateUpdateNoteDTO"
                         }
                     }
                 ],
@@ -391,6 +391,64 @@ const docTemplate = `{
                         "description": "Note ID",
                         "schema": {
                             "$ref": "#/definitions/docs.CreateNoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/notebooks/{notebook_id}/notes/{note_id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Note"
+                ],
+                "summary": "Updating a note in a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Note ID",
+                        "name": "note_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New note data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateUpdateNoteDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
                         }
                     },
                     "400": {
@@ -489,7 +547,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CreateNoteDTO": {
+        "domain.CreateUpdateNoteDTO": {
             "type": "object",
             "properties": {
                 "body": {

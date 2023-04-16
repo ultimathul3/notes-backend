@@ -18,20 +18,21 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 		nuc: nuc,
 	}
 
-	notebook := router.Group("/notebooks/:id/notes").Use(tokenChecker)
+	notebook := router.Group("/notebooks/:notebook_id/notes").Use(tokenChecker)
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByNotebookID)
+		notebook.PUT("/:note_id", handler.update)
 	}
 }
 
-// @Summary		Creating a note in notebook
+// @Summary		Creating a note in a notebook
 // @Security	BearerToken
 // @Tags		Note
 // @Accept		json
 // @Produce		json
 // @Param		notebook_id path int true "Notebook ID"
-// @Param		user body domain.CreateNoteDTO true "Note data"
+// @Param		user body domain.CreateUpdateNoteDTO true "Note data"
 // @Success		200 {object} docs.CreateNoteResponse "Note ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks/{notebook_id}/notes [post]
@@ -42,7 +43,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 		return
 	}
 
-	var note domain.CreateNoteDTO
+	var note domain.CreateUpdateNoteDTO
 	if err := c.BindJSON(&note); err != nil {
 		log.Error("Note bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
@@ -61,7 +62,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
-// @Summary		Getting a list of user notes in notebook
+// @Summary		Getting a list of user notes in a notebook
 // @Security	BearerToken
 // @Tags		Note
 // @Accept		json
@@ -71,7 +72,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks/{notebook_id}/notes [get]
 func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
-	notebookID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
 		return
@@ -90,4 +91,47 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 		Notes: notes,
 		Count: len(notes),
 	})
+}
+
+// @Summary		Updating a note in a notebook
+// @Security	BearerToken
+// @Tags		Note
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Param		note_id path int true "Note ID"
+// @Param		user body domain.CreateUpdateNoteDTO true "New note data"
+// @Success		200 {object} docs.OkStatusResponse "OK status"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id}/notes/{note_id} [put]
+func (h *HandlerHTTP) update(c *gin.Context) {
+	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
+		return
+	}
+
+	noteID, err := strconv.ParseInt(c.Param("note_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid note id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	var note domain.CreateUpdateNoteDTO
+	if err := c.BindJSON(&note); err != nil {
+		log.Error("Notebook bind json: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	err = h.nuc.Update(c, noteID, userID, notebookID, note)
+	if err != nil {
+		log.Error("update note: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }

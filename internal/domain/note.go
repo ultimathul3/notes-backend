@@ -17,7 +17,7 @@ type (
 		NotebookID int64     `json:"notebook_id,omitempty"`
 	}
 
-	CreateNoteDTO struct {
+	CreateUpdateNoteDTO struct {
 		Title *string `json:"title"`
 		Body  *string `json:"body"`
 	}
@@ -29,16 +29,18 @@ type (
 )
 
 type NoteUsecase interface {
-	Create(ctx context.Context, userID, notebookID int64, input CreateNoteDTO) (int64, error)
+	Create(ctx context.Context, userID, notebookID int64, input CreateUpdateNoteDTO) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
+	Update(ctx context.Context, noteID, userID, notebookID int64, input CreateUpdateNoteDTO) error
 }
 
 type NoteRepository interface {
 	Create(ctx context.Context, note Note) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
+	Update(ctx context.Context, note Note) error
 }
 
-func (cn *CreateNoteDTO) Validate() error {
+func (cn *CreateUpdateNoteDTO) Validate() error {
 	if cn.Title == nil {
 		return errors.New("empty title")
 	}

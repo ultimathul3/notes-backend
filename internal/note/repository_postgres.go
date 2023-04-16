@@ -56,3 +56,18 @@ func (r *RepositoryPostgres) GetAllByNotebookID(ctx context.Context, userID, not
 
 	return notes, nil
 }
+
+func (r *RepositoryPostgres) Update(ctx context.Context, note domain.Note) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`UPDATE notes
+		 SET title=$1, body=$2, updated_at=$3
+		 WHERE user_id=$4 AND notebook_id=$5 AND id=$6
+		 RETURNING id`,
+		note.Title, note.Body, note.UpdatedAt, note.UserID, note.NotebookID, note.ID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}

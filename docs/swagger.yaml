@@ -53,7 +53,7 @@ definitions:
       id:
         type: integer
     type: object
-  domain.CreateNoteDTO:
+  domain.CreateUpdateNoteDTO:
     properties:
       body:
         type: string
@@ -334,7 +334,7 @@ paths:
             $ref: '#/definitions/docs.MessageResponse'
       security:
       - BearerToken: []
-      summary: Getting a list of user notes in notebook
+      summary: Getting a list of user notes in a notebook
       tags:
       - Note
     post:
@@ -351,7 +351,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/domain.CreateNoteDTO'
+          $ref: '#/definitions/domain.CreateUpdateNoteDTO'
       produces:
       - application/json
       responses:
@@ -365,7 +365,44 @@ paths:
             $ref: '#/definitions/docs.MessageResponse'
       security:
       - BearerToken: []
-      summary: Creating a note in notebook
+      summary: Creating a note in a notebook
+      tags:
+      - Note
+  /notebooks/{notebook_id}/notes/{note_id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook_id
+        required: true
+        type: integer
+      - description: Note ID
+        in: path
+        name: note_id
+        required: true
+        type: integer
+      - description: New note data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateUpdateNoteDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Updating a note in a notebook
       tags:
       - Note
 securityDefinitions:
