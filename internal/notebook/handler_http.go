@@ -62,7 +62,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Tags		Notebook
 // @Accept		json
 // @Produce		json
-// @Success		200 {array} docs.GetAllNotebooksResponse "Notebooks"
+// @Success		200 {array} domain.GetAllNotebooksResponse "Notebooks"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks [get]
 func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
@@ -75,7 +75,10 @@ func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, notebooks)
+	c.JSON(http.StatusOK, domain.GetAllNotebooksResponse{
+		Notebooks: notebooks,
+		Count:     len(notebooks),
+	})
 }
 
 // @Summary		Updating user notebook

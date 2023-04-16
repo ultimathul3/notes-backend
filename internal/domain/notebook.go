@@ -12,6 +12,11 @@ type (
 		Description *string `json:"description"`
 		UserID      int64   `json:"user_id,omitempty"`
 	}
+
+	GetAllNotebooksResponse struct {
+		Notebooks []Notebook `json:"notebooks,omitempty"`
+		Count     int        `json:"count"`
+	}
 )
 
 type NotebookUsecase interface {
