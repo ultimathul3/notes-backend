@@ -57,7 +57,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"id": id})
 }
 
-// @Summary		Getting list of user notebooks
+// @Summary		Getting a list of user notebooks
 // @Security	BearerToken
 // @Tags		Notebook
 // @Accept		json

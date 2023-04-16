@@ -13,22 +13,29 @@ type (
 		Body       string    `json:"body"`
 		CreatedAt  time.Time `json:"created_at"`
 		UpdatedAt  time.Time `json:"updated_at"`
-		UserID     int64     `json:"user_id"`
-		NotebookID int64     `json:"notebook_id"`
+		UserID     int64     `json:"user_id,omitempty"`
+		NotebookID int64     `json:"notebook_id,omitempty"`
 	}
 
 	CreateNoteDTO struct {
 		Title *string `json:"title"`
 		Body  *string `json:"body"`
 	}
+
+	GetAllNotesResponse struct {
+		Notes []Note `json:"notes,omitempty"`
+		Count int    `json:"count"`
+	}
 )
 
 type NoteUsecase interface {
 	Create(ctx context.Context, userID, notebookID int64, input CreateNoteDTO) (int64, error)
+	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
 }
 
 type NoteRepository interface {
 	Create(ctx context.Context, note Note) (int64, error)
+	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
 }
 
 func (cn *CreateNoteDTO) Validate() error {

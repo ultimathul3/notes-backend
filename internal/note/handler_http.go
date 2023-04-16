@@ -21,6 +21,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 	notebook := router.Group("/notebooks/:id/notes").Use(tokenChecker)
 	{
 		notebook.POST("/", handler.create)
+		notebook.GET("/", handler.getAllByNotebookID)
 	}
 }
 
@@ -58,4 +59,35 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"id": id})
+}
+
+// @Summary		Getting a list of user notes in notebook
+// @Security	BearerToken
+// @Tags		Note
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Success		200 {array} domain.GetAllNotesResponse "Notebooks"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id}/notes [get]
+func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
+	notebookID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	notes, err := h.nuc.GetAllByNotebookID(c, userID, notebookID)
+	if err != nil {
+		log.Error("get all notes by notebook id: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.GetAllNotesResponse{
+		Notes: notes,
+		Count: len(notes),
+	})
 }

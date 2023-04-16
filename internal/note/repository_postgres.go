@@ -30,3 +30,29 @@ func (r *RepositoryPostgres) Create(ctx context.Context, note domain.Note) (int6
 
 	return note.ID, nil
 }
+
+func (r *RepositoryPostgres) GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]domain.Note, error) {
+	var notes []domain.Note
+
+	rows, err := r.conn.Query(
+		ctx,
+		`SELECT id, title, body, created_at, updated_at
+		 FROM notes
+		 WHERE user_id=$1 AND notebook_id=$2`,
+		userID, notebookID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		note := domain.Note{}
+		err := rows.Scan(&note.ID, &note.Title, &note.Body, &note.CreatedAt, &note.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		notes = append(notes, note)
+	}
+
+	return notes, nil
+}

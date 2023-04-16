@@ -155,7 +155,7 @@ const docTemplate = `{
                 "tags": [
                     "Notebook"
                 ],
-                "summary": "Getting list of user notebooks",
+                "summary": "Getting a list of user notebooks",
                 "responses": {
                     "200": {
                         "description": "Notebooks",
@@ -309,6 +309,49 @@ const docTemplate = `{
             }
         },
         "/notebooks/{notebook_id}/notes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Note"
+                ],
+                "summary": "Getting a list of user notes in notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Notebooks",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.GetAllNotesResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -485,6 +528,20 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.GetAllNotesResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Note"
+                    }
+                }
+            }
+        },
         "domain.GetUserIDDTO": {
             "type": "object",
             "properties": {
@@ -493,6 +550,32 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.Note": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "notebook_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
