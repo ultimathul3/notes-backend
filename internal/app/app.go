@@ -15,6 +15,7 @@ import (
 	"github.com/ultimathul3/notes-backend/internal/auth"
 	"github.com/ultimathul3/notes-backend/internal/config"
 	"github.com/ultimathul3/notes-backend/internal/middleware"
+	"github.com/ultimathul3/notes-backend/internal/note"
 	"github.com/ultimathul3/notes-backend/internal/notebook"
 	"github.com/ultimathul3/notes-backend/internal/session"
 	"github.com/ultimathul3/notes-backend/internal/user"
@@ -43,6 +44,7 @@ func Run(cfg *config.Config) {
 	userRepo := user.NewRepositoryPostgres(pgConn)
 	sessionRepo := session.NewRepositoryPostgres(pgConn)
 	notebookRepo := notebook.NewRepositoryPostgres(pgConn)
+	noteRepo := note.NewRepositoryPostgres(pgConn)
 
 	// providers
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
@@ -60,11 +62,13 @@ func Run(cfg *config.Config) {
 		cfg.Auth.MaxUserSessionsCount,
 	)
 	notebookUsecase := notebook.NewUsecase(notebookRepo)
+	noteUsecase := note.NewUsecase(noteRepo)
 
 	// handlers
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
+	note.NewHandlerHTTP(router, noteUsecase, tokenChecker.Handle())
 
 	addr := fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port)
 

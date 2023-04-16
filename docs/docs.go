@@ -162,7 +162,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/docs.GetAllNotebooksResponse"
+                                "$ref": "#/definitions/domain.GetAllNotebooksResponse"
                             }
                         }
                     },
@@ -307,9 +307,68 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/notebooks/{notebook_id}/notes": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Note"
+                ],
+                "summary": "Creating a note in notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Note data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateNoteDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Note ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.CreateNoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "docs.CreateNoteResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "docs.CreateNotebookResponse": {
             "type": "object",
             "properties": {
@@ -323,17 +382,6 @@ const docTemplate = `{
             "properties": {
                 "description": {
                     "type": "string"
-                }
-            }
-        },
-        "docs.GetAllNotebooksResponse": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 }
             }
         },
@@ -398,6 +446,17 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateNoteDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.CreateUserDTO": {
             "type": "object",
             "properties": {
@@ -412,6 +471,20 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.GetAllNotebooksResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "notebooks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Notebook"
+                    }
+                }
+            }
+        },
         "domain.GetUserIDDTO": {
             "type": "object",
             "properties": {
@@ -420,6 +493,20 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.Notebook": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         }

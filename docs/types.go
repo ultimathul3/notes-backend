@@ -40,3 +40,7 @@ type GetAllNotebooksResponse struct {
 type OkStatusResponse struct {
 	Status string `json:"status" example:"ok"`
 }
+
+type CreateNoteResponse struct {
+	ID int64 `json:"id"`
+}
