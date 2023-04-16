@@ -32,12 +32,14 @@ type NoteUsecase interface {
 	Create(ctx context.Context, userID, notebookID int64, input CreateUpdateNoteDTO) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
 	Update(ctx context.Context, noteID, userID, notebookID int64, input CreateUpdateNoteDTO) error
+	Delete(ctx context.Context, noteID, userID, notebookID int64) error
 }
 
 type NoteRepository interface {
 	Create(ctx context.Context, note Note) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
 	Update(ctx context.Context, note Note) error
+	Delete(ctx context.Context, noteID, userID, notebookID int64) error
 }
 
 func (cn *CreateUpdateNoteDTO) Validate() error {
@@ -50,4 +52,4 @@ func (cn *CreateUpdateNoteDTO) Validate() error {
 	return nil
 }
 
-var ErrNotebookNotFound = errors.New("notebook not found")
+var ErrNoteNotFound = errors.New("note not found")

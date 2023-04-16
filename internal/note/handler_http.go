@@ -23,6 +23,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByNotebookID)
 		notebook.PUT("/:note_id", handler.update)
+		notebook.DELETE("/:note_id", handler.delete)
 	}
 }
 
@@ -55,7 +56,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	id, err := h.nuc.Create(c, userID, notebookID, note)
 	if err != nil {
 		log.Error("create note: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
 		return
 	}
 
@@ -83,7 +84,7 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 	notes, err := h.nuc.GetAllByNotebookID(c, userID, notebookID)
 	if err != nil {
 		log.Error("get all notes by notebook id: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
 		return
 	}
 
@@ -129,7 +130,42 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 	err = h.nuc.Update(c, noteID, userID, notebookID, note)
 	if err != nil {
 		log.Error("update note: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
+// @Summary		Deleting a note from a notebook
+// @Security	BearerToken
+// @Tags		Note
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Param		note_id path int true "Note ID"
+// @Success		200 {object} docs.OkStatusResponse "OK status"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id}/notes/{note_id} [delete]
+func (h *HandlerHTTP) delete(c *gin.Context) {
+	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
+		return
+	}
+
+	noteID, err := strconv.ParseInt(c.Param("note_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid note id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	err = h.nuc.Delete(c, noteID, userID, notebookID)
+	if err != nil {
+		log.Error("update note: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
 		return
 	}
 

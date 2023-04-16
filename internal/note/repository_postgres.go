@@ -25,7 +25,7 @@ func (r *RepositoryPostgres) Create(ctx context.Context, note domain.Note) (int6
 		 RETURNING id`,
 		note.Title, note.Body, note.CreatedAt, note.UpdatedAt, note.UserID, note.NotebookID,
 	).Scan(&note.ID); err != nil {
-		return 0, domain.ErrNotebookNotFound
+		return 0, domain.ErrNoteNotFound
 	}
 
 	return note.ID, nil
@@ -65,6 +65,20 @@ func (r *RepositoryPostgres) Update(ctx context.Context, note domain.Note) error
 		 WHERE user_id=$4 AND notebook_id=$5 AND id=$6
 		 RETURNING id`,
 		note.Title, note.Body, note.UpdatedAt, note.UserID, note.NotebookID, note.ID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RepositoryPostgres) Delete(ctx context.Context, noteID, userID, notebookID int64) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`DELETE FROM notes
+		 WHERE user_id=$1 AND notebook_id=$2 AND id=$3
+		 RETURNING id`,
+		userID, notebookID, noteID,
 	).Scan(nil); err != nil {
 		return err
 	}

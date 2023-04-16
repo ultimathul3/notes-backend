@@ -42,3 +42,5 @@ func (cn *Notebook) Validate() error {
 	}
 	return nil
 }
+
+var ErrNotebookNotFound = errors.New("notebook not found")

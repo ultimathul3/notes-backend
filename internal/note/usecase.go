@@ -50,3 +50,7 @@ func (u *Usecase) Update(ctx context.Context, noteID, userID, notebookID int64, 
 		NotebookID: notebookID,
 	})
 }
+
+func (u *Usecase) Delete(ctx context.Context, noteID, userID, notebookID int64) error {
+	return u.repo.Delete(ctx, noteID, userID, notebookID)
+}

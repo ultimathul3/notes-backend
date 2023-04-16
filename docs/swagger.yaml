@@ -369,6 +369,36 @@ paths:
       tags:
       - Note
   /notebooks/{notebook_id}/notes/{note_id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook_id
+        required: true
+        type: integer
+      - description: Note ID
+        in: path
+        name: note_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Deleting a note from a notebook
+      tags:
+      - Note
     put:
       consumes:
       - application/json

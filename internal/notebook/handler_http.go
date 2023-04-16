@@ -112,7 +112,7 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 	err = h.nuc.Update(c, notebook)
 	if err != nil {
 		log.Error("update notebook: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "notebook not found"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNotebookNotFound.Error()})
 		return
 	}
 
@@ -139,7 +139,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 	err = h.nuc.Delete(c, id, userID)
 	if err != nil {
 		log.Error("delete notebook: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "notebook not found"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNotebookNotFound.Error()})
 		return
 	}
 
