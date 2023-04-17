@@ -40,7 +40,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks/{notebook_id}/notes [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
-	notebookID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
 		return
