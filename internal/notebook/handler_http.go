@@ -13,7 +13,7 @@ type HandlerHTTP struct {
 	nuc domain.NotebookUsecase
 }
 
-func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker gin.HandlerFunc) {
+func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker gin.HandlerFunc) *HandlerHTTP {
 	handler := &HandlerHTTP{
 		nuc: nuc,
 	}
@@ -25,6 +25,8 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 		notebook.PUT("/:notebook_id", handler.update)
 		notebook.DELETE("/:notebook_id", handler.delete)
 	}
+
+	return handler
 }
 
 // @Summary		Creating notebook

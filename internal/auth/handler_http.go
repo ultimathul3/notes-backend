@@ -13,7 +13,7 @@ type HandlerHTTP struct {
 	suc domain.SessionUsecase
 }
 
-func NewHandlerHTTP(router *gin.Engine, uuc domain.UserUsecase, suc domain.SessionUsecase) {
+func NewHandlerHTTP(router *gin.Engine, uuc domain.UserUsecase, suc domain.SessionUsecase) *HandlerHTTP {
 	handler := &HandlerHTTP{
 		uuc: uuc,
 		suc: suc,
@@ -25,6 +25,8 @@ func NewHandlerHTTP(router *gin.Engine, uuc domain.UserUsecase, suc domain.Sessi
 		auth.POST("/sign-up", handler.signUp)
 		auth.POST("/refresh", handler.refresh)
 	}
+
+	return handler
 }
 
 func generateFingerprint(c *gin.Context) string {
