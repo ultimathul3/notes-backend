@@ -55,10 +55,6 @@ func (u *Usecase) GetID(ctx context.Context, input domain.GetUserIdDTO) (int64, 
 	return u.repo.GetID(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
 }
 
-func (u *Usecase) GetUserIdByLogin(ctx context.Context, input domain.GetUserIdByLoginDTO) (int64, error) {
-	if err := input.Validate(); err != nil {
-		return 0, err
-	}
-
-	return u.repo.GetUserIdByLogin(ctx, *input.Login)
+func (u *Usecase) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {
+	return u.repo.GetUserIdByLogin(ctx, login)
 }
