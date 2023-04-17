@@ -66,7 +66,7 @@ func TestGetUserID(t *testing.T) {
 		Return(expectedID, nil)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
-	resultID, err := usecase.GetID(context.Background(), domain.GetUserIDDTO{
+	resultID, err := usecase.GetID(context.Background(), domain.GetUserIdDTO{
 		Login:    toPtr("login"),
 		Password: toPtr("password"),
 	})

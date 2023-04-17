@@ -74,7 +74,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.GetUserIDDTO"
+                            "$ref": "#/definitions/domain.GetUserIdDTO"
                         }
                     }
                 ],
@@ -647,7 +647,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.GetUserIDDTO": {
+        "domain.GetUserIdDTO": {
             "type": "object",
             "properties": {
                 "login": {

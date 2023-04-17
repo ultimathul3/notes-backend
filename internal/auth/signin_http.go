@@ -12,15 +12,15 @@ import (
 // @Tags	Auth
 // @Accept	json
 // @Produce	json
-// @Param	user body domain.GetUserIDDTO true "User JSON"
+// @Param	user body domain.GetUserIdDTO true "User JSON"
 // @Success	200 {object} docs.SignInResponse "Data for user authorization"
 // @Failure	400 {object} docs.MessageResponse "Error message"
 // @Failure	500 {object} docs.MessageResponse "Server error message"
 // @Router	/auth/sign-in [post]
 func (h *HandlerHTTP) signIn(c *gin.Context) {
-	var user domain.GetUserIDDTO
+	var user domain.GetUserIdDTO
 	if err := c.BindJSON(&user); err != nil {
-		log.Error("GetUserIDDTO bind json: ", err)
+		log.Error("GetUserIdDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

@@ -87,7 +87,7 @@ definitions:
           $ref: '#/definitions/domain.Note'
         type: array
     type: object
-  domain.GetUserIDDTO:
+  domain.GetUserIdDTO:
     properties:
       login:
         type: string
@@ -160,7 +160,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/domain.GetUserIDDTO'
+          $ref: '#/definitions/domain.GetUserIdDTO'
       produces:
       - application/json
       responses:

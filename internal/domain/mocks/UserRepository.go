@@ -62,6 +62,30 @@ func (_m *UserRepository) GetID(ctx context.Context, login string, passwordHash 
 	return r0, r1
 }
 
+// GetUserIdByLogin provides a mock function with given fields: ctx, login
+func (_m *UserRepository) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {
+	ret := _m.Called(ctx, login)
+
+	var r0 int64
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (int64, error)); ok {
+		return rf(ctx, login)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) int64); ok {
+		r0 = rf(ctx, login)
+	} else {
+		r0 = ret.Get(0).(int64)
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, login)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 type mockConstructorTestingTNewUserRepository interface {
 	mock.TestingT
 	Cleanup(func())

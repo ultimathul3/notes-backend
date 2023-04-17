@@ -45,3 +45,18 @@ func (r *RepositoryPostgres) GetID(ctx context.Context, login, passwordHash stri
 
 	return id, nil
 }
+
+func (r *RepositoryPostgres) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {
+	var id int64
+
+	if err := r.conn.QueryRow(
+		ctx,
+		`SELECT id FROM users
+		 WHERE login=$1`,
+		login,
+	).Scan(&id); err != nil {
+		return 0, domain.ErrUserNotFound
+	}
+
+	return id, nil
+}
