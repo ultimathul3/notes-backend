@@ -506,6 +506,92 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/shared_notes": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Creating a shared note",
+                "parameters": [
+                    {
+                        "description": "Shared note data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateSharedNoteDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Shared note ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.CreateSharedNoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared_notes/{shared_note_id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Deleting a shared note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared note ID",
+                        "name": "shared_note_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -518,6 +604,14 @@ const docTemplate = `{
             }
         },
         "docs.CreateNotebookResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "docs.CreateSharedNoteResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -590,6 +684,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.CreateSharedNoteDTO": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "note_id": {
                     "type": "integer"
                 }
             }

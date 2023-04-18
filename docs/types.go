@@ -44,3 +44,7 @@ type OkStatusResponse struct {
 type CreateNoteResponse struct {
 	ID int64 `json:"id"`
 }
+
+type CreateSharedNoteResponse struct {
+	ID int64 `json:"id"`
+}

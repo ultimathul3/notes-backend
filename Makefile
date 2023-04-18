@@ -22,4 +22,4 @@ drop_migrate:
 	migrate -path ./migrations -database '$(PSQL_URL)' drop -f
 
 lines_count:
-	find . -name '*.go' -type f -print0 | xargs -0 cat | wc -l
+	find ./internal ./pkg -name '*.go' -not -path "*/mocks/*" -type f -print0 | xargs -0 cat | wc -l

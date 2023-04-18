@@ -9,6 +9,11 @@ definitions:
       id:
         type: integer
     type: object
+  docs.CreateSharedNoteResponse:
+    properties:
+      id:
+        type: integer
+    type: object
   docs.CreateUpdateNotebookDTO:
     properties:
       description:
@@ -51,6 +56,13 @@ definitions:
   docs.SignUpResponse:
     properties:
       id:
+        type: integer
+    type: object
+  domain.CreateSharedNoteDTO:
+    properties:
+      login:
+        type: string
+      note_id:
         type: integer
     type: object
   domain.CreateUpdateNoteDTO:
@@ -435,6 +447,59 @@ paths:
       summary: Updating a note in a notebook
       tags:
       - Note
+  /shared_notes:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared note data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateSharedNoteDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Shared note ID
+          schema:
+            $ref: '#/definitions/docs.CreateSharedNoteResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Creating a shared note
+      tags:
+      - Shared note
+  /shared_notes/{shared_note_id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared note ID
+        in: path
+        name: shared_note_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Deleting a shared note
+      tags:
+      - Shared note
 securityDefinitions:
   BearerToken:
     in: header
