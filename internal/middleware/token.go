@@ -37,7 +37,7 @@ func (t *TokenChecker) Handle() gin.HandlerFunc {
 
 		if len(headerParts) != 2 {
 			log.Error("TokenChecker: ", ErrMissingOrInvalidAuthHeader)
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": ErrMissingOrInvalidAuthHeader.Error(),
 			})
 			return
@@ -48,7 +48,7 @@ func (t *TokenChecker) Handle() gin.HandlerFunc {
 		userID, err := t.jwt.ParseAccessToken(token)
 		if err != nil {
 			log.Error("TokenChecker: ", ErrInvalidOrExpiredAccessToken)
-			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 				"message": ErrInvalidOrExpiredAccessToken.Error(),
 			})
 		}
