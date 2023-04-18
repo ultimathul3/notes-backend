@@ -81,6 +81,15 @@ definitions:
       password:
         type: string
     type: object
+  domain.GetAllIncomingSharedNotesResponse:
+    properties:
+      count:
+        type: integer
+      incoming_shared_notes:
+        items:
+          $ref: '#/definitions/domain.IncomingSharedNote'
+        type: array
+    type: object
   domain.GetAllNotebooksResponse:
     properties:
       count:
@@ -104,6 +113,15 @@ definitions:
       login:
         type: string
       password:
+        type: string
+    type: object
+  domain.IncomingSharedNote:
+    properties:
+      id:
+        type: integer
+      owner_login:
+        type: string
+      title:
         type: string
     type: object
   domain.Note:
@@ -448,6 +466,27 @@ paths:
       tags:
       - Note
   /shared_notes:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Incoming shared notes
+          schema:
+            items:
+              $ref: '#/definitions/domain.GetAllIncomingSharedNotesResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a list of incoming shared notes
+      tags:
+      - Shared note
     post:
       consumes:
       - application/json

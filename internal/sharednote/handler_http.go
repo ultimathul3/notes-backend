@@ -29,6 +29,7 @@ func NewHandlerHTTP(
 	notebook := router.Group("/shared_notes").Use(tokenChecker)
 	{
 		notebook.POST("/", handler.create)
+		notebook.GET("/", handler.getIncomingSharedNotes)
 		notebook.DELETE("/:shared_note_id", handler.delete)
 	}
 
@@ -103,4 +104,28 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
+}
+
+// @Summary		Getting a list of incoming shared notes
+// @Security	BearerToken
+// @Tags		Shared note
+// @Accept		json
+// @Produce		json
+// @Success		200 {array} domain.GetAllIncomingSharedNotesResponse "Incoming shared notes"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/shared_notes [get]
+func (h *HandlerHTTP) getIncomingSharedNotes(c *gin.Context) {
+	userID := c.MustGet("userID").(int64)
+
+	notes, err := h.suc.GetIncomingSharedNotes(c, userID)
+	if err != nil {
+		log.Error("get all notes by notebook id: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.GetAllIncomingSharedNotesResponse{
+		IncomingSharedNotes: notes,
+		Count:               len(notes),
+	})
 }

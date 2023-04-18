@@ -44,3 +44,31 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, id, whomID int64) error
 
 	return nil
 }
+
+func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whoseID int64) ([]domain.IncomingSharedNote, error) {
+	var notes []domain.IncomingSharedNote
+
+	rows, err := r.conn.Query(
+		ctx,
+		`SELECT s.id, u.login, n.title
+		 FROM shared_notes s
+		 LEFT JOIN users u ON u.id=s.whom_id
+		 LEFT JOIN notes n ON n.id=s.note_id
+		 WHERE s.whom_id=$1 AND s.accepted=false`,
+		whoseID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		note := domain.IncomingSharedNote{}
+		err := rows.Scan(&note.ID, &note.OwnerLogin, &note.Title)
+		if err != nil {
+			return nil, err
+		}
+		notes = append(notes, note)
+	}
+
+	return notes, nil
+}

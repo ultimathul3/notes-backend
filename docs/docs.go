@@ -508,6 +508,40 @@ const docTemplate = `{
             }
         },
         "/shared_notes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Getting a list of incoming shared notes",
+                "responses": {
+                    "200": {
+                        "description": "Incoming shared notes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.GetAllIncomingSharedNotesResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -724,6 +758,20 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.GetAllIncomingSharedNotesResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "incoming_shared_notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.IncomingSharedNote"
+                    }
+                }
+            }
+        },
         "domain.GetAllNotebooksResponse": {
             "type": "object",
             "properties": {
@@ -759,6 +807,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.IncomingSharedNote": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "owner_login": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
