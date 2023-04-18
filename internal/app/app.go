@@ -8,6 +8,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -28,6 +29,7 @@ import (
 func Run(cfg *config.Config) {
 	gin.SetMode(cfg.HTTP.GinMode)
 	router := gin.New()
+	router.Use(cors.Default())
 
 	pgConn, err := postgresql.NewConnection(
 		context.Background(),
