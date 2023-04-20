@@ -50,6 +50,8 @@ definitions:
         type: string
       id:
         type: integer
+      name:
+        type: string
       refresh_token:
         type: string
     type: object
@@ -108,7 +110,7 @@ definitions:
           $ref: '#/definitions/domain.Note'
         type: array
     type: object
-  domain.GetUserIdDTO:
+  domain.GetUserDTO:
     properties:
       login:
         type: string
@@ -190,7 +192,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/domain.GetUserIdDTO'
+          $ref: '#/definitions/domain.GetUserDTO'
       produces:
       - application/json
       responses:

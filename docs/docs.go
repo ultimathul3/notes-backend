@@ -74,7 +74,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.GetUserIdDTO"
+                            "$ref": "#/definitions/domain.GetUserDTO"
                         }
                     }
                 ],
@@ -709,6 +709,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "refresh_token": {
                     "type": "string"
                 }
@@ -800,7 +803,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.GetUserIdDTO": {
+        "domain.GetUserDTO": {
             "type": "object",
             "properties": {
                 "login": {

@@ -64,7 +64,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.GetUserIdDTO"
+                            "$ref": "#/definitions/domain.GetUserDTO"
                         }
                     }
                 ],
@@ -699,6 +699,9 @@
                 "id": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "refresh_token": {
                     "type": "string"
                 }
@@ -790,7 +793,7 @@
                 }
             }
         },
-        "domain.GetUserIdDTO": {
+        "domain.GetUserDTO": {
             "type": "object",
             "properties": {
                 "login": {

@@ -38,19 +38,19 @@ func (_m *UserRepository) Create(ctx context.Context, user domain.User) (int64, 
 	return r0, r1
 }
 
-// GetID provides a mock function with given fields: ctx, login, passwordHash
-func (_m *UserRepository) GetID(ctx context.Context, login string, passwordHash string) (int64, error) {
+// Get provides a mock function with given fields: ctx, login, passwordHash
+func (_m *UserRepository) Get(ctx context.Context, login string, passwordHash string) (domain.User, error) {
 	ret := _m.Called(ctx, login, passwordHash)
 
-	var r0 int64
+	var r0 domain.User
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) (int64, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) (domain.User, error)); ok {
 		return rf(ctx, login, passwordHash)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, string, string) int64); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, string, string) domain.User); ok {
 		r0 = rf(ctx, login, passwordHash)
 	} else {
-		r0 = ret.Get(0).(int64)
+		r0 = ret.Get(0).(domain.User)
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, string, string) error); ok {

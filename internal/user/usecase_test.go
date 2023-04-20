@@ -57,20 +57,26 @@ func TestUserCreateError(t *testing.T) {
 
 func TestGetUserID(t *testing.T) {
 	repo := &mocks.UserRepository{}
-	expectedID := int64(1)
+	expectedUser := domain.User{
+		ID:    1,
+		Login: "login",
+		Name:  "name",
+	}
 	repo.On(
-		"GetID",
+		"Get",
 		mock.AnythingOfType("*context.emptyCtx"),
 		mock.AnythingOfType("string"),
 		mock.AnythingOfType("string")).
-		Return(expectedID, nil)
+		Return(expectedUser, nil)
 
 	usecase := NewUsecase(repo, hash.NewSHA256Hasher([]byte("salt")))
-	resultID, err := usecase.GetID(context.Background(), domain.GetUserIdDTO{
+	resultUser, err := usecase.Get(context.Background(), domain.GetUserDTO{
 		Login:    toPtr("login"),
 		Password: toPtr("password"),
 	})
 
-	assert.Equal(t, expectedID, resultID)
+	assert.Equal(t, expectedUser.ID, resultUser.ID)
+	assert.Equal(t, expectedUser.Name, resultUser.Name)
+	assert.Equal(t, expectedUser.Login, resultUser.Login)
 	assert.Nil(t, err)
 }

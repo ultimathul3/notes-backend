@@ -31,19 +31,19 @@ func (r *RepositoryPostgres) Create(ctx context.Context, user domain.User) (int6
 	return user.ID, nil
 }
 
-func (r *RepositoryPostgres) GetID(ctx context.Context, login, passwordHash string) (int64, error) {
-	var id int64
+func (r *RepositoryPostgres) Get(ctx context.Context, login, passwordHash string) (domain.User, error) {
+	var user domain.User
 
 	if err := r.conn.QueryRow(
 		ctx,
-		`SELECT id FROM users
+		`SELECT id, login, name, password_hash FROM users
 		 WHERE login=$1 AND password_hash=$2`,
 		login, passwordHash,
-	).Scan(&id); err != nil {
-		return 0, domain.ErrInvalidLoginOrPassword
+	).Scan(&user.ID, &user.Login, &user.Name, &user.PasswordHash); err != nil {
+		return domain.User{}, domain.ErrInvalidLoginOrPassword
 	}
 
-	return id, nil
+	return user, nil
 }
 
 func (r *RepositoryPostgres) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {

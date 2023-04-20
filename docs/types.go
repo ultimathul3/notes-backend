@@ -2,6 +2,7 @@ package docs
 
 type SignInResponse struct {
 	ID           int64  `json:"id"`
+	Name         string `json:"name"`
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }

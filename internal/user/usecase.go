@@ -42,17 +42,17 @@ func (u *Usecase) Create(ctx context.Context, input domain.CreateUserDTO) (int64
 	return u.repo.Create(ctx, user)
 }
 
-func (u *Usecase) GetID(ctx context.Context, input domain.GetUserIdDTO) (int64, error) {
+func (u *Usecase) Get(ctx context.Context, input domain.GetUserDTO) (domain.User, error) {
 	if err := input.Validate(); err != nil {
-		return 0, err
+		return domain.User{}, err
 	}
 
 	passwordHash, err := u.passwordHasher.Hash([]byte(*input.Password))
 	if err != nil {
-		return 0, err
+		return domain.User{}, err
 	}
 
-	return u.repo.GetID(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
+	return u.repo.Get(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
 }
 
 func (u *Usecase) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {

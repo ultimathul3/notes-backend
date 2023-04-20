@@ -21,7 +21,7 @@ type (
 		Password *string `json:"password"`
 	}
 
-	GetUserIdDTO struct {
+	GetUserDTO struct {
 		Login    *string `json:"login"`
 		Password *string `json:"password"`
 	}
@@ -29,14 +29,14 @@ type (
 
 type UserUsecase interface {
 	Create(ctx context.Context, input CreateUserDTO) (int64, error)
-	GetID(ctx context.Context, input GetUserIdDTO) (int64, error)
+	Get(ctx context.Context, input GetUserDTO) (User, error)
 	GetUserIdByLogin(ctx context.Context, login string) (int64, error)
 }
 
 //go:generate mockery --name UserRepository
 type UserRepository interface {
 	Create(ctx context.Context, user User) (int64, error)
-	GetID(ctx context.Context, login, passwordHash string) (int64, error)
+	Get(ctx context.Context, login, passwordHash string) (User, error)
 	GetUserIdByLogin(ctx context.Context, login string) (int64, error)
 }
 
@@ -71,7 +71,7 @@ func (cu *CreateUserDTO) Validate() error {
 	return nil
 }
 
-func (gu *GetUserIdDTO) Validate() error {
+func (gu *GetUserDTO) Validate() error {
 	if gu.Login == nil {
 		return errors.New("empty login")
 	}
