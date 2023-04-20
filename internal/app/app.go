@@ -74,7 +74,7 @@ func Run(cfg *config.Config) {
 
 	// handlers
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase)
+	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase, tokenChecker.Handle())
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
 	note.NewHandlerHTTP(router, noteUsecase, tokenChecker.Handle())
 	sharedNote.NewHandlerHTTP(router, sharedNoteUsecase, userUsecase, tokenChecker.Handle())

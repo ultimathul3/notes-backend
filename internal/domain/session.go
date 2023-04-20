@@ -34,6 +34,10 @@ type (
 		RefreshToken uuid.UUID `json:"refresh_token"`
 		ExpiresIn    time.Time `json:"expires_in"`
 	}
+
+	LogoutDTO struct {
+		RefreshToken *uuid.UUID `json:"refresh_token"`
+	}
 )
 
 type SessionUsecase interface {
@@ -43,6 +47,7 @@ type SessionUsecase interface {
 	GetCountByUserID(ctx context.Context, userID int64) int64
 	DeleteAllByUserID(ctx context.Context, userID int64)
 	Refresh(ctx context.Context, input RefreshSessionDTO) (string, uuid.UUID, error)
+	Logout(ctx context.Context, userID int64, input LogoutDTO) error
 }
 
 //go:generate mockery --name SessionRepository
@@ -53,10 +58,18 @@ type SessionRepository interface {
 	GetByRefreshToken(ctx context.Context, refreshToken uuid.UUID) (Session, error)
 	Update(ctx context.Context, input UpdateSessionDTO) error
 	DeleteByID(ctx context.Context, id int64) error
+	DeleteByRefreshToken(ctx context.Context, userID int64, refreshToken uuid.UUID) error
 }
 
 func (r *RefreshSessionDTO) Validate() error {
 	if r.RefreshToken == nil {
+		return errors.New("empty refresh token")
+	}
+	return nil
+}
+
+func (l *LogoutDTO) Validate() error {
+	if l.RefreshToken == nil {
 		return errors.New("empty refresh token")
 	}
 	return nil

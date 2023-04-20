@@ -68,6 +68,20 @@ func (_m *SessionRepository) DeleteByID(ctx context.Context, id int64) error {
 	return r0
 }
 
+// DeleteByRefreshToken provides a mock function with given fields: ctx, userID, refreshToken
+func (_m *SessionRepository) DeleteByRefreshToken(ctx context.Context, userID int64, refreshToken uuid.UUID) error {
+	ret := _m.Called(ctx, userID, refreshToken)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, int64, uuid.UUID) error); ok {
+		r0 = rf(ctx, userID, refreshToken)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // GetByRefreshToken provides a mock function with given fields: ctx, refreshToken
 func (_m *SessionRepository) GetByRefreshToken(ctx context.Context, refreshToken uuid.UUID) (domain.Session, error) {
 	ret := _m.Called(ctx, refreshToken)

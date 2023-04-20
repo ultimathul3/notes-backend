@@ -126,6 +126,11 @@ definitions:
       title:
         type: string
     type: object
+  domain.LogoutDTO:
+    properties:
+      refresh_token:
+        type: string
+    type: object
   domain.Note:
     properties:
       body:
@@ -157,6 +162,33 @@ info:
   title: Notes API
   version: "1.0"
 paths:
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User refresh token
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LogoutDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: User logout
+      tags:
+      - Auth
   /auth/refresh:
     post:
       consumes:

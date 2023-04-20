@@ -92,3 +92,11 @@ func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (
 
 	return accessToken, refreshToken, nil
 }
+
+func (u *Usecase) Logout(ctx context.Context, userID int64, input domain.LogoutDTO) error {
+	if err := input.Validate(); err != nil {
+		return err
+	}
+
+	return u.repo.DeleteByRefreshToken(ctx, userID, *input.RefreshToken)
+}

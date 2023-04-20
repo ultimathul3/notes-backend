@@ -111,3 +111,17 @@ func (r *RepositoryPostgres) DeleteByID(ctx context.Context, id int64) error {
 
 	return nil
 }
+
+func (r *RepositoryPostgres) DeleteByRefreshToken(ctx context.Context, userID int64, refreshToken uuid.UUID) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`DELETE FROM sessions
+		 WHERE user_id=$1 AND refresh_token=$2
+		 RETURNING id`,
+		userID, refreshToken,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}
