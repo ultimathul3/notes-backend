@@ -78,21 +78,18 @@ func TestSessionRefresh(t *testing.T) {
 	usecase := NewUsecase(repo, jwtauth.NewJWT(10*time.Second, ""), 60*time.Second, 1)
 
 	_, _, err := usecase.Refresh(context.Background(), domain.RefreshSessionDTO{
-		UserID:       1,
 		RefreshToken: toPtr(uuid.New()),
 		Fingerprint:  "other fingerprint",
 	})
 	assert.ErrorIs(t, err, domain.ErrInvalidFingerPrint)
 
 	_, _, err = usecase.Refresh(context.Background(), domain.RefreshSessionDTO{
-		UserID:       1,
 		RefreshToken: toPtr(uuid.New()),
 		Fingerprint:  "fingerprint",
 	})
 	assert.Nil(t, err)
 
 	_, _, err = usecase.Refresh(context.Background(), domain.RefreshSessionDTO{
-		UserID:       1,
 		RefreshToken: toPtr(uuidTest),
 		Fingerprint:  "fingerprint",
 	})

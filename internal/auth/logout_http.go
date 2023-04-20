@@ -20,7 +20,7 @@ import (
 func (h *HandlerHTTP) logout(c *gin.Context) {
 	var session domain.LogoutDTO
 	if err := c.BindJSON(&session); err != nil {
-		log.Error("CreateUserDTO bind json: ", err)
+		log.Error("LogoutDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}

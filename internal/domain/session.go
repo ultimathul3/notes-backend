@@ -24,7 +24,6 @@ type (
 	}
 
 	RefreshSessionDTO struct {
-		UserID       int64      `json:"user_id"`
 		RefreshToken *uuid.UUID `json:"refresh_token"`
 		Fingerprint  string     `json:"fingerprint"`
 	}

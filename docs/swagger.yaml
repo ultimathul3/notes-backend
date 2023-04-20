@@ -41,8 +41,6 @@ definitions:
     properties:
       refresh_token:
         type: string
-      user_id:
-        type: integer
     type: object
   docs.SignInResponse:
     properties:
