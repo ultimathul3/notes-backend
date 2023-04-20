@@ -77,7 +77,7 @@ func (u *Usecase) Refresh(ctx context.Context, input domain.RefreshSessionDTO) (
 		return "", uuid.Nil, domain.ErrInvalidOrExpiredRefreshToken
 	}
 
-	accessToken, refreshToken, err := u.jwt.GenerateTokens(session.ID)
+	accessToken, refreshToken, err := u.jwt.GenerateTokens(session.UserID)
 	if err != nil {
 		return "", uuid.Nil, err
 	}
