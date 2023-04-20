@@ -32,6 +32,7 @@ func Run(cfg *config.Config) {
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins = cfg.CORS.AllowOrigins
+	corsConfig.AllowHeaders = []string{"Authorization", "Content-Type"}
 	router.Use(cors.New(corsConfig))
 
 	pgConn, err := postgresql.NewConnection(
