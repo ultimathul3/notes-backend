@@ -29,7 +29,10 @@ import (
 func Run(cfg *config.Config) {
 	gin.SetMode(cfg.HTTP.GinMode)
 	router := gin.New()
-	router.Use(cors.Default())
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = cfg.CORS.AllowOrigins
+	router.Use(cors.New(corsConfig))
 
 	pgConn, err := postgresql.NewConnection(
 		context.Background(),

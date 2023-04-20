@@ -34,6 +34,10 @@ type Config struct {
 		JwtSecretKey         string        `env:"JWT_SECRET_KEY"`
 		MaxUserSessionsCount int64         `env:"MAX_USER_SESSIONS_COUNT"`
 	}
+
+	CORS struct {
+		AllowOrigins []string `env:"CORS_ALLOW_ORIGINS"`
+	}
 }
 
 func ReadEnvFile() (*Config, error) {
