@@ -1,5 +1,7 @@
 package docs
 
+import "time"
+
 type SignInResponse struct {
 	ID           int64  `json:"id"`
 	Name         string `json:"name"`
@@ -49,5 +51,16 @@ type GetAllNotebooksResponse struct {
 		ID          int64   `json:"id"`
 		Description *string `json:"description"`
 	} `json:"notebooks,omitempty"`
+	Count int `json:"count"`
+}
+
+type GetAllNotesResponse struct {
+	Notes []struct {
+		ID        int64     `json:"id"`
+		Title     string    `json:"title"`
+		Body      string    `json:"body"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+	} `json:"notes,omitempty"`
 	Count int `json:"count"`
 }

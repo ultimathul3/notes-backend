@@ -71,7 +71,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Accept		json
 // @Produce		json
 // @Param		notebook_id path int true "Notebook ID"
-// @Success		200 {array} domain.GetAllNotesResponse "Notebooks"
+// @Success		200 {array} docs.GetAllNotesResponse "Notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks/{notebook_id}/notes [get]
 func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {

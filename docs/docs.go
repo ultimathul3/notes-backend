@@ -380,11 +380,11 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Notebooks",
+                        "description": "Notes",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.GetAllNotesResponse"
+                                "$ref": "#/definitions/docs.GetAllNotesResponse"
                             }
                         }
                     },
@@ -727,6 +727,37 @@ const docTemplate = `{
                 }
             }
         },
+        "docs.GetAllNotesResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "body": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "integer"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "updated_at": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "docs.MessageResponse": {
             "type": "object",
             "properties": {
@@ -838,20 +869,6 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.GetAllNotesResponse": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "notes": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Note"
-                    }
-                }
-            }
-        },
         "domain.GetUserDTO": {
             "type": "object",
             "properties": {
@@ -882,32 +899,6 @@ const docTemplate = `{
             "properties": {
                 "refresh_token": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.Note": {
-            "type": "object",
-            "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "notebook_id": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
                 }
             }
         }

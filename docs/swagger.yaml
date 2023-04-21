@@ -33,6 +33,26 @@ definitions:
           type: object
         type: array
     type: object
+  docs.GetAllNotesResponse:
+    properties:
+      count:
+        type: integer
+      notes:
+        items:
+          properties:
+            body:
+              type: string
+            created_at:
+              type: string
+            id:
+              type: integer
+            title:
+              type: string
+            updated_at:
+              type: string
+          type: object
+        type: array
+    type: object
   docs.MessageResponse:
     properties:
       message:
@@ -104,15 +124,6 @@ definitions:
           $ref: '#/definitions/domain.IncomingSharedNote'
         type: array
     type: object
-  domain.GetAllNotesResponse:
-    properties:
-      count:
-        type: integer
-      notes:
-        items:
-          $ref: '#/definitions/domain.Note'
-        type: array
-    type: object
   domain.GetUserDTO:
     properties:
       login:
@@ -133,23 +144,6 @@ definitions:
     properties:
       refresh_token:
         type: string
-    type: object
-  domain.Note:
-    properties:
-      body:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: integer
-      notebook_id:
-        type: integer
-      title:
-        type: string
-      updated_at:
-        type: string
-      user_id:
-        type: integer
     type: object
 info:
   contact: {}
@@ -381,10 +375,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: Notebooks
+          description: Notes
           schema:
             items:
-              $ref: '#/definitions/domain.GetAllNotesResponse'
+              $ref: '#/definitions/docs.GetAllNotesResponse'
             type: array
         "400":
           description: Error message
