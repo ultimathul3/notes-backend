@@ -206,7 +206,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.GetAllNotebooksResponse"
+                                "$ref": "#/definitions/docs.GetAllNotebooksResponse"
                             }
                         }
                     },
@@ -705,6 +705,28 @@ const docTemplate = `{
                 }
             }
         },
+        "docs.GetAllNotebooksResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "notebooks": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "docs.MessageResponse": {
             "type": "object",
             "properties": {
@@ -816,20 +838,6 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.GetAllNotebooksResponse": {
-            "type": "object",
-            "properties": {
-                "count": {
-                    "type": "integer"
-                },
-                "notebooks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Notebook"
-                    }
-                }
-            }
-        },
         "domain.GetAllNotesResponse": {
             "type": "object",
             "properties": {
@@ -897,20 +905,6 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "domain.Notebook": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "user_id": {
                     "type": "integer"

@@ -19,6 +19,20 @@ definitions:
       description:
         type: string
     type: object
+  docs.GetAllNotebooksResponse:
+    properties:
+      count:
+        type: integer
+      notebooks:
+        items:
+          properties:
+            description:
+              type: string
+            id:
+              type: integer
+          type: object
+        type: array
+    type: object
   docs.MessageResponse:
     properties:
       message:
@@ -90,15 +104,6 @@ definitions:
           $ref: '#/definitions/domain.IncomingSharedNote'
         type: array
     type: object
-  domain.GetAllNotebooksResponse:
-    properties:
-      count:
-        type: integer
-      notebooks:
-        items:
-          $ref: '#/definitions/domain.Notebook'
-        type: array
-    type: object
   domain.GetAllNotesResponse:
     properties:
       count:
@@ -143,15 +148,6 @@ definitions:
         type: string
       updated_at:
         type: string
-      user_id:
-        type: integer
-    type: object
-  domain.Notebook:
-    properties:
-      description:
-        type: string
-      id:
-        type: integer
       user_id:
         type: integer
     type: object
@@ -277,7 +273,7 @@ paths:
           description: Notebooks
           schema:
             items:
-              $ref: '#/definitions/domain.GetAllNotebooksResponse'
+              $ref: '#/definitions/docs.GetAllNotebooksResponse'
             type: array
         "400":
           description: Error message

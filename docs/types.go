@@ -32,11 +32,6 @@ type CreateNotebookResponse struct {
 	ID int64 `json:"id"`
 }
 
-type GetAllNotebooksResponse struct {
-	ID          int64  `json:"id"`
-	Description string `json:"description"`
-}
-
 type OkStatusResponse struct {
 	Status string `json:"status" example:"ok"`
 }
@@ -47,4 +42,12 @@ type CreateNoteResponse struct {
 
 type CreateSharedNoteResponse struct {
 	ID int64 `json:"id"`
+}
+
+type GetAllNotebooksResponse struct {
+	Notebooks []struct {
+		ID          int64   `json:"id"`
+		Description *string `json:"description"`
+	} `json:"notebooks,omitempty"`
+	Count int `json:"count"`
 }
