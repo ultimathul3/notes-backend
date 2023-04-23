@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"time"
+	"unicode/utf8"
 )
 
 type (
@@ -48,6 +49,9 @@ func (cn *CreateUpdateNoteDTO) Validate() error {
 	}
 	if cn.Body == nil {
 		return errors.New("empty body")
+	}
+	if utf8.RuneCountInString(*cn.Title) == 0 || utf8.RuneCountInString(*cn.Title) > 64 {
+		return errors.New("title length must be from 1 to 64 characters")
 	}
 	return nil
 }
