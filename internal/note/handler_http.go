@@ -22,7 +22,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByNotebookID)
-		notebook.PUT("/:note_id", handler.update)
+		notebook.PATCH("/:note_id", handler.patch)
 		notebook.DELETE("/:note_id", handler.delete)
 	}
 
@@ -35,7 +35,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 // @Accept		json
 // @Produce		json
 // @Param		notebook_id path int true "Notebook ID"
-// @Param		user body domain.CreateUpdateNoteDTO true "Note data"
+// @Param		user body domain.CreateNoteDTO true "Note data"
 // @Success		200 {object} docs.CreateNoteResponse "Note ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/notebooks/{notebook_id}/notes [post]
@@ -46,9 +46,9 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 		return
 	}
 
-	var note domain.CreateUpdateNoteDTO
+	var note domain.CreateNoteDTO
 	if err := c.BindJSON(&note); err != nil {
-		log.Error("Note bind json: ", err)
+		log.Error("CreateNoteDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -103,11 +103,11 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 // @Produce		json
 // @Param		notebook_id path int true "Notebook ID"
 // @Param		note_id path int true "Note ID"
-// @Param		user body domain.CreateUpdateNoteDTO true "New note data"
+// @Param		user body domain.PatchNoteDTO true "New note data"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook_id}/notes/{note_id} [put]
-func (h *HandlerHTTP) update(c *gin.Context) {
+// @Router		/notebooks/{notebook_id}/notes/{note_id} [patch]
+func (h *HandlerHTTP) patch(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
@@ -122,17 +122,17 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 
 	userID := c.MustGet("userID").(int64)
 
-	var note domain.CreateUpdateNoteDTO
+	var note domain.PatchNoteDTO
 	if err := c.BindJSON(&note); err != nil {
-		log.Error("Notebook bind json: ", err)
+		log.Error("PatchNoteDTO bind json: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	err = h.nuc.Update(c, noteID, userID, notebookID, note)
+	err = h.nuc.Patch(c, noteID, userID, notebookID, note)
 	if err != nil {
-		log.Error("update note: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		log.Error("patch note: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 

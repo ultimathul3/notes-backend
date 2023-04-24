@@ -2,6 +2,9 @@ package note
 
 import (
 	"context"
+	"fmt"
+	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/ultimathul3/notes-backend/internal/domain"
@@ -79,6 +82,42 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, noteID, userID, noteboo
 		 WHERE user_id=$1 AND notebook_id=$2 AND id=$3
 		 RETURNING id`,
 		userID, notebookID, noteID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RepositoryPostgres) Patch(ctx context.Context, noteID, userID, notebookID int64, input domain.PatchNoteDTO) error {
+	setValues := make([]string, 0)
+	args := make([]any, 0)
+	argID := 1
+
+	if input.Title != nil {
+		setValues = append(setValues, fmt.Sprintf("title=$%d", argID))
+		args = append(args, *input.Title)
+		argID++
+	}
+
+	if input.Body != nil {
+		setValues = append(setValues, fmt.Sprintf("body=$%d", argID))
+		args = append(args, *input.Body)
+		argID++
+	}
+
+	setQuery := strings.Join(setValues, ", ")
+
+	if err := r.conn.QueryRow(
+		ctx,
+		fmt.Sprintf(
+			`UPDATE notes
+			 SET %s, updated_at=$%d
+			 WHERE user_id=$%d AND notebook_id=$%d AND id=$%d
+			 RETURNING id`,
+			setQuery, argID, argID+1, argID+2, argID+3,
+		),
+		append(args, time.Now(), userID, notebookID, noteID)...,
 	).Scan(nil); err != nil {
 		return err
 	}

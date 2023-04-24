@@ -17,7 +17,7 @@ func NewUsecase(repo domain.NoteRepository) *Usecase {
 	}
 }
 
-func (u *Usecase) Create(ctx context.Context, userID, notebookID int64, input domain.CreateUpdateNoteDTO) (int64, error) {
+func (u *Usecase) Create(ctx context.Context, userID, notebookID int64, input domain.CreateNoteDTO) (int64, error) {
 	if err := input.Validate(); err != nil {
 		return 0, err
 	}
@@ -36,21 +36,13 @@ func (u *Usecase) GetAllByNotebookID(ctx context.Context, userID, notebookID int
 	return u.repo.GetAllByNotebookID(ctx, userID, notebookID)
 }
 
-func (u *Usecase) Update(ctx context.Context, noteID, userID, notebookID int64, input domain.CreateUpdateNoteDTO) error {
+func (u *Usecase) Delete(ctx context.Context, noteID, userID, notebookID int64) error {
+	return u.repo.Delete(ctx, noteID, userID, notebookID)
+}
+
+func (u *Usecase) Patch(ctx context.Context, noteID, userID, notebookID int64, input domain.PatchNoteDTO) error {
 	if err := input.Validate(); err != nil {
 		return err
 	}
-
-	return u.repo.Update(ctx, domain.Note{
-		ID:         noteID,
-		Title:      *input.Title,
-		Body:       *input.Body,
-		UpdatedAt:  time.Now(),
-		UserID:     userID,
-		NotebookID: notebookID,
-	})
-}
-
-func (u *Usecase) Delete(ctx context.Context, noteID, userID, notebookID int64) error {
-	return u.repo.Delete(ctx, noteID, userID, notebookID)
+	return u.repo.Patch(ctx, noteID, userID, notebookID, input)
 }

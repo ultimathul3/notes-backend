@@ -426,7 +426,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CreateUpdateNoteDTO"
+                            "$ref": "#/definitions/domain.CreateNoteDTO"
                         }
                     }
                 ],
@@ -447,7 +447,54 @@ const docTemplate = `{
             }
         },
         "/notebooks/{notebook_id}/notes/{note_id}": {
-            "put": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Note"
+                ],
+                "summary": "Deleting a note from a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Note ID",
+                        "name": "note_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
                 "security": [
                     {
                         "BearerToken": []
@@ -484,55 +531,8 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CreateUpdateNoteDTO"
+                            "$ref": "#/definitions/domain.PatchNoteDTO"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK status",
-                        "schema": {
-                            "$ref": "#/definitions/docs.OkStatusResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error message",
-                        "schema": {
-                            "$ref": "#/definitions/docs.MessageResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "BearerToken": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Note"
-                ],
-                "summary": "Deleting a note from a notebook",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Notebook ID",
-                        "name": "notebook_id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Note ID",
-                        "name": "note_id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -819,6 +819,17 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateNoteDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.CreateSharedNoteDTO": {
             "type": "object",
             "properties": {
@@ -827,17 +838,6 @@ const docTemplate = `{
                 },
                 "note_id": {
                     "type": "integer"
-                }
-            }
-        },
-        "domain.CreateUpdateNoteDTO": {
-            "type": "object",
-            "properties": {
-                "body": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
                 }
             }
         },
@@ -898,6 +898,17 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PatchNoteDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

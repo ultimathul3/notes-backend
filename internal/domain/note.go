@@ -18,7 +18,12 @@ type (
 		NotebookID int64     `json:"notebook_id,omitempty"`
 	}
 
-	CreateUpdateNoteDTO struct {
+	CreateNoteDTO struct {
+		Title *string `json:"title"`
+		Body  *string `json:"body"`
+	}
+
+	PatchNoteDTO struct {
 		Title *string `json:"title"`
 		Body  *string `json:"body"`
 	}
@@ -30,20 +35,20 @@ type (
 )
 
 type NoteUsecase interface {
-	Create(ctx context.Context, userID, notebookID int64, input CreateUpdateNoteDTO) (int64, error)
+	Create(ctx context.Context, userID, notebookID int64, input CreateNoteDTO) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
-	Update(ctx context.Context, noteID, userID, notebookID int64, input CreateUpdateNoteDTO) error
 	Delete(ctx context.Context, noteID, userID, notebookID int64) error
+	Patch(ctx context.Context, noteID, userID, notebookID int64, input PatchNoteDTO) error
 }
 
 type NoteRepository interface {
 	Create(ctx context.Context, note Note) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
-	Update(ctx context.Context, note Note) error
 	Delete(ctx context.Context, noteID, userID, notebookID int64) error
+	Patch(ctx context.Context, noteID, userID, notebookID int64, input PatchNoteDTO) error
 }
 
-func (cn *CreateUpdateNoteDTO) Validate() error {
+func (cn *CreateNoteDTO) Validate() error {
 	if cn.Title == nil {
 		return errors.New("empty title")
 	}
@@ -52,6 +57,13 @@ func (cn *CreateUpdateNoteDTO) Validate() error {
 	}
 	if utf8.RuneCountInString(*cn.Title) == 0 || utf8.RuneCountInString(*cn.Title) > 64 {
 		return errors.New("title length must be from 1 to 64 characters")
+	}
+	return nil
+}
+
+func (pn *PatchNoteDTO) Validate() error {
+	if pn.Title == nil && pn.Body == nil {
+		return errors.New("empty title and body")
 	}
 	return nil
 }

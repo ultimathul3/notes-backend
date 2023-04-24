@@ -92,19 +92,19 @@ definitions:
       id:
         type: integer
     type: object
+  domain.CreateNoteDTO:
+    properties:
+      body:
+        type: string
+      title:
+        type: string
+    type: object
   domain.CreateSharedNoteDTO:
     properties:
       login:
         type: string
       note_id:
         type: integer
-    type: object
-  domain.CreateUpdateNoteDTO:
-    properties:
-      body:
-        type: string
-      title:
-        type: string
     type: object
   domain.CreateUserDTO:
     properties:
@@ -143,6 +143,13 @@ definitions:
   domain.LogoutDTO:
     properties:
       refresh_token:
+        type: string
+    type: object
+  domain.PatchNoteDTO:
+    properties:
+      body:
+        type: string
+      title:
         type: string
     type: object
 info:
@@ -403,7 +410,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/domain.CreateUpdateNoteDTO'
+          $ref: '#/definitions/domain.CreateNoteDTO'
       produces:
       - application/json
       responses:
@@ -451,7 +458,7 @@ paths:
       summary: Deleting a note from a notebook
       tags:
       - Note
-    put:
+    patch:
       consumes:
       - application/json
       parameters:
@@ -470,7 +477,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/domain.CreateUpdateNoteDTO'
+          $ref: '#/definitions/domain.PatchNoteDTO'
       produces:
       - application/json
       responses:
