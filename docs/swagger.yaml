@@ -53,6 +53,19 @@ definitions:
           type: object
         type: array
     type: object
+  docs.GetNoteResponse:
+    properties:
+      body:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
   docs.MessageResponse:
     properties:
       message:
@@ -456,6 +469,38 @@ paths:
       security:
       - BearerToken: []
       summary: Deleting a note from a notebook
+      tags:
+      - Note
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook_id
+        required: true
+        type: integer
+      - description: Note ID
+        in: path
+        name: note_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Notes
+          schema:
+            items:
+              $ref: '#/definitions/docs.GetNoteResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a note in a notebook
       tags:
       - Note
     patch:

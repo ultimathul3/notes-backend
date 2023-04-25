@@ -60,6 +60,22 @@ func (r *RepositoryPostgres) GetAllByNotebookID(ctx context.Context, userID, not
 	return notes, nil
 }
 
+func (r *RepositoryPostgres) GetByID(ctx context.Context, userID, notebookID, noteID int64) (domain.Note, error) {
+	var note domain.Note
+
+	if err := r.conn.QueryRow(
+		ctx,
+		`SELECT id, title, body, created_at, updated_at
+		 FROM notes
+		 WHERE user_id=$1 AND notebook_id=$2 AND id=$3`,
+		userID, notebookID, noteID,
+	).Scan(&note.ID, &note.Title, &note.Body, &note.CreatedAt, &note.UpdatedAt); err != nil {
+		return domain.Note{}, err
+	}
+
+	return note, nil
+}
+
 func (r *RepositoryPostgres) Update(ctx context.Context, note domain.Note) error {
 	if err := r.conn.QueryRow(
 		ctx,

@@ -36,6 +36,10 @@ func (u *Usecase) GetAllByNotebookID(ctx context.Context, userID, notebookID int
 	return u.repo.GetAllByNotebookID(ctx, userID, notebookID)
 }
 
+func (u *Usecase) GetByID(ctx context.Context, userID, notebookID, noteID int64) (domain.Note, error) {
+	return u.repo.GetByID(ctx, userID, notebookID, noteID)
+}
+
 func (u *Usecase) Delete(ctx context.Context, noteID, userID, notebookID int64) error {
 	return u.repo.Delete(ctx, noteID, userID, notebookID)
 }

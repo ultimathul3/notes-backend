@@ -64,3 +64,11 @@ type GetAllNotesResponse struct {
 	} `json:"notes,omitempty"`
 	Count int `json:"count"`
 }
+
+type GetNoteResponse struct {
+	ID        int64     `json:"id"`
+	Title     string    `json:"title"`
+	Body      string    `json:"body"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}

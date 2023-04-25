@@ -22,6 +22,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByNotebookID)
+		notebook.GET("/:note_id", handler.getByID)
 		notebook.PATCH("/:note_id", handler.patch)
 		notebook.DELETE("/:note_id", handler.delete)
 	}
@@ -58,7 +59,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	id, err := h.nuc.Create(c, userID, notebookID, note)
 	if err != nil {
 		log.Error("create note: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNotebookNotFound.Error()})
 		return
 	}
 
@@ -86,7 +87,7 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 	notes, err := h.nuc.GetAllByNotebookID(c, userID, notebookID)
 	if err != nil {
 		log.Error("get all notes by notebook id: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNotebookNotFound.Error()})
 		return
 	}
 
@@ -94,6 +95,41 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 		Notes: notes,
 		Count: len(notes),
 	})
+}
+
+// @Summary		Getting a note in a notebook
+// @Security	BearerToken
+// @Tags		Note
+// @Accept		json
+// @Produce		json
+// @Param		notebook_id path int true "Notebook ID"
+// @Param		note_id path int true "Note ID"
+// @Success		200 {array} docs.GetNoteResponse "Notes"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/notebooks/{notebook_id}/notes/{note_id} [get]
+func (h *HandlerHTTP) getByID(c *gin.Context) {
+	notebookID, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
+		return
+	}
+
+	noteID, err := strconv.ParseInt(c.Param("note_id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid note id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	note, err := h.nuc.GetByID(c, userID, notebookID, noteID)
+	if err != nil {
+		log.Error("get note by id: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, note)
 }
 
 // @Summary		Updating a note in a notebook

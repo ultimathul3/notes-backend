@@ -37,6 +37,7 @@ type (
 type NoteUsecase interface {
 	Create(ctx context.Context, userID, notebookID int64, input CreateNoteDTO) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
+	GetByID(ctx context.Context, userID, notebookID, noteID int64) (Note, error)
 	Delete(ctx context.Context, noteID, userID, notebookID int64) error
 	Patch(ctx context.Context, noteID, userID, notebookID int64, input PatchNoteDTO) error
 }
@@ -44,6 +45,7 @@ type NoteUsecase interface {
 type NoteRepository interface {
 	Create(ctx context.Context, note Note) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]Note, error)
+	GetByID(ctx context.Context, userID, notebookID, noteID int64) (Note, error)
 	Delete(ctx context.Context, noteID, userID, notebookID int64) error
 	Patch(ctx context.Context, noteID, userID, notebookID int64, input PatchNoteDTO) error
 }
