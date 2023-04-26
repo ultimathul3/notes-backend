@@ -93,5 +93,11 @@ func Run(cfg *config.Config) {
 
 	log.Info("server is listening on ", addr)
 
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatal(err)
+		}
+	}()
+
 	shutdownGracefully(server, cfg.HTTP.ShutdownTimeout)
 }

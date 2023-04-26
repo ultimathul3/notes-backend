@@ -15,12 +15,6 @@ func shutdownGracefully(server *http.Server, shutdownTimeout time.Duration) {
 	signalCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	go func() {
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal(err)
-		}
-	}()
-
 	<-signalCtx.Done()
 
 	log.Info("shutting down server...")
