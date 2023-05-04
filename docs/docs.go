@@ -261,7 +261,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook_id}": {
+        "/notebooks/{notebook-id}": {
             "put": {
                 "security": [
                     {
@@ -282,7 +282,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     },
@@ -331,7 +331,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     }
@@ -352,7 +352,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook_id}/notes": {
+        "/notebooks/{notebook-id}/notes": {
             "get": {
                 "security": [
                     {
@@ -373,7 +373,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     }
@@ -416,7 +416,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     },
@@ -446,7 +446,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook_id}/notes/{note_id}": {
+        "/notebooks/{notebook-id}/notes/{note-id}": {
             "get": {
                 "security": [
                     {
@@ -467,14 +467,14 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Note ID",
-                        "name": "note_id",
+                        "name": "note-id",
                         "in": "path",
                         "required": true
                     }
@@ -517,14 +517,14 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Note ID",
-                        "name": "note_id",
+                        "name": "note-id",
                         "in": "path",
                         "required": true
                     }
@@ -564,14 +564,14 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Notebook ID",
-                        "name": "notebook_id",
+                        "name": "notebook-id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Note ID",
-                        "name": "note_id",
+                        "name": "note-id",
                         "in": "path",
                         "required": true
                     },
@@ -601,7 +601,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared_notes": {
+        "/shared-notes": {
             "get": {
                 "security": [
                     {
@@ -679,7 +679,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared_notes/{shared_note_id}": {
+        "/shared-notes/{shared-note-id}": {
             "delete": {
                 "security": [
                     {
@@ -700,7 +700,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Shared note ID",
-                        "name": "shared_note_id",
+                        "name": "shared-note-id",
                         "in": "path",
                         "required": true
                     }

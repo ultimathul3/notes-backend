@@ -22,8 +22,8 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NotebookUsecase, tokenChecker
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getAllByUserID)
-		notebook.PUT("/:notebook_id", handler.update)
-		notebook.DELETE("/:notebook_id", handler.delete)
+		notebook.PUT("/:notebook-id", handler.update)
+		notebook.DELETE("/:notebook-id", handler.delete)
 	}
 
 	return handler
@@ -88,13 +88,13 @@ func (h *HandlerHTTP) getAllByUserID(c *gin.Context) {
 // @Tags		Notebook
 // @Accept		json
 // @Produce		json
-// @Param		notebook_id path int true "Notebook ID"
+// @Param		notebook-id path int true "Notebook ID"
 // @Param		user body docs.CreateUpdateNotebookDTO true "New notebook data"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook_id} [put]
+// @Router		/notebooks/{notebook-id} [put]
 func (h *HandlerHTTP) update(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
+	id, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
 		return
@@ -126,12 +126,12 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 // @Tags		Notebook
 // @Accept		json
 // @Produce		json
-// @Param		notebook_id path int true "Notebook ID"
+// @Param		notebook-id path int true "Notebook ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook_id} [delete]
+// @Router		/notebooks/{notebook-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("notebook_id"), 10, 64)
+	id, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
 		return

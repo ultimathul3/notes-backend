@@ -324,14 +324,14 @@ paths:
       summary: Creating notebook
       tags:
       - Notebook
-  /notebooks/{notebook_id}:
+  /notebooks/{notebook-id}:
     delete:
       consumes:
       - application/json
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       produces:
@@ -356,7 +356,7 @@ paths:
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       - description: New notebook data
@@ -381,14 +381,14 @@ paths:
       summary: Updating user notebook
       tags:
       - Notebook
-  /notebooks/{notebook_id}/notes:
+  /notebooks/{notebook-id}/notes:
     get:
       consumes:
       - application/json
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       produces:
@@ -415,7 +415,7 @@ paths:
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       - description: Note data
@@ -440,19 +440,19 @@ paths:
       summary: Creating a note in a notebook
       tags:
       - Note
-  /notebooks/{notebook_id}/notes/{note_id}:
+  /notebooks/{notebook-id}/notes/{note-id}:
     delete:
       consumes:
       - application/json
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       - description: Note ID
         in: path
-        name: note_id
+        name: note-id
         required: true
         type: integer
       produces:
@@ -477,12 +477,12 @@ paths:
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       - description: Note ID
         in: path
-        name: note_id
+        name: note-id
         required: true
         type: integer
       produces:
@@ -509,12 +509,12 @@ paths:
       parameters:
       - description: Notebook ID
         in: path
-        name: notebook_id
+        name: notebook-id
         required: true
         type: integer
       - description: Note ID
         in: path
-        name: note_id
+        name: note-id
         required: true
         type: integer
       - description: New note data
@@ -539,7 +539,7 @@ paths:
       summary: Updating a note in a notebook
       tags:
       - Note
-  /shared_notes:
+  /shared-notes:
     get:
       consumes:
       - application/json
@@ -587,14 +587,14 @@ paths:
       summary: Creating a shared note
       tags:
       - Shared note
-  /shared_notes/{shared_note_id}:
+  /shared-notes/{shared-note-id}:
     delete:
       consumes:
       - application/json
       parameters:
       - description: Shared note ID
         in: path
-        name: shared_note_id
+        name: shared-note-id
         required: true
         type: integer
       produces:
