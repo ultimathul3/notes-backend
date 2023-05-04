@@ -26,11 +26,11 @@ func NewHandlerHTTP(
 		uuc: uuc,
 	}
 
-	notebook := router.Group("/shared_notes").Use(tokenChecker)
+	notebook := router.Group("/shared-notes").Use(tokenChecker)
 	{
 		notebook.POST("/", handler.create)
 		notebook.GET("/", handler.getIncomingSharedNotes)
-		notebook.DELETE("/:shared_note_id", handler.delete)
+		notebook.DELETE("/:shared-note-id", handler.delete)
 	}
 
 	return handler
@@ -44,7 +44,7 @@ func NewHandlerHTTP(
 // @Param		user body domain.CreateSharedNoteDTO true "Shared note data"
 // @Success		200 {object} docs.CreateSharedNoteResponse "Shared note ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared_notes [post]
+// @Router		/shared-notes [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	var sharedNote domain.CreateSharedNoteDTO
 	if err := c.BindJSON(&sharedNote); err != nil {
@@ -83,12 +83,12 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Tags		Shared note
 // @Accept		json
 // @Produce		json
-// @Param		shared_note_id path int true "Shared note ID"
+// @Param		shared-note-id path int true "Shared note ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared_notes/{shared_note_id} [delete]
+// @Router		/shared-notes/{shared-note-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
-	sharedNoteID, err := strconv.ParseInt(c.Param("shared_note_id"), 10, 64)
+	sharedNoteID, err := strconv.ParseInt(c.Param("shared-note-id"), 10, 64)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
 		return
@@ -113,7 +113,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 // @Produce		json
 // @Success		200 {array} domain.GetAllIncomingSharedNotesResponse "Incoming shared notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared_notes [get]
+// @Router		/shared-notes [get]
 func (h *HandlerHTTP) getIncomingSharedNotes(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 
