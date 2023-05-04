@@ -601,6 +601,205 @@ const docTemplate = `{
                 }
             }
         },
+        "/notebooks/{notebook-id}/todo-lists": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Getting a list of user todo lists in a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todo lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/docs.GetAllTodoListsResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Creating a todo list in a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Todo list data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateTodoListDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todo list ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.CreateTodoListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Updating a todo list in a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New todo list data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateTodoListDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo list"
+                ],
+                "summary": "Deleting a todo list from a notebook",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/shared-notes": {
             "get": {
                 "security": [
@@ -747,6 +946,14 @@ const docTemplate = `{
                 }
             }
         },
+        "docs.CreateTodoListResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "docs.CreateUpdateNotebookDTO": {
             "type": "object",
             "properties": {
@@ -791,6 +998,34 @@ const docTemplate = `{
                             "body": {
                                 "type": "string"
                             },
+                            "created_at": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "integer"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "updated_at": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "docs.GetAllTodoListsResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "todo_lists": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
                             "created_at": {
                                 "type": "string"
                             },
@@ -911,6 +1146,14 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateTodoListDTO": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.CreateUserDTO": {
             "type": "object",
             "properties": {
@@ -978,6 +1221,14 @@ const docTemplate = `{
                 "body": {
                     "type": "string"
                 },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UpdateTodoListDTO": {
+            "type": "object",
+            "properties": {
                 "title": {
                     "type": "string"
                 }

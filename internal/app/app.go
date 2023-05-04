@@ -20,6 +20,7 @@ import (
 	"github.com/ultimathul3/notes-backend/internal/notebook"
 	"github.com/ultimathul3/notes-backend/internal/session"
 	sharedNote "github.com/ultimathul3/notes-backend/internal/sharednote"
+	"github.com/ultimathul3/notes-backend/internal/todolist"
 	"github.com/ultimathul3/notes-backend/internal/user"
 	"github.com/ultimathul3/notes-backend/pkg/hash"
 	"github.com/ultimathul3/notes-backend/pkg/jwtauth"
@@ -53,6 +54,7 @@ func Run(cfg *config.Config) {
 	notebookRepo := notebook.NewRepositoryPostgres(pgConn)
 	noteRepo := note.NewRepositoryPostgres(pgConn)
 	sharedNoteRepo := sharedNote.NewRepositoryPostgres(pgConn)
+	todoListRepo := todolist.NewRepositoryPostgres(pgConn)
 
 	// providers
 	sha256Hasher := hash.NewSHA256Hasher([]byte(cfg.PasswordSalt))
@@ -72,6 +74,7 @@ func Run(cfg *config.Config) {
 	notebookUsecase := notebook.NewUsecase(notebookRepo)
 	noteUsecase := note.NewUsecase(noteRepo)
 	sharedNoteUsecase := sharedNote.NewUsecase(sharedNoteRepo)
+	todoListUsecase := todolist.NewUsecase(todoListRepo)
 
 	// handlers
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -79,6 +82,7 @@ func Run(cfg *config.Config) {
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
 	note.NewHandlerHTTP(router, noteUsecase, tokenChecker.Handle())
 	sharedNote.NewHandlerHTTP(router, sharedNoteUsecase, userUsecase, tokenChecker.Handle())
+	todolist.NewHandlerHTTP(router, todoListUsecase, tokenChecker.Handle())
 
 	addr := fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port)
 
