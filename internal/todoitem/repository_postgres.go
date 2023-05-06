@@ -41,7 +41,8 @@ func (r *RepositoryPostgres) GetAllByListID(ctx context.Context, userID, noteboo
 		`SELECT ti.id, ti.body, ti.done, ti.todo_list_id
 		 FROM todo_items ti
 		 LEFT JOIN todo_lists tl ON tl.id=ti.todo_list_id
-		 WHERE ti.todo_list_id=$1 AND tl.user_id=$2 AND tl.notebook_id=$3`,
+		 WHERE ti.todo_list_id=$1 AND tl.user_id=$2 AND tl.notebook_id=$3
+		 ORDER BY ti.id`,
 		listID, userID, notebookID,
 	)
 	if err != nil {
