@@ -800,6 +800,233 @@ const docTemplate = `{
                 }
             }
         },
+        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo item"
+                ],
+                "summary": "Getting a list of items in todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todo items",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/docs.GetAllTodoItemsResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo item"
+                ],
+                "summary": "Creating a todo item in todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Item data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateTodoItemDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Todo list ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.CreateTodoItemResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo item"
+                ],
+                "summary": "Deleting an item from todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Item ID",
+                        "name": "item-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo item"
+                ],
+                "summary": "Updating an item in todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Notebook ID",
+                        "name": "notebook-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Todo list ID",
+                        "name": "todo-list-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Item ID",
+                        "name": "item-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "New todo item data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.PatchTodoItemDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/shared-notes": {
             "get": {
                 "security": [
@@ -946,6 +1173,14 @@ const docTemplate = `{
                 }
             }
         },
+        "docs.CreateTodoItemResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "docs.CreateTodoListResponse": {
             "type": "object",
             "properties": {
@@ -1009,6 +1244,31 @@ const docTemplate = `{
                             },
                             "updated_at": {
                                 "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "docs.GetAllTodoItemsResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "todo_items": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "body": {
+                                "type": "string"
+                            },
+                            "done": {
+                                "type": "boolean"
+                            },
+                            "id": {
+                                "type": "integer"
                             }
                         }
                     }
@@ -1146,6 +1406,14 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateTodoItemDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.CreateTodoListDTO": {
             "type": "object",
             "properties": {
@@ -1223,6 +1491,17 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.PatchTodoItemDTO": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "done": {
+                    "type": "boolean"
                 }
             }
         },

@@ -67,6 +67,9 @@ func (pn *PatchNoteDTO) Validate() error {
 	if pn.Title == nil && pn.Body == nil {
 		return errors.New("empty title and body")
 	}
+	if pn.Title != nil && (utf8.RuneCountInString(*pn.Title) == 0 || utf8.RuneCountInString(*pn.Title) > 64) {
+		return errors.New("title length must be from 1 to 64 characters")
+	}
 	return nil
 }
 

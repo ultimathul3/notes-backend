@@ -14,6 +14,11 @@ definitions:
       id:
         type: integer
     type: object
+  docs.CreateTodoItemResponse:
+    properties:
+      id:
+        type: integer
+    type: object
   docs.CreateTodoListResponse:
     properties:
       id:
@@ -55,6 +60,22 @@ definitions:
               type: string
             updated_at:
               type: string
+          type: object
+        type: array
+    type: object
+  docs.GetAllTodoItemsResponse:
+    properties:
+      count:
+        type: integer
+      todo_items:
+        items:
+          properties:
+            body:
+              type: string
+            done:
+              type: boolean
+            id:
+              type: integer
           type: object
         type: array
     type: object
@@ -142,6 +163,11 @@ definitions:
       note_id:
         type: integer
     type: object
+  domain.CreateTodoItemDTO:
+    properties:
+      body:
+        type: string
+    type: object
   domain.CreateTodoListDTO:
     properties:
       title:
@@ -192,6 +218,13 @@ definitions:
         type: string
       title:
         type: string
+    type: object
+  domain.PatchTodoItemDTO:
+    properties:
+      body:
+        type: string
+      done:
+        type: boolean
     type: object
   domain.UpdateTodoListDTO:
     properties:
@@ -698,6 +731,152 @@ paths:
       summary: Updating a todo list in a notebook
       tags:
       - Todo list
+  /notebooks/{notebook-id}/todo-lists/{todo-list-id}/items:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook-id
+        required: true
+        type: integer
+      - description: Todo list ID
+        in: path
+        name: todo-list-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo items
+          schema:
+            items:
+              $ref: '#/definitions/docs.GetAllTodoItemsResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a list of items in todo list
+      tags:
+      - Todo item
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook-id
+        required: true
+        type: integer
+      - description: Todo list ID
+        in: path
+        name: todo-list-id
+        required: true
+        type: integer
+      - description: Item data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateTodoItemDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo list ID
+          schema:
+            $ref: '#/definitions/docs.CreateTodoItemResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Creating a todo item in todo list
+      tags:
+      - Todo item
+  /notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook-id
+        required: true
+        type: integer
+      - description: Todo list ID
+        in: path
+        name: todo-list-id
+        required: true
+        type: integer
+      - description: Item ID
+        in: path
+        name: item-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Deleting an item from todo list
+      tags:
+      - Todo item
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Notebook ID
+        in: path
+        name: notebook-id
+        required: true
+        type: integer
+      - description: Todo list ID
+        in: path
+        name: todo-list-id
+        required: true
+        type: integer
+      - description: Item ID
+        in: path
+        name: item-id
+        required: true
+        type: integer
+      - description: New todo item data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PatchTodoItemDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Updating an item in todo list
+      tags:
+      - Todo item
   /shared-notes:
     get:
       consumes:

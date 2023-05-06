@@ -202,7 +202,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 
 	err = h.nuc.Delete(c, noteID, userID, notebookID)
 	if err != nil {
-		log.Error("update note: ", err)
+		log.Error("delete note: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
 		return
 	}

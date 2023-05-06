@@ -86,3 +86,16 @@ type GetAllTodoListsResponse struct {
 	} `json:"todo_lists,omitempty"`
 	Count int `json:"count"`
 }
+
+type CreateTodoItemResponse struct {
+	ID int64 `json:"id"`
+}
+
+type GetAllTodoItemsResponse struct {
+	TodoItems []struct {
+		ID   int64  `json:"id"`
+		Body string `json:"body"`
+		Done bool   `json:"done"`
+	} `json:"todo_items,omitempty"`
+	Count int `json:"count"`
+}
