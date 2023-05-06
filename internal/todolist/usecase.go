@@ -38,6 +38,10 @@ func (u *Usecase) Update(ctx context.Context, todoListID, userID, notebookID int
 	return u.repo.Update(ctx, todoListID, userID, notebookID, input)
 }
 
+func (u *Usecase) RefreshUpdatedAt(ctx context.Context, todoListID, userID, notebookID int64) error {
+	return u.repo.RefreshUpdatedAt(ctx, todoListID, userID, notebookID)
+}
+
 func (u *Usecase) GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]domain.TodoList, error) {
 	return u.repo.GetAllByNotebookID(ctx, userID, notebookID)
 }

@@ -35,6 +35,7 @@ type TodoListUsecase interface {
 	Create(ctx context.Context, userID, notebookID int64, input CreateTodoListDTO) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]TodoList, error)
 	Update(ctx context.Context, todoListID, userID, notebookID int64, input UpdateTodoListDTO) error
+	RefreshUpdatedAt(ctx context.Context, todoListID, userID, notebookID int64) error
 	Delete(ctx context.Context, todoListID, userID, notebookID int64) error
 }
 
@@ -42,6 +43,7 @@ type TodoListRepository interface {
 	Create(ctx context.Context, list TodoList) (int64, error)
 	GetAllByNotebookID(ctx context.Context, userID, notebookID int64) ([]TodoList, error)
 	Update(ctx context.Context, todoListID, userID, notebookID int64, input UpdateTodoListDTO) error
+	RefreshUpdatedAt(ctx context.Context, todoListID, userID, notebookID int64) error
 	Delete(ctx context.Context, todoListID, userID, notebookID int64) error
 }
 

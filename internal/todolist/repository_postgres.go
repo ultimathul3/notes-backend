@@ -73,6 +73,21 @@ func (r *RepositoryPostgres) Update(ctx context.Context, todoListID, userID, not
 	return nil
 }
 
+func (r *RepositoryPostgres) RefreshUpdatedAt(ctx context.Context, todoListID, userID, notebookID int64) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`UPDATE todo_lists
+		 SET updated_at=$1
+		 WHERE user_id=$2 AND notebook_id=$3 AND id=$4
+		 RETURNING id`,
+		time.Now(), userID, notebookID, todoListID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *RepositoryPostgres) Delete(ctx context.Context, todoListID, userID, notebookID int64) error {
 	if err := r.conn.QueryRow(
 		ctx,
