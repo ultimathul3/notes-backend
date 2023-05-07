@@ -26,11 +26,11 @@ func NewHandlerHTTP(
 		uuc: uuc,
 	}
 
-	notebook := router.Group("/shared-notes").Use(tokenChecker)
+	sharedNote := router.Group("/shared-notes").Use(tokenChecker)
 	{
-		notebook.POST("/", handler.create)
-		notebook.GET("/", handler.getIncomingSharedNotes)
-		notebook.DELETE("/:shared-note-id", handler.delete)
+		sharedNote.POST("/", handler.create)
+		sharedNote.GET("/", handler.getIncomingSharedNotes)
+		sharedNote.DELETE("/:shared-note-id", handler.delete)
 	}
 
 	return handler

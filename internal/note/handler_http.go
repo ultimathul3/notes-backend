@@ -18,13 +18,13 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 		nuc: nuc,
 	}
 
-	notebook := router.Group("/notebooks/:notebook-id/notes").Use(tokenChecker)
+	note := router.Group("/notebooks/:notebook-id/notes").Use(tokenChecker)
 	{
-		notebook.POST("/", handler.create)
-		notebook.GET("/", handler.getAllByNotebookID)
-		notebook.GET("/:note-id", handler.getByID)
-		notebook.PATCH("/:note-id", handler.patch)
-		notebook.DELETE("/:note-id", handler.delete)
+		note.POST("/", handler.create)
+		note.GET("/", handler.getAllByNotebookID)
+		note.GET("/:note-id", handler.getByID)
+		note.PATCH("/:note-id", handler.patch)
+		note.DELETE("/:note-id", handler.delete)
 	}
 
 	return handler

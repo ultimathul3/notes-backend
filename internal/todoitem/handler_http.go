@@ -20,12 +20,12 @@ func NewHandlerHTTP(router *gin.Engine, iuc domain.TodoItemUsecase, luc domain.T
 		luc: luc,
 	}
 
-	notebook := router.Group("/notebooks/:notebook-id/todo-lists/:todo-list-id/items").Use(tokenChecker)
+	todoItem := router.Group("/notebooks/:notebook-id/todo-lists/:todo-list-id/items").Use(tokenChecker)
 	{
-		notebook.POST("/", handler.create)
-		notebook.GET("/", handler.getAllByListID)
-		notebook.PATCH("/:item-id", handler.patch)
-		notebook.DELETE("/:item-id", handler.delete)
+		todoItem.POST("/", handler.create)
+		todoItem.GET("/", handler.getAllByListID)
+		todoItem.PATCH("/:item-id", handler.patch)
+		todoItem.DELETE("/:item-id", handler.delete)
 	}
 
 	return handler
