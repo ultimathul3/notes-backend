@@ -1027,6 +1027,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/search": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search in notes, todo lists, shared notes and shared todo lists",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Search by title",
+                        "name": "title",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Search by notes",
+                        "name": "notes",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Search by todo lists",
+                        "name": "todo-lists",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search result",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.SearchResult"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/shared-notes": {
             "get": {
                 "security": [
@@ -1483,6 +1540,32 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.Note": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "notebook_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.PatchNoteDTO": {
             "type": "object",
             "properties": {
@@ -1502,6 +1585,61 @@ const docTemplate = `{
                 },
                 "done": {
                     "type": "boolean"
+                }
+            }
+        },
+        "domain.SearchResult": {
+            "type": "object",
+            "properties": {
+                "notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Note"
+                    }
+                },
+                "notes_count": {
+                    "type": "integer"
+                },
+                "shared_notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Note"
+                    }
+                },
+                "shared_notes_count": {
+                    "type": "integer"
+                },
+                "todo_lists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.TodoList"
+                    }
+                },
+                "todo_lists_count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.TodoList": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "notebook_id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

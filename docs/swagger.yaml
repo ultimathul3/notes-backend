@@ -212,6 +212,23 @@ definitions:
       refresh_token:
         type: string
     type: object
+  domain.Note:
+    properties:
+      body:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      notebook_id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
   domain.PatchNoteDTO:
     properties:
       body:
@@ -225,6 +242,42 @@ definitions:
         type: string
       done:
         type: boolean
+    type: object
+  domain.SearchResult:
+    properties:
+      notes:
+        items:
+          $ref: '#/definitions/domain.Note'
+        type: array
+      notes_count:
+        type: integer
+      shared_notes:
+        items:
+          $ref: '#/definitions/domain.Note'
+        type: array
+      shared_notes_count:
+        type: integer
+      todo_lists:
+        items:
+          $ref: '#/definitions/domain.TodoList'
+        type: array
+      todo_lists_count:
+        type: integer
+    type: object
+  domain.TodoList:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      notebook_id:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
     type: object
   domain.UpdateTodoListDTO:
     properties:
@@ -877,6 +930,42 @@ paths:
       summary: Updating an item in todo list
       tags:
       - Todo item
+  /search:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Search by title
+        in: query
+        name: title
+        required: true
+        type: string
+      - description: Search by notes
+        in: query
+        name: notes
+        type: boolean
+      - description: Search by todo lists
+        in: query
+        name: todo-lists
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Search result
+          schema:
+            items:
+              $ref: '#/definitions/domain.SearchResult'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Search in notes, todo lists, shared notes and shared todo lists
+      tags:
+      - Search
   /shared-notes:
     get:
       consumes:
