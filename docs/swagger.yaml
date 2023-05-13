@@ -1042,6 +1042,31 @@ paths:
       summary: Deleting a shared note
       tags:
       - Shared note
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared note ID
+        in: path
+        name: shared-note-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Accept a shared note
+      tags:
+      - Shared note
 securityDefinitions:
   BearerToken:
     in: header

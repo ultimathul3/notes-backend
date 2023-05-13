@@ -1163,6 +1163,46 @@ const docTemplate = `{
             }
         },
         "/shared-notes/incoming/{shared-note-id}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Accept a shared note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared note ID",
+                        "name": "shared-note-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "security": [
                     {

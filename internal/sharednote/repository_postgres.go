@@ -80,3 +80,18 @@ func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whomID 
 
 	return notes, nil
 }
+
+func (r *RepositoryPostgres) Accept(ctx context.Context, id, whomID int64) error {
+	if err := r.conn.QueryRow(
+		ctx,
+		`UPDATE shared_notes
+		 SET accepted=true
+		 WHERE id=$1 AND whom_id=$2
+		 RETURNING id`,
+		id, whomID,
+	).Scan(nil); err != nil {
+		return err
+	}
+
+	return nil
+}

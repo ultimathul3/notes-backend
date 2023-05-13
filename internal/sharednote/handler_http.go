@@ -31,6 +31,7 @@ func NewHandlerHTTP(
 		sharedNote.POST("/incoming", handler.create)
 		sharedNote.GET("/incoming", handler.getIncomingSharedNotes)
 		sharedNote.DELETE("/incoming/:shared-note-id", handler.delete)
+		sharedNote.POST("/incoming/:shared-note-id", handler.accept)
 	}
 
 	return handler
@@ -90,7 +91,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	sharedNoteID, err := strconv.ParseInt(c.Param("shared-note-id"), 10, 64)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid notebook id param"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared note id id param"})
 		return
 	}
 
@@ -128,4 +129,32 @@ func (h *HandlerHTTP) getIncomingSharedNotes(c *gin.Context) {
 		IncomingSharedNotes: notes,
 		Count:               len(notes),
 	})
+}
+
+// @Summary		Accept a shared note
+// @Security	BearerToken
+// @Tags		Shared note
+// @Accept		json
+// @Produce		json
+// @Param		shared-note-id path int true "Shared note ID"
+// @Success		200 {object} docs.OkStatusResponse "OK status"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/shared-notes/incoming/{shared-note-id} [post]
+func (h *HandlerHTTP) accept(c *gin.Context) {
+	sharedNoteID, err := strconv.ParseInt(c.Param("shared-note-id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared note id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	err = h.suc.Accept(c, sharedNoteID, userID)
+	if err != nil {
+		log.Error("accept shared note: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNoteNotFound.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }

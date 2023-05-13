@@ -36,12 +36,14 @@ type SharedNoteUsecase interface {
 	Create(ctx context.Context, whoseID, whomID, noteID int64) (int64, error)
 	Delete(ctx context.Context, id, whomID int64) error
 	GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]IncomingSharedNote, error)
+	Accept(ctx context.Context, id, whomID int64) error
 }
 
 type SharedNoteRepository interface {
 	Create(ctx context.Context, sharedNote SharedNote) (int64, error)
 	Delete(ctx context.Context, id, whomID int64) error
 	GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]IncomingSharedNote, error)
+	Accept(ctx context.Context, id, whomID int64) error
 }
 
 func (cs *CreateSharedNoteDTO) Validate() error {
