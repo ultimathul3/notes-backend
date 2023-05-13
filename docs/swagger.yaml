@@ -204,6 +204,8 @@ definitions:
         type: integer
       owner_login:
         type: string
+      owner_name:
+        type: string
       title:
         type: string
     type: object
@@ -966,7 +968,7 @@ paths:
       summary: Search in notes, todo lists, shared notes and shared todo lists
       tags:
       - Search
-  /shared-notes:
+  /shared-notes/incoming:
     get:
       consumes:
       - application/json
@@ -1014,7 +1016,7 @@ paths:
       summary: Creating a shared note
       tags:
       - Shared note
-  /shared-notes/{shared-note-id}:
+  /shared-notes/incoming/{shared-note-id}:
     delete:
       consumes:
       - application/json

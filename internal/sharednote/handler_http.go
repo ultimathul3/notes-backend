@@ -28,9 +28,9 @@ func NewHandlerHTTP(
 
 	sharedNote := router.Group("/shared-notes").Use(tokenChecker)
 	{
-		sharedNote.POST("/", handler.create)
-		sharedNote.GET("/", handler.getIncomingSharedNotes)
-		sharedNote.DELETE("/:shared-note-id", handler.delete)
+		sharedNote.POST("/incoming", handler.create)
+		sharedNote.GET("/incoming", handler.getIncomingSharedNotes)
+		sharedNote.DELETE("/incoming/:shared-note-id", handler.delete)
 	}
 
 	return handler
@@ -44,7 +44,7 @@ func NewHandlerHTTP(
 // @Param		user body domain.CreateSharedNoteDTO true "Shared note data"
 // @Success		200 {object} docs.CreateSharedNoteResponse "Shared note ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-notes [post]
+// @Router		/shared-notes/incoming [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	var sharedNote domain.CreateSharedNoteDTO
 	if err := c.BindJSON(&sharedNote); err != nil {
@@ -71,7 +71,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 	id, err := h.suc.Create(c, userID, whomID, *sharedNote.NoteID)
 	if err != nil {
 		log.Error("create shared note: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
@@ -86,7 +86,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Param		shared-note-id path int true "Shared note ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-notes/{shared-note-id} [delete]
+// @Router		/shared-notes/incoming/{shared-note-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	sharedNoteID, err := strconv.ParseInt(c.Param("shared-note-id"), 10, 64)
 	if err != nil {
@@ -113,7 +113,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 // @Produce		json
 // @Success		200 {array} domain.GetAllIncomingSharedNotesResponse "Incoming shared notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-notes [get]
+// @Router		/shared-notes/incoming [get]
 func (h *HandlerHTTP) getIncomingSharedNotes(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 

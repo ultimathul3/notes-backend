@@ -22,6 +22,7 @@ type (
 	IncomingSharedNote struct {
 		ID         int64  `json:"id"`
 		OwnerLogin string `json:"owner_login"`
+		OwnerName  string `json:"owner_name"`
 		Title      string `json:"title"`
 	}
 
@@ -34,13 +35,13 @@ type (
 type SharedNoteUsecase interface {
 	Create(ctx context.Context, whoseID, whomID, noteID int64) (int64, error)
 	Delete(ctx context.Context, id, whomID int64) error
-	GetIncomingSharedNotes(ctx context.Context, whoseID int64) ([]IncomingSharedNote, error)
+	GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]IncomingSharedNote, error)
 }
 
 type SharedNoteRepository interface {
 	Create(ctx context.Context, sharedNote SharedNote) (int64, error)
 	Delete(ctx context.Context, id, whomID int64) error
-	GetIncomingSharedNotes(ctx context.Context, whoseID int64) ([]IncomingSharedNote, error)
+	GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]IncomingSharedNote, error)
 }
 
 func (cs *CreateSharedNoteDTO) Validate() error {
@@ -56,4 +57,5 @@ func (cs *CreateSharedNoteDTO) Validate() error {
 var (
 	ErrImpossibleToShareNoteWithYourself = errors.New("impossible to share note with yourself")
 	ErrSharedNoteNotFound                = errors.New("shared note not found")
+	ErrAlreadyShared                     = errors.New("already shared")
 )

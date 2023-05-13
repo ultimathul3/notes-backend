@@ -1084,7 +1084,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes": {
+        "/shared-notes/incoming": {
             "get": {
                 "security": [
                     {
@@ -1162,7 +1162,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/{shared-note-id}": {
+        "/shared-notes/incoming/{shared-note-id}": {
             "delete": {
                 "security": [
                     {
@@ -1525,6 +1525,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "owner_login": {
+                    "type": "string"
+                },
+                "owner_name": {
                     "type": "string"
                 },
                 "title": {

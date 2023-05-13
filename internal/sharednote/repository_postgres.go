@@ -2,7 +2,9 @@ package sharednote
 
 import (
 	"context"
+	"errors"
 
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/ultimathul3/notes-backend/internal/domain"
 )
@@ -25,6 +27,12 @@ func (r *RepositoryPostgres) Create(ctx context.Context, sharedNote domain.Share
 		 RETURNING id`,
 		sharedNote.WhoseID, sharedNote.WhomID, sharedNote.NoteID, sharedNote.Accepted,
 	).Scan(&sharedNote.ID); err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			if pgErr.Code == domain.UniqueViolation {
+				return 0, domain.ErrAlreadyShared
+			}
+		}
 		return 0, err
 	}
 
@@ -45,17 +53,17 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, id, whomID int64) error
 	return nil
 }
 
-func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whoseID int64) ([]domain.IncomingSharedNote, error) {
+func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]domain.IncomingSharedNote, error) {
 	var notes []domain.IncomingSharedNote
 
 	rows, err := r.conn.Query(
 		ctx,
-		`SELECT s.id, u.login, n.title
+		`SELECT s.id, u.login, u.name, n.title
 		 FROM shared_notes s
-		 LEFT JOIN users u ON u.id=s.whom_id
+		 LEFT JOIN users u ON u.id=s.whose_id
 		 LEFT JOIN notes n ON n.id=s.note_id
 		 WHERE s.whom_id=$1 AND s.accepted=false`,
-		whoseID,
+		whomID,
 	)
 	if err != nil {
 		return nil, err
@@ -63,7 +71,7 @@ func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whoseID
 
 	for rows.Next() {
 		note := domain.IncomingSharedNote{}
-		err := rows.Scan(&note.ID, &note.OwnerLogin, &note.Title)
+		err := rows.Scan(&note.ID, &note.OwnerLogin, &note.OwnerName, &note.Title)
 		if err != nil {
 			return nil, err
 		}

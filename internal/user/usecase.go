@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/ultimathul3/notes-backend/internal/domain"
 )
@@ -34,7 +35,7 @@ func (u *Usecase) Create(ctx context.Context, input domain.CreateUserDTO) (int64
 	}
 
 	user := domain.User{
-		Login:        *input.Login,
+		Login:        strings.ToLower(*input.Login),
 		Name:         *input.Name,
 		PasswordHash: fmt.Sprintf("%x", passwordHash),
 	}
@@ -52,9 +53,9 @@ func (u *Usecase) Get(ctx context.Context, input domain.GetUserDTO) (domain.User
 		return domain.User{}, err
 	}
 
-	return u.repo.Get(ctx, *input.Login, fmt.Sprintf("%x", passwordHash))
+	return u.repo.Get(ctx, strings.ToLower(*input.Login), fmt.Sprintf("%x", passwordHash))
 }
 
 func (u *Usecase) GetUserIdByLogin(ctx context.Context, login string) (int64, error) {
-	return u.repo.GetUserIdByLogin(ctx, login)
+	return u.repo.GetUserIdByLogin(ctx, strings.ToLower(login))
 }

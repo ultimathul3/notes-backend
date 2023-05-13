@@ -33,7 +33,8 @@ CREATE TABLE shared_notes (
     "whose_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
     "whom_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
     "note_id" BIGINT REFERENCES notes("id") ON DELETE CASCADE NOT NULL,
-    "accepted" BOOLEAN NOT NULL
+    "accepted" BOOLEAN NOT NULL,
+    UNIQUE("whose_id", "whom_id", "note_id")
 );
 
 CREATE TABLE todo_lists (
