@@ -182,13 +182,13 @@ definitions:
       password:
         type: string
     type: object
-  domain.GetAllIncomingSharedNotesResponse:
+  domain.GetAllSharedNotesInfoResponse:
     properties:
       count:
         type: integer
-      incoming_shared_notes:
+      shared_notes:
         items:
-          $ref: '#/definitions/domain.IncomingSharedNote'
+          $ref: '#/definitions/domain.SharedNoteInfo'
         type: array
     type: object
   domain.GetUserDTO:
@@ -196,17 +196,6 @@ definitions:
       login:
         type: string
       password:
-        type: string
-    type: object
-  domain.IncomingSharedNote:
-    properties:
-      id:
-        type: integer
-      owner_login:
-        type: string
-      owner_name:
-        type: string
-      title:
         type: string
     type: object
   domain.LogoutDTO:
@@ -265,6 +254,19 @@ definitions:
         type: array
       todo_lists_count:
         type: integer
+    type: object
+  domain.SharedNoteInfo:
+    properties:
+      accepted:
+        type: boolean
+      id:
+        type: integer
+      owner_login:
+        type: string
+      owner_name:
+        type: string
+      title:
+        type: string
     type: object
   domain.TodoList:
     properties:
@@ -968,7 +970,7 @@ paths:
       summary: Search in notes, todo lists, shared notes and shared todo lists
       tags:
       - Search
-  /shared-notes/incoming:
+  /shared-notes:
     get:
       consumes:
       - application/json
@@ -976,10 +978,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: Incoming shared notes
+          description: Shared notes
           schema:
             items:
-              $ref: '#/definitions/domain.GetAllIncomingSharedNotesResponse'
+              $ref: '#/definitions/domain.GetAllSharedNotesInfoResponse'
             type: array
         "400":
           description: Error message
@@ -987,9 +989,10 @@ paths:
             $ref: '#/definitions/docs.MessageResponse'
       security:
       - BearerToken: []
-      summary: Getting a list of incoming shared notes
+      summary: Getting a list of shared notes
       tags:
       - Shared note
+  /shared-notes/incoming:
     post:
       consumes:
       - application/json

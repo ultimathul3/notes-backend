@@ -1084,7 +1084,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/incoming": {
+        "/shared-notes": {
             "get": {
                 "security": [
                     {
@@ -1100,14 +1100,14 @@ const docTemplate = `{
                 "tags": [
                     "Shared note"
                 ],
-                "summary": "Getting a list of incoming shared notes",
+                "summary": "Getting a list of shared notes",
                 "responses": {
                     "200": {
-                        "description": "Incoming shared notes",
+                        "description": "Shared notes",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.GetAllIncomingSharedNotesResponse"
+                                "$ref": "#/definitions/domain.GetAllSharedNotesInfoResponse"
                             }
                         }
                     },
@@ -1118,7 +1118,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/shared-notes/incoming": {
             "post": {
                 "security": [
                     {
@@ -1533,16 +1535,16 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.GetAllIncomingSharedNotesResponse": {
+        "domain.GetAllSharedNotesInfoResponse": {
             "type": "object",
             "properties": {
                 "count": {
                     "type": "integer"
                 },
-                "incoming_shared_notes": {
+                "shared_notes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/domain.IncomingSharedNote"
+                        "$ref": "#/definitions/domain.SharedNoteInfo"
                     }
                 }
             }
@@ -1554,23 +1556,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.IncomingSharedNote": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "owner_login": {
-                    "type": "string"
-                },
-                "owner_name": {
-                    "type": "string"
-                },
-                "title": {
                     "type": "string"
                 }
             }
@@ -1660,6 +1645,26 @@ const docTemplate = `{
                 },
                 "todo_lists_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.SharedNoteInfo": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owner_login": {
+                    "type": "string"
+                },
+                "owner_name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },

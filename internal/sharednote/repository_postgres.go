@@ -53,16 +53,16 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, id, whomID int64) error
 	return nil
 }
 
-func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whomID int64) ([]domain.IncomingSharedNote, error) {
-	var notes []domain.IncomingSharedNote
+func (r *RepositoryPostgres) GetAllInfo(ctx context.Context, whomID int64) ([]domain.SharedNoteInfo, error) {
+	var notes []domain.SharedNoteInfo
 
 	rows, err := r.conn.Query(
 		ctx,
-		`SELECT s.id, u.login, u.name, n.title
+		`SELECT s.id, u.login, u.name, n.title, s.accepted
 		 FROM shared_notes s
 		 LEFT JOIN users u ON u.id=s.whose_id
 		 LEFT JOIN notes n ON n.id=s.note_id
-		 WHERE s.whom_id=$1 AND s.accepted=false`,
+		 WHERE s.whom_id=$1`,
 		whomID,
 	)
 	if err != nil {
@@ -70,8 +70,8 @@ func (r *RepositoryPostgres) GetIncomingSharedNotes(ctx context.Context, whomID 
 	}
 
 	for rows.Next() {
-		note := domain.IncomingSharedNote{}
-		err := rows.Scan(&note.ID, &note.OwnerLogin, &note.OwnerName, &note.Title)
+		note := domain.SharedNoteInfo{}
+		err := rows.Scan(&note.ID, &note.OwnerLogin, &note.OwnerName, &note.Title, &note.Accepted)
 		if err != nil {
 			return nil, err
 		}

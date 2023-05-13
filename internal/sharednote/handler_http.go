@@ -29,7 +29,7 @@ func NewHandlerHTTP(
 	sharedNote := router.Group("/shared-notes").Use(tokenChecker)
 	{
 		sharedNote.POST("/incoming", handler.create)
-		sharedNote.GET("/incoming", handler.getIncomingSharedNotes)
+		sharedNote.GET("/", handler.getAllInfo)
 		sharedNote.DELETE("/incoming/:shared-note-id", handler.delete)
 		sharedNote.POST("/incoming/:shared-note-id", handler.accept)
 	}
@@ -107,27 +107,27 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
-// @Summary		Getting a list of incoming shared notes
+// @Summary		Getting a list of shared notes
 // @Security	BearerToken
 // @Tags		Shared note
 // @Accept		json
 // @Produce		json
-// @Success		200 {array} domain.GetAllIncomingSharedNotesResponse "Incoming shared notes"
+// @Success		200 {array} domain.GetAllSharedNotesInfoResponse "Shared notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-notes/incoming [get]
-func (h *HandlerHTTP) getIncomingSharedNotes(c *gin.Context) {
+// @Router		/shared-notes [get]
+func (h *HandlerHTTP) getAllInfo(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 
-	notes, err := h.suc.GetIncomingSharedNotes(c, userID)
+	notes, err := h.suc.GetAllInfo(c, userID)
 	if err != nil {
 		log.Error("get all notes by notebook id: ", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.GetAllIncomingSharedNotesResponse{
-		IncomingSharedNotes: notes,
-		Count:               len(notes),
+	c.JSON(http.StatusOK, domain.GetAllSharedNotesInfoResponse{
+		SharedNotesInfo: notes,
+		Count:           len(notes),
 	})
 }
 

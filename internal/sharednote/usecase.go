@@ -33,8 +33,8 @@ func (u *Usecase) Delete(ctx context.Context, id, whomID int64) error {
 	return u.repo.Delete(ctx, id, whomID)
 }
 
-func (u *Usecase) GetIncomingSharedNotes(ctx context.Context, whoseID int64) ([]domain.IncomingSharedNote, error) {
-	return u.repo.GetIncomingSharedNotes(ctx, whoseID)
+func (u *Usecase) GetAllInfo(ctx context.Context, whoseID int64) ([]domain.SharedNoteInfo, error) {
+	return u.repo.GetAllInfo(ctx, whoseID)
 }
 
 func (u *Usecase) Accept(ctx context.Context, id, whomID int64) error {
