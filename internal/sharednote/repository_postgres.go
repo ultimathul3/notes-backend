@@ -95,3 +95,20 @@ func (r *RepositoryPostgres) Accept(ctx context.Context, id, whomID int64) error
 
 	return nil
 }
+
+func (r *RepositoryPostgres) GetDataByID(ctx context.Context, id, whomID int64) (domain.SharedNoteData, error) {
+	var note domain.SharedNoteData
+
+	if err := r.conn.QueryRow(
+		ctx,
+		`SELECT n.body, n.created_at, n.updated_at
+		 FROM shared_notes sn
+		 LEFT JOIN notes n ON n.id=sn.note_id
+		 WHERE sn.id=$1 AND sn.whom_id=$2 AND sn.accepted=true`,
+		id, whomID,
+	).Scan(&note.Body, &note.CreatedAt, &note.UpdatedAt); err != nil {
+		return domain.SharedNoteData{}, err
+	}
+
+	return note, nil
+}

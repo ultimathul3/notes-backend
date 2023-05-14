@@ -255,6 +255,15 @@ definitions:
       todo_lists_count:
         type: integer
     type: object
+  domain.SharedNoteData:
+    properties:
+      body:
+        type: string
+      created_at:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.SharedNoteInfo:
     properties:
       accepted:
@@ -992,6 +1001,32 @@ paths:
       summary: Getting a list of shared notes
       tags:
       - Shared note
+  /shared-notes/{shared-note-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared note ID
+        in: path
+        name: shared-note-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data of shared note
+          schema:
+            $ref: '#/definitions/domain.SharedNoteData'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a data of shared note
+      tags:
+      - Shared note
   /shared-notes/incoming:
     post:
       consumes:
@@ -1067,7 +1102,7 @@ paths:
             $ref: '#/definitions/docs.MessageResponse'
       security:
       - BearerToken: []
-      summary: Accept a shared note
+      summary: Accepting a shared note
       tags:
       - Shared note
 securityDefinitions:

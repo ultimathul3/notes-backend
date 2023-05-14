@@ -3,6 +3,7 @@ package domain
 import (
 	"context"
 	"errors"
+	"time"
 )
 
 type (
@@ -27,6 +28,12 @@ type (
 		Accepted   bool   `json:"accepted"`
 	}
 
+	SharedNoteData struct {
+		Body      string    `json:"body"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
+	}
+
 	GetAllSharedNotesInfoResponse struct {
 		SharedNotesInfo []SharedNoteInfo `json:"shared_notes,omitempty"`
 		Count           int              `json:"count"`
@@ -38,6 +45,7 @@ type SharedNoteUsecase interface {
 	Delete(ctx context.Context, id, whomID int64) error
 	GetAllInfo(ctx context.Context, whomID int64) ([]SharedNoteInfo, error)
 	Accept(ctx context.Context, id, whomID int64) error
+	GetDataByID(ctx context.Context, id, whomID int64) (SharedNoteData, error)
 }
 
 type SharedNoteRepository interface {
@@ -45,6 +53,7 @@ type SharedNoteRepository interface {
 	Delete(ctx context.Context, id, whomID int64) error
 	GetAllInfo(ctx context.Context, whomID int64) ([]SharedNoteInfo, error)
 	Accept(ctx context.Context, id, whomID int64) error
+	GetDataByID(ctx context.Context, id, whomID int64) (SharedNoteData, error)
 }
 
 func (cs *CreateSharedNoteDTO) Validate() error {

@@ -1180,7 +1180,7 @@ const docTemplate = `{
                 "tags": [
                     "Shared note"
                 ],
-                "summary": "Accept a shared note",
+                "summary": "Accepting a shared note",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1235,6 +1235,48 @@ const docTemplate = `{
                         "description": "OK status",
                         "schema": {
                             "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-notes/{shared-note-id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Getting a data of shared note",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared note ID",
+                        "name": "shared-note-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data of shared note",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SharedNoteData"
                         }
                     },
                     "400": {
@@ -1645,6 +1687,20 @@ const docTemplate = `{
                 },
                 "todo_lists_count": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.SharedNoteData": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         },
