@@ -43,7 +43,7 @@ func (r *RepositoryPostgres) Delete(ctx context.Context, id, whomID int64) error
 	if err := r.conn.QueryRow(
 		ctx,
 		`DELETE FROM shared_notes
-		 WHERE id=$1 AND whom_id=$2
+		 WHERE id=$1 AND (whom_id=$2 OR whose_id=$2)
 		 RETURNING id`,
 		id, whomID,
 	).Scan(nil); err != nil {
