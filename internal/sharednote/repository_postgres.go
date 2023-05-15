@@ -112,3 +112,31 @@ func (r *RepositoryPostgres) GetDataByID(ctx context.Context, id, whomID int64) 
 
 	return note, nil
 }
+
+func (r *RepositoryPostgres) GetOutgoingInfoByNoteID(ctx context.Context, noteID, whoseID int64) ([]domain.OutgoingSharedNoteInfo, error) {
+	var notes []domain.OutgoingSharedNoteInfo
+
+	rows, err := r.conn.Query(
+		ctx,
+		`SELECT s.id, u.login, u.name, s.accepted
+		 FROM shared_notes s
+		 LEFT JOIN users u ON u.id=s.whom_id
+		 LEFT JOIN notes n ON n.id=s.note_id
+		 WHERE s.whose_id=$1 AND s.note_id=$2 AND accepted=true`,
+		whoseID, noteID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		note := domain.OutgoingSharedNoteInfo{}
+		err := rows.Scan(&note.ID, &note.RecipientLogin, &note.RecipientName, &note.Accepted)
+		if err != nil {
+			return nil, err
+		}
+		notes = append(notes, note)
+	}
+
+	return notes, nil
+}

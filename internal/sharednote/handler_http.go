@@ -33,6 +33,7 @@ func NewHandlerHTTP(
 		sharedNote.GET("/:shared-note-id", handler.getDataByID)
 		sharedNote.DELETE("/incoming/:shared-note-id", handler.delete)
 		sharedNote.POST("/incoming/:shared-note-id", handler.accept)
+		sharedNote.GET("/outgoing/:note-id", handler.getOutgoingInfoByNoteID)
 	}
 
 	return handler
@@ -113,7 +114,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 // @Tags		Shared note
 // @Accept		json
 // @Produce		json
-// @Success		200 {array} domain.GetAllSharedNotesInfoResponse "Shared notes"
+// @Success		200 {array} domain.GetSharedNotesInfoResponse "Shared notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/shared-notes [get]
 func (h *HandlerHTTP) getAllInfo(c *gin.Context) {
@@ -122,11 +123,11 @@ func (h *HandlerHTTP) getAllInfo(c *gin.Context) {
 	notes, err := h.suc.GetAllInfo(c, userID)
 	if err != nil {
 		log.Error("get all shared notes info: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, domain.GetAllSharedNotesInfoResponse{
+	c.JSON(http.StatusOK, domain.GetSharedNotesInfoResponse{
 		SharedNotesInfo: notes,
 		Count:           len(notes),
 	})
@@ -186,4 +187,35 @@ func (h *HandlerHTTP) getDataByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, data)
+}
+
+// @Summary		Getting an outgoing shared notes
+// @Security	BearerToken
+// @Tags		Shared note
+// @Accept		json
+// @Produce		json
+// @Param		note-id path int true "Note ID"
+// @Success		200 {array} domain.GetOutgoingSharedNotesInfoResponse "Outgoing shared notes"
+// @Failure		400 {object} docs.MessageResponse "Error message"
+// @Router		/shared-notes/outgoing/{note-id} [get]
+func (h *HandlerHTTP) getOutgoingInfoByNoteID(c *gin.Context) {
+	noteID, err := strconv.ParseInt(c.Param("note-id"), 10, 64)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid note id param"})
+		return
+	}
+
+	userID := c.MustGet("userID").(int64)
+
+	notes, err := h.suc.GetOutgoingInfoByNoteID(c, noteID, userID)
+	if err != nil {
+		log.Error("get all shared notes info: ", err)
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, domain.GetOutgoingSharedNotesInfoResponse{
+		OutgoingSharedNotesInfo: notes,
+		Count:                   len(notes),
+	})
 }

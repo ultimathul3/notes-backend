@@ -34,9 +34,21 @@ type (
 		UpdatedAt time.Time `json:"updated_at"`
 	}
 
-	GetAllSharedNotesInfoResponse struct {
+	OutgoingSharedNoteInfo struct {
+		ID             int64  `json:"id"`
+		RecipientLogin string `json:"recipient_login"`
+		RecipientName  string `json:"recipient_name"`
+		Accepted       bool   `json:"accepted"`
+	}
+
+	GetSharedNotesInfoResponse struct {
 		SharedNotesInfo []SharedNoteInfo `json:"shared_notes,omitempty"`
 		Count           int              `json:"count"`
+	}
+
+	GetOutgoingSharedNotesInfoResponse struct {
+		OutgoingSharedNotesInfo []OutgoingSharedNoteInfo `json:"shared_notes,omitempty"`
+		Count                   int                      `json:"count"`
 	}
 )
 
@@ -46,6 +58,7 @@ type SharedNoteUsecase interface {
 	GetAllInfo(ctx context.Context, whomID int64) ([]SharedNoteInfo, error)
 	Accept(ctx context.Context, id, whomID int64) error
 	GetDataByID(ctx context.Context, id, whomID int64) (SharedNoteData, error)
+	GetOutgoingInfoByNoteID(ctx context.Context, noteID, whoseID int64) ([]OutgoingSharedNoteInfo, error)
 }
 
 type SharedNoteRepository interface {
@@ -54,6 +67,7 @@ type SharedNoteRepository interface {
 	GetAllInfo(ctx context.Context, whomID int64) ([]SharedNoteInfo, error)
 	Accept(ctx context.Context, id, whomID int64) error
 	GetDataByID(ctx context.Context, id, whomID int64) (SharedNoteData, error)
+	GetOutgoingInfoByNoteID(ctx context.Context, noteID, whoseID int64) ([]OutgoingSharedNoteInfo, error)
 }
 
 func (cs *CreateSharedNoteDTO) Validate() error {

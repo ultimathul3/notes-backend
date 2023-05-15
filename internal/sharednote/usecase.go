@@ -44,3 +44,7 @@ func (u *Usecase) Accept(ctx context.Context, id, whomID int64) error {
 func (u *Usecase) GetDataByID(ctx context.Context, id, whomID int64) (domain.SharedNoteData, error) {
 	return u.repo.GetDataByID(ctx, id, whomID)
 }
+
+func (u *Usecase) GetOutgoingInfoByNoteID(ctx context.Context, noteID, whoseID int64) ([]domain.OutgoingSharedNoteInfo, error) {
+	return u.repo.GetOutgoingInfoByNoteID(ctx, noteID, whoseID)
+}

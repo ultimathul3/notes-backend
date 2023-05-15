@@ -1097,7 +1097,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.GetAllSharedNotesInfoResponse"
+                                "$ref": "#/definitions/domain.GetSharedNotesInfoResponse"
                             }
                         }
                     },
@@ -1225,6 +1225,51 @@
                         "description": "OK status",
                         "schema": {
                             "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-notes/outgoing/{note-id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared note"
+                ],
+                "summary": "Getting an outgoing shared notes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Note ID",
+                        "name": "note-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Outgoing shared notes",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.GetOutgoingSharedNotesInfoResponse"
+                            }
                         }
                     },
                     "400": {
@@ -1567,7 +1612,21 @@
                 }
             }
         },
-        "domain.GetAllSharedNotesInfoResponse": {
+        "domain.GetOutgoingSharedNotesInfoResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "shared_notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.OutgoingSharedNoteInfo"
+                    }
+                }
+            }
+        },
+        "domain.GetSharedNotesInfoResponse": {
             "type": "object",
             "properties": {
                 "count": {
@@ -1623,6 +1682,23 @@
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.OutgoingSharedNoteInfo": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "recipient_login": {
+                    "type": "string"
+                },
+                "recipient_name": {
+                    "type": "string"
                 }
             }
         },

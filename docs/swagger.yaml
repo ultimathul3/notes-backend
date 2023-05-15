@@ -182,7 +182,16 @@ definitions:
       password:
         type: string
     type: object
-  domain.GetAllSharedNotesInfoResponse:
+  domain.GetOutgoingSharedNotesInfoResponse:
+    properties:
+      count:
+        type: integer
+      shared_notes:
+        items:
+          $ref: '#/definitions/domain.OutgoingSharedNoteInfo'
+        type: array
+    type: object
+  domain.GetSharedNotesInfoResponse:
     properties:
       count:
         type: integer
@@ -219,6 +228,17 @@ definitions:
         type: string
       user_id:
         type: integer
+    type: object
+  domain.OutgoingSharedNoteInfo:
+    properties:
+      accepted:
+        type: boolean
+      id:
+        type: integer
+      recipient_login:
+        type: string
+      recipient_name:
+        type: string
     type: object
   domain.PatchNoteDTO:
     properties:
@@ -990,7 +1010,7 @@ paths:
           description: Shared notes
           schema:
             items:
-              $ref: '#/definitions/domain.GetAllSharedNotesInfoResponse'
+              $ref: '#/definitions/domain.GetSharedNotesInfoResponse'
             type: array
         "400":
           description: Error message
@@ -1103,6 +1123,34 @@ paths:
       security:
       - BearerToken: []
       summary: Accepting a shared note
+      tags:
+      - Shared note
+  /shared-notes/outgoing/{note-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Note ID
+        in: path
+        name: note-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Outgoing shared notes
+          schema:
+            items:
+              $ref: '#/definitions/domain.GetOutgoingSharedNotesInfoResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting an outgoing shared notes
       tags:
       - Shared note
 securityDefinitions:
