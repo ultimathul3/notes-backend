@@ -83,5 +83,6 @@ func (cs *CreateSharedNoteDTO) Validate() error {
 var (
 	ErrImpossibleToShareNoteWithYourself = errors.New("impossible to share note with yourself")
 	ErrSharedNoteNotFound                = errors.New("shared note not found")
-	ErrAlreadyShared                     = errors.New("already shared")
+	ErrSharedNotesNotFound               = errors.New("shared notes not found")
+	ErrNoteHasAlreadyBeenShared          = errors.New("note has already been shared")
 )

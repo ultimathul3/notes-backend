@@ -30,7 +30,7 @@ func (r *RepositoryPostgres) Create(ctx context.Context, sharedNote domain.Share
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
 			if pgErr.Code == domain.UniqueViolation {
-				return 0, domain.ErrAlreadyShared
+				return 0, domain.ErrNoteHasAlreadyBeenShared
 			}
 		}
 		return 0, err

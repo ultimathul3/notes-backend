@@ -182,7 +182,7 @@ func (h *HandlerHTTP) getDataByID(c *gin.Context) {
 	data, err := h.suc.GetDataByID(c, sharedNoteID, userID)
 	if err != nil {
 		log.Error("get data of shared note by id: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNotesNotFound.Error()})
 		return
 	}
 
@@ -210,7 +210,7 @@ func (h *HandlerHTTP) getOutgoingInfoByNoteID(c *gin.Context) {
 	notes, err := h.suc.GetOutgoingInfoByNoteID(c, noteID, userID)
 	if err != nil {
 		log.Error("get all shared notes info: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrNoteNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNotesNotFound.Error()})
 		return
 	}
 
