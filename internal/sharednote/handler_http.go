@@ -93,7 +93,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	sharedNoteID, err := strconv.ParseInt(c.Param("shared-note-id"), 10, 64)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared note id id param"})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared note id param"})
 		return
 	}
 
@@ -182,7 +182,7 @@ func (h *HandlerHTTP) getDataByID(c *gin.Context) {
 	data, err := h.suc.GetDataByID(c, sharedNoteID, userID)
 	if err != nil {
 		log.Error("get data of shared note by id: ", err)
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNotesNotFound.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": domain.ErrSharedNoteNotFound.Error()})
 		return
 	}
 

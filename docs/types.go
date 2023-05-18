@@ -46,6 +46,10 @@ type CreateSharedNoteResponse struct {
 	ID int64 `json:"id"`
 }
 
+type CreateSharedTodoListResponse struct {
+	ID int64 `json:"id"`
+}
+
 type GetAllNotebooksResponse struct {
 	Notebooks []struct {
 		ID          int64   `json:"id"`

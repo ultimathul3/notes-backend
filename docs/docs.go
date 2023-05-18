@@ -1332,6 +1332,255 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/shared-todo-lists": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Getting a list of shared todo lists",
+                "responses": {
+                    "200": {
+                        "description": "Shared todo lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.GetSharedTodoListsInfoResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-todo-lists/incoming": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Creating a shared todo list",
+                "parameters": [
+                    {
+                        "description": "Shared todo list data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateSharedTodoListDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Shared todo list ID",
+                        "schema": {
+                            "$ref": "#/definitions/docs.CreateSharedTodoListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-todo-lists/incoming/{shared-todo-list-id}": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Accepting a shared todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared todo list ID",
+                        "name": "shared-todo-list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Deleting a shared todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared todo list ID",
+                        "name": "shared-todo-list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK status",
+                        "schema": {
+                            "$ref": "#/definitions/docs.OkStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-todo-lists/outgoing/{todo-list-id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Getting an outgoing shared todo lists",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared todo list ID",
+                        "name": "list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Outgoing shared todo lists",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.GetOutgoingSharedTodoListsInfoResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/shared-todo-lists/{shared-todo-list-id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shared todo list"
+                ],
+                "summary": "Getting a data of shared todo list",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Shared todo list ID",
+                        "name": "shared-todo-list-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data of shared todo list",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SharedTodoListData"
+                        }
+                    },
+                    "400": {
+                        "description": "Error message",
+                        "schema": {
+                            "$ref": "#/definitions/docs.MessageResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1352,6 +1601,14 @@ const docTemplate = `{
             }
         },
         "docs.CreateSharedNoteResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "docs.CreateSharedTodoListResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1592,6 +1849,17 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateSharedTodoListDTO": {
+            "type": "object",
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "todo_list_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.CreateTodoItemDTO": {
             "type": "object",
             "properties": {
@@ -1636,6 +1904,20 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.GetOutgoingSharedTodoListsInfoResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "shared_todo_lists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.OutgoingSharedTodoListInfo"
+                    }
+                }
+            }
+        },
         "domain.GetSharedNotesInfoResponse": {
             "type": "object",
             "properties": {
@@ -1646,6 +1928,20 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/domain.SharedNoteInfo"
+                    }
+                }
+            }
+        },
+        "domain.GetSharedTodoListsInfoResponse": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "shared_todo_lists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.SharedTodoListInfo"
                     }
                 }
             }
@@ -1696,6 +1992,23 @@ const docTemplate = `{
             }
         },
         "domain.OutgoingSharedNoteInfo": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "recipient_login": {
+                    "type": "string"
+                },
+                "recipient_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.OutgoingSharedTodoListInfo": {
             "type": "object",
             "properties": {
                 "accepted": {
@@ -1797,6 +2110,60 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.SharedTodoListData": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.TodoItem"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.SharedTodoListInfo": {
+            "type": "object",
+            "properties": {
+                "accepted": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "owner_login": {
+                    "type": "string"
+                },
+                "owner_name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TodoItem": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "done": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "todo_list_id": {
+                    "type": "integer"
                 }
             }
         },

@@ -58,7 +58,8 @@ CREATE TABLE shared_todo_lists (
     "whose_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
     "whom_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
     "todo_list_id" BIGINT REFERENCES todo_lists("id") ON DELETE CASCADE NOT NULL,
-    "accepted" BOOLEAN NOT NULL
+    "accepted" BOOLEAN NOT NULL,
+    UNIQUE("whose_id", "whom_id", "todo_list_id")
 );
 
 CREATE TABLE sessions (

@@ -14,6 +14,11 @@ definitions:
       id:
         type: integer
     type: object
+  docs.CreateSharedTodoListResponse:
+    properties:
+      id:
+        type: integer
+    type: object
   docs.CreateTodoItemResponse:
     properties:
       id:
@@ -163,6 +168,13 @@ definitions:
       note_id:
         type: integer
     type: object
+  domain.CreateSharedTodoListDTO:
+    properties:
+      login:
+        type: string
+      todo_list_id:
+        type: integer
+    type: object
   domain.CreateTodoItemDTO:
     properties:
       body:
@@ -191,6 +203,15 @@ definitions:
           $ref: '#/definitions/domain.OutgoingSharedNoteInfo'
         type: array
     type: object
+  domain.GetOutgoingSharedTodoListsInfoResponse:
+    properties:
+      count:
+        type: integer
+      shared_todo_lists:
+        items:
+          $ref: '#/definitions/domain.OutgoingSharedTodoListInfo'
+        type: array
+    type: object
   domain.GetSharedNotesInfoResponse:
     properties:
       count:
@@ -198,6 +219,15 @@ definitions:
       shared_notes:
         items:
           $ref: '#/definitions/domain.SharedNoteInfo'
+        type: array
+    type: object
+  domain.GetSharedTodoListsInfoResponse:
+    properties:
+      count:
+        type: integer
+      shared_todo_lists:
+        items:
+          $ref: '#/definitions/domain.SharedTodoListInfo'
         type: array
     type: object
   domain.GetUserDTO:
@@ -230,6 +260,17 @@ definitions:
         type: integer
     type: object
   domain.OutgoingSharedNoteInfo:
+    properties:
+      accepted:
+        type: boolean
+      id:
+        type: integer
+      recipient_login:
+        type: string
+      recipient_name:
+        type: string
+    type: object
+  domain.OutgoingSharedTodoListInfo:
     properties:
       accepted:
         type: boolean
@@ -296,6 +337,41 @@ definitions:
         type: string
       title:
         type: string
+    type: object
+  domain.SharedTodoListData:
+    properties:
+      created_at:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/domain.TodoItem'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  domain.SharedTodoListInfo:
+    properties:
+      accepted:
+        type: boolean
+      id:
+        type: integer
+      owner_login:
+        type: string
+      owner_name:
+        type: string
+      title:
+        type: string
+    type: object
+  domain.TodoItem:
+    properties:
+      body:
+        type: string
+      done:
+        type: boolean
+      id:
+        type: integer
+      todo_list_id:
+        type: integer
     type: object
   domain.TodoList:
     properties:
@@ -1153,6 +1229,160 @@ paths:
       summary: Getting an outgoing shared notes
       tags:
       - Shared note
+  /shared-todo-lists:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Shared todo lists
+          schema:
+            items:
+              $ref: '#/definitions/domain.GetSharedTodoListsInfoResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a list of shared todo lists
+      tags:
+      - Shared todo list
+  /shared-todo-lists/{shared-todo-list-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared todo list ID
+        in: path
+        name: shared-todo-list-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data of shared todo list
+          schema:
+            $ref: '#/definitions/domain.SharedTodoListData'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting a data of shared todo list
+      tags:
+      - Shared todo list
+  /shared-todo-lists/incoming:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared todo list data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateSharedTodoListDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Shared todo list ID
+          schema:
+            $ref: '#/definitions/docs.CreateSharedTodoListResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Creating a shared todo list
+      tags:
+      - Shared todo list
+  /shared-todo-lists/incoming/{shared-todo-list-id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared todo list ID
+        in: path
+        name: shared-todo-list-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Deleting a shared todo list
+      tags:
+      - Shared todo list
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared todo list ID
+        in: path
+        name: shared-todo-list-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK status
+          schema:
+            $ref: '#/definitions/docs.OkStatusResponse'
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Accepting a shared todo list
+      tags:
+      - Shared todo list
+  /shared-todo-lists/outgoing/{todo-list-id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Shared todo list ID
+        in: path
+        name: list-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Outgoing shared todo lists
+          schema:
+            items:
+              $ref: '#/definitions/domain.GetOutgoingSharedTodoListsInfoResponse'
+            type: array
+        "400":
+          description: Error message
+          schema:
+            $ref: '#/definitions/docs.MessageResponse'
+      security:
+      - BearerToken: []
+      summary: Getting an outgoing shared todo lists
+      tags:
+      - Shared todo list
 securityDefinitions:
   BearerToken:
     in: header

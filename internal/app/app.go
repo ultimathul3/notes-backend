@@ -20,7 +20,8 @@ import (
 	"github.com/ultimathul3/notes-backend/internal/notebook"
 	"github.com/ultimathul3/notes-backend/internal/search"
 	"github.com/ultimathul3/notes-backend/internal/session"
-	sharedNote "github.com/ultimathul3/notes-backend/internal/sharednote"
+	"github.com/ultimathul3/notes-backend/internal/sharednote"
+	"github.com/ultimathul3/notes-backend/internal/sharedtodolist"
 	"github.com/ultimathul3/notes-backend/internal/todoitem"
 	"github.com/ultimathul3/notes-backend/internal/todolist"
 	"github.com/ultimathul3/notes-backend/internal/user"
@@ -55,9 +56,10 @@ func Run(cfg *config.Config) {
 	sessionRepo := session.NewRepositoryPostgres(pgConn)
 	notebookRepo := notebook.NewRepositoryPostgres(pgConn)
 	noteRepo := note.NewRepositoryPostgres(pgConn)
-	sharedNoteRepo := sharedNote.NewRepositoryPostgres(pgConn)
+	sharedNoteRepo := sharednote.NewRepositoryPostgres(pgConn)
 	todoListRepo := todolist.NewRepositoryPostgres(pgConn)
 	todoItemRepo := todoitem.NewRepositoryPostgres(pgConn)
+	sharedTodoListRepo := sharedtodolist.NewRepositoryPostgres(pgConn)
 	searchRepo := search.NewRepositoryPostgres(pgConn)
 
 	// providers
@@ -77,9 +79,10 @@ func Run(cfg *config.Config) {
 	)
 	notebookUsecase := notebook.NewUsecase(notebookRepo)
 	noteUsecase := note.NewUsecase(noteRepo)
-	sharedNoteUsecase := sharedNote.NewUsecase(sharedNoteRepo)
+	sharedNoteUsecase := sharednote.NewUsecase(sharedNoteRepo)
 	todoListUsecase := todolist.NewUsecase(todoListRepo)
 	todoItemUsecase := todoitem.NewUsecase(todoItemRepo)
+	sharedTodoListUsecase := sharedtodolist.NewUsecase(sharedTodoListRepo)
 	searchUsecase := search.NewUsecase(searchRepo)
 
 	// handlers
@@ -87,10 +90,11 @@ func Run(cfg *config.Config) {
 	auth.NewHandlerHTTP(router, userUsecase, sessionUsecase, tokenChecker.Handle())
 	notebook.NewHandlerHTTP(router, notebookUsecase, tokenChecker.Handle())
 	note.NewHandlerHTTP(router, noteUsecase, tokenChecker.Handle())
-	sharedNote.NewHandlerHTTP(router, sharedNoteUsecase, userUsecase, tokenChecker.Handle())
+	sharednote.NewHandlerHTTP(router, sharedNoteUsecase, userUsecase, tokenChecker.Handle())
 	todolist.NewHandlerHTTP(router, todoListUsecase, tokenChecker.Handle())
 	todoitem.NewHandlerHTTP(router, todoItemUsecase, todoListUsecase, tokenChecker.Handle())
 	search.NewHandlerHTTP(router, searchUsecase, tokenChecker.Handle())
+	sharedtodolist.NewHandlerHTTP(router, sharedTodoListUsecase, userUsecase, tokenChecker.Handle())
 
 	addr := fmt.Sprintf("%s:%d", cfg.HTTP.IP, cfg.HTTP.Port)
 
