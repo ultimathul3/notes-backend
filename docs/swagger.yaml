@@ -305,9 +305,15 @@ definitions:
         type: integer
       shared_notes:
         items:
-          $ref: '#/definitions/domain.Note'
+          $ref: '#/definitions/domain.SharedNoteInfo'
         type: array
       shared_notes_count:
+        type: integer
+      shared_todo_lists:
+        items:
+          $ref: '#/definitions/domain.SharedTodoListInfo'
+        type: array
+      shared_todo_lists_count:
         type: integer
       todo_lists:
         items:
@@ -1056,6 +1062,14 @@ paths:
       - description: Search by todo lists
         in: query
         name: todo-lists
+        type: boolean
+      - description: Search by shared notes
+        in: query
+        name: shared-notes
+        type: boolean
+      - description: Search by shared todo lists
+        in: query
+        name: shared-todo-lists
         type: boolean
       produces:
       - application/json

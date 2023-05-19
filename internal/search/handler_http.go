@@ -34,6 +34,8 @@ func NewHandlerHTTP(router *gin.Engine, suc domain.SearchUsecase, tokenChecker g
 // @Param		title query string true "Search by title"
 // @Param		notes query boolean false "Search by notes"
 // @Param		todo-lists query boolean false "Search by todo lists"
+// @Param		shared-notes query boolean false "Search by shared notes"
+// @Param		shared-todo-lists query boolean false "Search by shared todo lists"
 // @Success		200 {array} domain.SearchResult "Search result"
 // @Failure		400 {object} docs.MessageResponse "Error message"
 // @Router		/search [get]
@@ -67,6 +69,30 @@ func (h *HandlerHTTP) search(c *gin.Context) {
 			return
 		}
 		search.ByTodoLists = b
+	}
+
+	bySharedNotes := c.Query("shared-notes")
+	if bySharedNotes == "" {
+		search.BySharedNotes = true
+	} else {
+		b, err := strconv.ParseBool(bySharedNotes)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared-notes param"})
+			return
+		}
+		search.BySharedNotes = b
+	}
+
+	bySharedTodoLists := c.Query("shared-todo-lists")
+	if bySharedTodoLists == "" {
+		search.BySharedTodoLists = true
+	} else {
+		b, err := strconv.ParseBool(bySharedTodoLists)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "invalid shared-todo-lists param"})
+			return
+		}
+		search.BySharedTodoLists = b
 	}
 
 	result, err := h.suc.GetAll(c, userID, search)

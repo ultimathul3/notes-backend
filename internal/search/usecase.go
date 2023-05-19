@@ -37,5 +37,23 @@ func (u *Usecase) GetAll(ctx context.Context, userID int64, search domain.Search
 		result.TodoListsCount = len(lists)
 	}
 
+	if search.BySharedNotes {
+		notes, err := u.repo.GetAllAcceptedSharedNotes(ctx, userID, search)
+		if err != nil {
+			return domain.SearchResult{}, err
+		}
+		result.SharedNotes = notes
+		result.SharedNotesCount = len(notes)
+	}
+
+	if search.BySharedTodoLists {
+		lists, err := u.repo.GetAllAcceptedSharedTodoLists(ctx, userID, search)
+		if err != nil {
+			return domain.SearchResult{}, err
+		}
+		result.SharedTodoLists = lists
+		result.SharedTodoListsCount = len(lists)
+	}
+
 	return result, nil
 }

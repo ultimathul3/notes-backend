@@ -1063,6 +1063,18 @@ const docTemplate = `{
                         "description": "Search by todo lists",
                         "name": "todo-lists",
                         "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Search by shared notes",
+                        "name": "shared-notes",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Search by shared todo lists",
+                        "name": "shared-todo-lists",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2062,10 +2074,19 @@ const docTemplate = `{
                 "shared_notes": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/domain.Note"
+                        "$ref": "#/definitions/domain.SharedNoteInfo"
                     }
                 },
                 "shared_notes_count": {
+                    "type": "integer"
+                },
+                "shared_todo_lists": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.SharedTodoListInfo"
+                    }
+                },
+                "shared_todo_lists_count": {
                     "type": "integer"
                 },
                 "todo_lists": {
