@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	"time"
 )
 
 type (
@@ -11,6 +12,10 @@ type (
 		ByTodoLists       bool
 		BySharedNotes     bool
 		BySharedTodoLists bool
+		CreatedFrom       time.Time
+		CreatedTo         time.Time
+		UpdatedFrom       time.Time
+		UpdatedTo         time.Time
 	}
 
 	SearchResult struct {

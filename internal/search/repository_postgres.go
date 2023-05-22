@@ -30,6 +30,30 @@ func getWhereQuery(search domain.Search) (string, []any, int) {
 		argID++
 	}
 
+	if !search.CreatedFrom.IsZero() {
+		whereValues = append(whereValues, fmt.Sprintf("created_at >= $%d", argID))
+		args = append(args, search.CreatedFrom)
+		argID++
+	}
+
+	if !search.CreatedTo.IsZero() {
+		whereValues = append(whereValues, fmt.Sprintf("created_at <= $%d", argID))
+		args = append(args, search.CreatedTo)
+		argID++
+	}
+
+	if !search.UpdatedFrom.IsZero() {
+		whereValues = append(whereValues, fmt.Sprintf("updated_at >= $%d", argID))
+		args = append(args, search.UpdatedFrom)
+		argID++
+	}
+
+	if !search.UpdatedTo.IsZero() {
+		whereValues = append(whereValues, fmt.Sprintf("updated_at <= $%d", argID))
+		args = append(args, search.UpdatedTo)
+		argID++
+	}
+
 	whereValues = append(whereValues, "")
 	whereQuery := strings.Join(whereValues, " AND ")
 

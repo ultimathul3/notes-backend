@@ -1075,6 +1075,30 @@ const docTemplate = `{
                         "description": "Search by shared todo lists",
                         "name": "shared-todo-lists",
                         "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Created from (timestamp)",
+                        "name": "created-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Created to (timestamp)",
+                        "name": "created-to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Updated from (timestamp)",
+                        "name": "updated-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Updated to (timestamp)",
+                        "name": "updated-to",
+                        "in": "query"
                     }
                 ],
                 "responses": {

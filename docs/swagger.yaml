@@ -1071,6 +1071,22 @@ paths:
         in: query
         name: shared-todo-lists
         type: boolean
+      - description: Created from (timestamp)
+        in: query
+        name: created-from
+        type: number
+      - description: Created to (timestamp)
+        in: query
+        name: created-to
+        type: number
+      - description: Updated from (timestamp)
+        in: query
+        name: updated-from
+        type: number
+      - description: Updated to (timestamp)
+        in: query
+        name: updated-to
+        type: number
       produces:
       - application/json
       responses:

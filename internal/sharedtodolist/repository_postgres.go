@@ -122,7 +122,8 @@ func (r *RepositoryPostgres) GetItemsByID(ctx context.Context, id, whomID int64)
 		`SELECT t.id, t.body, t.done
 		 FROM shared_todo_lists s
 		 JOIN todo_items t ON t.todo_list_id=s.todo_list_id
-		 WHERE s.id=$1 AND s.whom_id=$2 AND s.accepted=true`,
+		 WHERE s.id=$1 AND s.whom_id=$2 AND s.accepted=true
+		 ORDER BY t.id`,
 		id, whomID,
 	)
 	if err != nil {
