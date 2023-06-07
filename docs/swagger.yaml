@@ -1053,7 +1053,6 @@ paths:
       - description: Search by title
         in: query
         name: title
-        required: true
         type: string
       - description: Search by notes
         in: query

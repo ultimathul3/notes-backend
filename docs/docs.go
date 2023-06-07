@@ -1049,8 +1049,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "Search by title",
                         "name": "title",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "boolean",

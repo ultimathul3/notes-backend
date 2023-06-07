@@ -18,5 +18,9 @@ func NewConnection(ctx context.Context, username, password, host, port, db strin
 		return nil, err
 	}
 
+	if err := conn.Ping(ctx); err != nil {
+		return nil, err
+	}
+
 	return conn, nil
 }

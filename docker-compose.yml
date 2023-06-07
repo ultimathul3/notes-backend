@@ -3,7 +3,7 @@ version: "3.9"
 services:
   db:
     image: postgres
-    container_name: "notes-postgres"
+    container_name: notes_postgres
     ports:
       - ${PSQL_PORT}:5432
     volumes:
@@ -13,4 +13,25 @@ services:
       POSTGRES_PASSWORD: ${PSQL_PASSWORD}
       POSTGRES_DB: ${PSQL_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+
+  migrate:
+    image: migrate/migrate
+    container_name: notes_migrate
+    depends_on:
+      - db
+    volumes:
+      - ./migrations:/migrations
+    command:
+      ["-path", "/migrations", "-database", "postgres://${PSQL_USERNAME}:${PSQL_PASSWORD}@notes_postgres:${PSQL_PORT}/${PSQL_DB}?sslmode=disable", "up"]
+    restart: on-failure
+
+  app:
+    container_name: notes_backend
+    build: .
+    ports:
+      - ${HTTP_PORT}:8080
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     restart: always
