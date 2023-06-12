@@ -21,13 +21,6 @@ CREATE TABLE notes (
     "notebook_id" BIGINT REFERENCES notebooks("id") ON DELETE CASCADE NOT NULL
 );
 
-CREATE TABLE files (
-    "id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    "filename" TEXT NOT NULL,
-    "note_id" BIGINT REFERENCES notes("id") ON DELETE CASCADE NOT NULL,
-    UNIQUE("filename", "note_id")
-);
-
 CREATE TABLE shared_notes (
     "id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     "whose_id" BIGINT REFERENCES users("id") ON DELETE CASCADE NOT NULL,
