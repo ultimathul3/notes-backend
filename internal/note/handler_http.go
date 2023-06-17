@@ -39,7 +39,7 @@ func NewHandlerHTTP(router *gin.Engine, nuc domain.NoteUsecase, tokenChecker gin
 // @Param		user body domain.CreateNoteDTO true "Note data"
 // @Success		200 {object} docs.CreateNoteResponse "Note ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/notes [post]
+// @Router		/api/notebooks/{notebook-id}/notes/ [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -74,7 +74,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Param		notebook-id path int true "Notebook ID"
 // @Success		200 {array} docs.GetAllNotesResponse "Notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/notes [get]
+// @Router		/api/notebooks/{notebook-id}/notes/ [get]
 func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -106,7 +106,7 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 // @Param		note-id path int true "Note ID"
 // @Success		200 {array} docs.GetNoteResponse "Notes"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/notes/{note-id} [get]
+// @Router		/api/notebooks/{notebook-id}/notes/{note-id} [get]
 func (h *HandlerHTTP) getByID(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -142,7 +142,7 @@ func (h *HandlerHTTP) getByID(c *gin.Context) {
 // @Param		user body domain.PatchNoteDTO true "New note data"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/notes/{note-id} [patch]
+// @Router		/api/notebooks/{notebook-id}/notes/{note-id} [patch]
 func (h *HandlerHTTP) patch(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -184,7 +184,7 @@ func (h *HandlerHTTP) patch(c *gin.Context) {
 // @Param		note-id path int true "Note ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/notes/{note-id} [delete]
+// @Router		/api/notebooks/{notebook-id}/notes/{note-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {

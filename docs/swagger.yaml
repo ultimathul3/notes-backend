@@ -404,7 +404,7 @@ info:
   title: Notes API
   version: "1.0"
 paths:
-  /auth/logout:
+  /api/auth/logout:
     post:
       consumes:
       - application/json
@@ -431,7 +431,7 @@ paths:
       summary: User logout
       tags:
       - Auth
-  /auth/refresh:
+  /api/auth/refresh:
     post:
       consumes:
       - application/json
@@ -456,7 +456,7 @@ paths:
       summary: Refreshing a user session
       tags:
       - Auth
-  /auth/sign-in:
+  /api/auth/sign-in:
     post:
       consumes:
       - application/json
@@ -485,7 +485,7 @@ paths:
       summary: User sign in
       tags:
       - Auth
-  /auth/sign-up:
+  /api/auth/sign-up:
     post:
       consumes:
       - application/json
@@ -510,7 +510,7 @@ paths:
       summary: User sign up
       tags:
       - Auth
-  /notebooks:
+  /api/notebooks/:
     get:
       consumes:
       - application/json
@@ -558,7 +558,7 @@ paths:
       summary: Creating notebook
       tags:
       - Notebook
-  /notebooks/{notebook-id}:
+  /api/notebooks/{notebook-id}:
     delete:
       consumes:
       - application/json
@@ -615,7 +615,7 @@ paths:
       summary: Updating user notebook
       tags:
       - Notebook
-  /notebooks/{notebook-id}/notes:
+  /api/notebooks/{notebook-id}/notes/:
     get:
       consumes:
       - application/json
@@ -674,7 +674,7 @@ paths:
       summary: Creating a note in a notebook
       tags:
       - Note
-  /notebooks/{notebook-id}/notes/{note-id}:
+  /api/notebooks/{notebook-id}/notes/{note-id}:
     delete:
       consumes:
       - application/json
@@ -773,7 +773,7 @@ paths:
       summary: Updating a note in a notebook
       tags:
       - Note
-  /notebooks/{notebook-id}/todo-lists:
+  /api/notebooks/{notebook-id}/todo-lists/:
     get:
       consumes:
       - application/json
@@ -832,7 +832,7 @@ paths:
       summary: Creating a todo list in a notebook
       tags:
       - Todo list
-  /notebooks/{notebook-id}/todo-lists/{todo-list-id}:
+  /api/notebooks/{notebook-id}/todo-lists/{todo-list-id}:
     delete:
       consumes:
       - application/json
@@ -899,7 +899,7 @@ paths:
       summary: Updating a todo list in a notebook
       tags:
       - Todo list
-  /notebooks/{notebook-id}/todo-lists/{todo-list-id}/items:
+  /api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/:
     get:
       consumes:
       - application/json
@@ -968,7 +968,7 @@ paths:
       summary: Creating a todo item in todo list
       tags:
       - Todo item
-  /notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}:
+  /api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}:
     delete:
       consumes:
       - application/json
@@ -1045,7 +1045,7 @@ paths:
       summary: Updating an item in todo list
       tags:
       - Todo item
-  /search:
+  /api/search/:
     get:
       consumes:
       - application/json
@@ -1104,7 +1104,7 @@ paths:
       summary: Search in notes, todo lists, shared notes and shared todo lists
       tags:
       - Search
-  /shared-notes:
+  /api/shared-notes/:
     get:
       consumes:
       - application/json
@@ -1126,7 +1126,7 @@ paths:
       summary: Getting a list of shared notes
       tags:
       - Shared note
-  /shared-notes/{shared-note-id}:
+  /api/shared-notes/{shared-note-id}:
     get:
       consumes:
       - application/json
@@ -1152,7 +1152,7 @@ paths:
       summary: Getting a data of shared note
       tags:
       - Shared note
-  /shared-notes/incoming:
+  /api/shared-notes/incoming:
     post:
       consumes:
       - application/json
@@ -1179,7 +1179,7 @@ paths:
       summary: Creating a shared note
       tags:
       - Shared note
-  /shared-notes/incoming/{shared-note-id}:
+  /api/shared-notes/incoming/{shared-note-id}:
     delete:
       consumes:
       - application/json
@@ -1230,7 +1230,7 @@ paths:
       summary: Accepting a shared note
       tags:
       - Shared note
-  /shared-notes/outgoing/{note-id}:
+  /api/shared-notes/outgoing/{note-id}:
     get:
       consumes:
       - application/json
@@ -1258,7 +1258,7 @@ paths:
       summary: Getting an outgoing shared notes
       tags:
       - Shared note
-  /shared-todo-lists:
+  /api/shared-todo-lists/:
     get:
       consumes:
       - application/json
@@ -1280,7 +1280,7 @@ paths:
       summary: Getting a list of shared todo lists
       tags:
       - Shared todo list
-  /shared-todo-lists/{shared-todo-list-id}:
+  /api/shared-todo-lists/{shared-todo-list-id}:
     get:
       consumes:
       - application/json
@@ -1306,7 +1306,7 @@ paths:
       summary: Getting a data of shared todo list
       tags:
       - Shared todo list
-  /shared-todo-lists/incoming:
+  /api/shared-todo-lists/incoming:
     post:
       consumes:
       - application/json
@@ -1333,7 +1333,7 @@ paths:
       summary: Creating a shared todo list
       tags:
       - Shared todo list
-  /shared-todo-lists/incoming/{shared-todo-list-id}:
+  /api/shared-todo-lists/incoming/{shared-todo-list-id}:
     delete:
       consumes:
       - application/json
@@ -1384,7 +1384,7 @@ paths:
       summary: Accepting a shared todo list
       tags:
       - Shared todo list
-  /shared-todo-lists/outgoing/{todo-list-id}:
+  /api/shared-todo-lists/outgoing/{todo-list-id}:
     get:
       consumes:
       - application/json

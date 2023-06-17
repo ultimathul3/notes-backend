@@ -16,7 +16,7 @@ import (
 // @Param	user body docs.RefreshSessionDTO true "User session"
 // @Success	200 {object} docs.RefreshResponse "New data for user authorization"
 // @Failure	400 {object} docs.MessageResponse "Error message"
-// @Router	/auth/refresh [post]
+// @Router	/api/auth/refresh [post]
 func (h *HandlerHTTP) refresh(c *gin.Context) {
 	var input domain.RefreshSessionDTO
 	if err := c.BindJSON(&input); err != nil {

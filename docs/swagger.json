@@ -6,7 +6,7 @@
         "version": "1.0"
     },
     "paths": {
-        "/auth/logout": {
+        "/api/auth/logout": {
             "post": {
                 "security": [
                     {
@@ -50,7 +50,7 @@
                 }
             }
         },
-        "/auth/refresh": {
+        "/api/auth/refresh": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -89,7 +89,7 @@
                 }
             }
         },
-        "/auth/sign-in": {
+        "/api/auth/sign-in": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -134,7 +134,7 @@
                 }
             }
         },
-        "/auth/sign-up": {
+        "/api/auth/sign-up": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -173,7 +173,7 @@
                 }
             }
         },
-        "/notebooks": {
+        "/api/notebooks/": {
             "get": {
                 "security": [
                     {
@@ -251,7 +251,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}": {
+        "/api/notebooks/{notebook-id}": {
             "put": {
                 "security": [
                     {
@@ -342,7 +342,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/notes": {
+        "/api/notebooks/{notebook-id}/notes/": {
             "get": {
                 "security": [
                     {
@@ -436,7 +436,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/notes/{note-id}": {
+        "/api/notebooks/{notebook-id}/notes/{note-id}": {
             "get": {
                 "security": [
                     {
@@ -591,7 +591,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists": {
+        "/api/notebooks/{notebook-id}/todo-lists/": {
             "get": {
                 "security": [
                     {
@@ -685,7 +685,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}": {
             "put": {
                 "security": [
                     {
@@ -790,7 +790,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/": {
             "get": {
                 "security": [
                     {
@@ -898,7 +898,7 @@
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}": {
             "delete": {
                 "security": [
                     {
@@ -1017,7 +1017,7 @@
                 }
             }
         },
-        "/search": {
+        "/api/search/": {
             "get": {
                 "security": [
                     {
@@ -1109,7 +1109,7 @@
                 }
             }
         },
-        "/shared-notes": {
+        "/api/shared-notes/": {
             "get": {
                 "security": [
                     {
@@ -1145,7 +1145,7 @@
                 }
             }
         },
-        "/shared-notes/incoming": {
+        "/api/shared-notes/incoming": {
             "post": {
                 "security": [
                     {
@@ -1189,7 +1189,7 @@
                 }
             }
         },
-        "/shared-notes/incoming/{shared-note-id}": {
+        "/api/shared-notes/incoming/{shared-note-id}": {
             "post": {
                 "security": [
                     {
@@ -1271,7 +1271,7 @@
                 }
             }
         },
-        "/shared-notes/outgoing/{note-id}": {
+        "/api/shared-notes/outgoing/{note-id}": {
             "get": {
                 "security": [
                     {
@@ -1316,7 +1316,7 @@
                 }
             }
         },
-        "/shared-notes/{shared-note-id}": {
+        "/api/shared-notes/{shared-note-id}": {
             "get": {
                 "security": [
                     {
@@ -1358,7 +1358,7 @@
                 }
             }
         },
-        "/shared-todo-lists": {
+        "/api/shared-todo-lists/": {
             "get": {
                 "security": [
                     {
@@ -1394,7 +1394,7 @@
                 }
             }
         },
-        "/shared-todo-lists/incoming": {
+        "/api/shared-todo-lists/incoming": {
             "post": {
                 "security": [
                     {
@@ -1438,7 +1438,7 @@
                 }
             }
         },
-        "/shared-todo-lists/incoming/{shared-todo-list-id}": {
+        "/api/shared-todo-lists/incoming/{shared-todo-list-id}": {
             "post": {
                 "security": [
                     {
@@ -1520,7 +1520,7 @@
                 }
             }
         },
-        "/shared-todo-lists/outgoing/{todo-list-id}": {
+        "/api/shared-todo-lists/outgoing/{todo-list-id}": {
             "get": {
                 "security": [
                     {
@@ -1565,7 +1565,7 @@
                 }
             }
         },
-        "/shared-todo-lists/{shared-todo-list-id}": {
+        "/api/shared-todo-lists/{shared-todo-list-id}": {
             "get": {
                 "security": [
                     {

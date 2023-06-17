@@ -16,7 +16,7 @@ import (
 // @Success	200 {object} docs.SignInResponse "Data for user authorization"
 // @Failure	400 {object} docs.MessageResponse "Error message"
 // @Failure	500 {object} docs.MessageResponse "Server error message"
-// @Router	/auth/sign-in [post]
+// @Router	/api/auth/sign-in [post]
 func (h *HandlerHTTP) signIn(c *gin.Context) {
 	var input domain.GetUserDTO
 	if err := c.BindJSON(&input); err != nil {

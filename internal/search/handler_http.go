@@ -43,7 +43,7 @@ func NewHandlerHTTP(router *gin.Engine, suc domain.SearchUsecase, tokenChecker g
 // @Param		updated-to query number false "Updated to (timestamp)"
 // @Success		200 {array} domain.SearchResult "Search result"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/search [get]
+// @Router		/api/search/ [get]
 func (h *HandlerHTTP) search(c *gin.Context) {
 	search := domain.Search{}
 

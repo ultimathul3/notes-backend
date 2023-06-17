@@ -41,7 +41,7 @@ func NewHandlerHTTP(router *gin.Engine, iuc domain.TodoItemUsecase, luc domain.T
 // @Param		user body domain.CreateTodoItemDTO true "Item data"
 // @Success		200 {object} docs.CreateTodoItemResponse "Todo list ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items [post]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/ [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -89,7 +89,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Param		todo-list-id path int true "Todo list ID"
 // @Success		200 {array} docs.GetAllTodoItemsResponse "Todo items"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items [get]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/ [get]
 func (h *HandlerHTTP) getAllByListID(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -129,7 +129,7 @@ func (h *HandlerHTTP) getAllByListID(c *gin.Context) {
 // @Param		user body domain.PatchTodoItemDTO true "New todo item data"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id} [patch]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id} [patch]
 func (h *HandlerHTTP) patch(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -184,7 +184,7 @@ func (h *HandlerHTTP) patch(c *gin.Context) {
 // @Param		item-id path int true "Item ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id} [delete]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {

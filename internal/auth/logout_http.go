@@ -16,7 +16,7 @@ import (
 // @Param		user body domain.LogoutDTO true "User refresh token"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/auth/logout [post]
+// @Router		/api/auth/logout [post]
 func (h *HandlerHTTP) logout(c *gin.Context) {
 	var session domain.LogoutDTO
 	if err := c.BindJSON(&session); err != nil {

@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/logout": {
+        "/api/auth/logout": {
             "post": {
                 "security": [
                     {
@@ -60,7 +60,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/refresh": {
+        "/api/auth/refresh": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -99,7 +99,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/sign-in": {
+        "/api/auth/sign-in": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -144,7 +144,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/sign-up": {
+        "/api/auth/sign-up": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -183,7 +183,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks": {
+        "/api/notebooks/": {
             "get": {
                 "security": [
                     {
@@ -261,7 +261,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}": {
+        "/api/notebooks/{notebook-id}": {
             "put": {
                 "security": [
                     {
@@ -352,7 +352,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/notes": {
+        "/api/notebooks/{notebook-id}/notes/": {
             "get": {
                 "security": [
                     {
@@ -446,7 +446,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/notes/{note-id}": {
+        "/api/notebooks/{notebook-id}/notes/{note-id}": {
             "get": {
                 "security": [
                     {
@@ -601,7 +601,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists": {
+        "/api/notebooks/{notebook-id}/todo-lists/": {
             "get": {
                 "security": [
                     {
@@ -695,7 +695,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}": {
             "put": {
                 "security": [
                     {
@@ -800,7 +800,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/": {
             "get": {
                 "security": [
                     {
@@ -908,7 +908,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}": {
+        "/api/notebooks/{notebook-id}/todo-lists/{todo-list-id}/items/{item-id}": {
             "delete": {
                 "security": [
                     {
@@ -1027,7 +1027,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/search": {
+        "/api/search/": {
             "get": {
                 "security": [
                     {
@@ -1119,7 +1119,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes": {
+        "/api/shared-notes/": {
             "get": {
                 "security": [
                     {
@@ -1155,7 +1155,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/incoming": {
+        "/api/shared-notes/incoming": {
             "post": {
                 "security": [
                     {
@@ -1199,7 +1199,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/incoming/{shared-note-id}": {
+        "/api/shared-notes/incoming/{shared-note-id}": {
             "post": {
                 "security": [
                     {
@@ -1281,7 +1281,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/outgoing/{note-id}": {
+        "/api/shared-notes/outgoing/{note-id}": {
             "get": {
                 "security": [
                     {
@@ -1326,7 +1326,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-notes/{shared-note-id}": {
+        "/api/shared-notes/{shared-note-id}": {
             "get": {
                 "security": [
                     {
@@ -1368,7 +1368,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-todo-lists": {
+        "/api/shared-todo-lists/": {
             "get": {
                 "security": [
                     {
@@ -1404,7 +1404,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-todo-lists/incoming": {
+        "/api/shared-todo-lists/incoming": {
             "post": {
                 "security": [
                     {
@@ -1448,7 +1448,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-todo-lists/incoming/{shared-todo-list-id}": {
+        "/api/shared-todo-lists/incoming/{shared-todo-list-id}": {
             "post": {
                 "security": [
                     {
@@ -1530,7 +1530,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-todo-lists/outgoing/{todo-list-id}": {
+        "/api/shared-todo-lists/outgoing/{todo-list-id}": {
             "get": {
                 "security": [
                     {
@@ -1575,7 +1575,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/shared-todo-lists/{shared-todo-list-id}": {
+        "/api/shared-todo-lists/{shared-todo-list-id}": {
             "get": {
                 "security": [
                     {

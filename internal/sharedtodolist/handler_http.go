@@ -47,7 +47,7 @@ func NewHandlerHTTP(
 // @Param		user body domain.CreateSharedTodoListDTO true "Shared todo list data"
 // @Success		200 {object} docs.CreateSharedTodoListResponse "Shared todo list ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists/incoming [post]
+// @Router		/api/shared-todo-lists/incoming [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	var sharedList domain.CreateSharedTodoListDTO
 	if err := c.BindJSON(&sharedList); err != nil {
@@ -89,7 +89,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Param		shared-todo-list-id path int true "Shared todo list ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists/incoming/{shared-todo-list-id} [delete]
+// @Router		/api/shared-todo-lists/incoming/{shared-todo-list-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	sharedTodoListID, err := strconv.ParseInt(c.Param("shared-todo-list-id"), 10, 64)
 	if err != nil {
@@ -116,7 +116,7 @@ func (h *HandlerHTTP) delete(c *gin.Context) {
 // @Produce		json
 // @Success		200 {array} domain.GetSharedTodoListsInfoResponse "Shared todo lists"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists [get]
+// @Router		/api/shared-todo-lists/ [get]
 func (h *HandlerHTTP) getAllInfo(c *gin.Context) {
 	userID := c.MustGet("userID").(int64)
 
@@ -141,7 +141,7 @@ func (h *HandlerHTTP) getAllInfo(c *gin.Context) {
 // @Param		shared-todo-list-id path int true "Shared todo list ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists/incoming/{shared-todo-list-id} [post]
+// @Router		/api/shared-todo-lists/incoming/{shared-todo-list-id} [post]
 func (h *HandlerHTTP) accept(c *gin.Context) {
 	sharedTodoListID, err := strconv.ParseInt(c.Param("shared-todo-list-id"), 10, 64)
 	if err != nil {
@@ -169,7 +169,7 @@ func (h *HandlerHTTP) accept(c *gin.Context) {
 // @Param		shared-todo-list-id path int true "Shared todo list ID"
 // @Success		200 {object} domain.SharedTodoListData "Data of shared todo list"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists/{shared-todo-list-id} [get]
+// @Router		/api/shared-todo-lists/{shared-todo-list-id} [get]
 func (h *HandlerHTTP) getDataByID(c *gin.Context) {
 	sharedTodoListID, err := strconv.ParseInt(c.Param("shared-todo-list-id"), 10, 64)
 	if err != nil {
@@ -197,7 +197,7 @@ func (h *HandlerHTTP) getDataByID(c *gin.Context) {
 // @Param		list-id path int true "Shared todo list ID"
 // @Success		200 {array} domain.GetOutgoingSharedTodoListsInfoResponse "Outgoing shared todo lists"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/shared-todo-lists/outgoing/{todo-list-id} [get]
+// @Router		/api/shared-todo-lists/outgoing/{todo-list-id} [get]
 func (h *HandlerHTTP) getOutgoingInfoByTodoListID(c *gin.Context) {
 	listID, err := strconv.ParseInt(c.Param("todo-list-id"), 10, 64)
 	if err != nil {

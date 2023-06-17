@@ -38,7 +38,7 @@ func NewHandlerHTTP(router *gin.Engine, tuc domain.TodoListUsecase, tokenChecker
 // @Param		user body domain.CreateTodoListDTO true "Todo list data"
 // @Success		200 {object} docs.CreateTodoListResponse "Todo list ID"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists [post]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/ [post]
 func (h *HandlerHTTP) create(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -73,7 +73,7 @@ func (h *HandlerHTTP) create(c *gin.Context) {
 // @Param		notebook-id path int true "Notebook ID"
 // @Success		200 {array} docs.GetAllTodoListsResponse "Todo lists"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists [get]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/ [get]
 func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -106,7 +106,7 @@ func (h *HandlerHTTP) getAllByNotebookID(c *gin.Context) {
 // @Param		user body domain.UpdateTodoListDTO true "New todo list data"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id} [put]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id} [put]
 func (h *HandlerHTTP) update(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {
@@ -148,7 +148,7 @@ func (h *HandlerHTTP) update(c *gin.Context) {
 // @Param		todo-list-id path int true "Todo list ID"
 // @Success		200 {object} docs.OkStatusResponse "OK status"
 // @Failure		400 {object} docs.MessageResponse "Error message"
-// @Router		/notebooks/{notebook-id}/todo-lists/{todo-list-id} [delete]
+// @Router		/api/notebooks/{notebook-id}/todo-lists/{todo-list-id} [delete]
 func (h *HandlerHTTP) delete(c *gin.Context) {
 	notebookID, err := strconv.ParseInt(c.Param("notebook-id"), 10, 64)
 	if err != nil {

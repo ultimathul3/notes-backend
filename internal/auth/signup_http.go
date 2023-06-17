@@ -15,7 +15,7 @@ import (
 // @Param	user body domain.CreateUserDTO true "User JSON"
 // @Success	200 {object} docs.SignUpResponse "User ID"
 // @Failure	400 {object} docs.MessageResponse "Error message"
-// @Router	/auth/sign-up [post]
+// @Router	/api/auth/sign-up [post]
 func (h *HandlerHTTP) signUp(c *gin.Context) {
 	var user domain.CreateUserDTO
 	if err := c.BindJSON(&user); err != nil {
