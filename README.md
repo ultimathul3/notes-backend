@@ -5,4 +5,4 @@
 
 # Swagger
 
-https://ultimathul3.ru/api/docs/index.html
+https://ultimathul3.ru/notes/api/docs/index.html
